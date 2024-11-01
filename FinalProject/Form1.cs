@@ -16,101 +16,76 @@ using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using iTextSharp.xmp.impl;
+using FinalProject.DataBase;
 
 
 namespace FinalProject
 {
   public partial class Form1 : Form
   {
-    const string connectionString = "Data Source=\"C:\\Users\\Алина\\source\\repos\\FinalProject\\DataBase.db\"";
-    SQLiteConnection connection = new SQLiteConnection(connectionString);
-    DataBase db = new DataBase();
+    
+
+    readonly PersonalInfo person = new PersonalInfo();
+    readonly DataBaseManager baseManager = new DataBaseManager();
     public Form1()
     {
       InitializeComponent();
-    }
-
-    private void nameField_TextChanged(object sender, EventArgs e)
-    {
-      PersonalInfo persona = new PersonalInfo();
-      persona.Name = nameField.Text;
-    }
-
-    private void dateOfBirth_ValueChanged(object sender, EventArgs e)
-    {
-      PersonalInfo persona = new PersonalInfo();
-      persona.DateOfBirth = dateOfBirth.Value;
-    }
-
-    private void genderField_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      if (genderField.Text != "Выберите пол")
-      {
-        genderField.ForeColor = Color.Black;
-        PersonalInfo persona = new PersonalInfo();
-        persona.Gender = genderField.Items.ToString();
-      }
-    }
-
-    private void nameField_Enter(object sender, EventArgs e)
-    {
-      if (nameField.Text == "Введите имя")
-      {
-        nameField.Text = "";
-        nameField.ForeColor = Color.Black;
-      }
-    }
-
-    private void nameField_Leave(object sender, EventArgs e)
-    {
-      if (nameField.Text == "")
-      {
-        nameField.Text = "Введите имя";
-        nameField.ForeColor = Color.Gray;
-      }
-    }
-
-    private void buttonSaveInfo_Click(object sender, EventArgs e)
-    {
-     
       
+    }
 
-      string name = nameField.Text;
-      string date = dateOfBirth.Text;
-      string gender = genderField.Text;
+    private void FullNameField_TextChanged(object sender, EventArgs e)
+    { 
+      person.FullName = FullNameField.Text;
+    }
 
-      connection.Open();
-      SQLiteCommand command = connection.CreateCommand();
-      command.CommandText = @"
-               INSERT INTO PersonalInfo (
-                 Name, 
-                 DateOfBirth, 
-                 Gender ) 
-               VALUES (
-                 @name, 
-                 @date, 
-                 @gender)";
+    private void DateOfBirth_ValueChanged(object sender, EventArgs e)
+    {
+      person.DateOfBirth = DateOfBirthField.Text;
+    }
 
-      command.Parameters.AddWithValue("@name", name);
-      command.Parameters.AddWithValue("@date", date);
-      command.Parameters.AddWithValue("@gender", gender);
 
-      if (command.ExecuteNonQuery() != 0)
-        MessageBox.Show("Данные сохранены");
-      connection.Close();
+    private void FullNameField_Enter(object sender, EventArgs e)
+    {
+      if (FullNameField.Text == "Введите имя")
+      {
+        FullNameField.Text = "";
+        FullNameField.ForeColor = Color.Black;
+      }
+    }
+
+    private void FullNameField_Leave(object sender, EventArgs e)
+    {
+      if (FullNameField.Text == "")
+      {
+        FullNameField.Text = "Введите имя";
+        FullNameField.ForeColor = Color.Gray;
+      }
+    }
+
+    private void ButtonSaveInfo_Click(object sender, EventArgs e)
+    {
+      person.FullName = FullNameField.Text;
+      person.DateOfBirth = DateOfBirthField.Text;
+      person.Gender = GenderField.Text;
+      person.City = CityField.Text;
+      person.PhoneNumber = PhoneNumberField.Text;
+      person.Email = EmailField.Text;
+      person.MaritalStatus = MaritalStatusField.Text;
+
+      baseManager.SavePersonalInfo(person);
 
     }
 
-    private void buttonCreatePDF_Click(object sender, EventArgs e)
+    private void ButtonCreatePDF_Click(object sender, EventArgs e)
     {
-      string query = "SELECT Name, DateOfBirth, Gender FROM PersonalInfo WHERE Name = @name";
+      /*string query = "SELECT Name, DateOfBirth, Gender FROM PersonalInfo WHERE Name = @name";
 
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
         connection.Open();
         using (SQLiteCommand command = new SQLiteCommand(query, connection))
         {
-          command.Parameters.AddWithValue("@name", nameField.Text);
+          command.Parameters.AddWithValue("@name", FullNameField.Text);
 
           using (SQLiteDataReader reader = command.ExecuteReader())
           {
@@ -145,7 +120,71 @@ namespace FinalProject
         }
       }
 
-      MessageBox.Show("PDF файл создан успешно.");
+      MessageBox.Show("PDF файл создан успешно.");*/
+    }
+
+    
+    private void CityField_TextChanged(object sender, EventArgs e)
+    {
+      person.City = CityField.Text;
+    }
+
+    private void CityField_Enter(object sender, EventArgs e)
+    {
+      if (CityField.Text == "Введите город")
+      {
+        CityField.Text = "";
+        CityField.ForeColor = Color.Black;
+      }
+    }
+
+    private void CityField_Leave(object sender, EventArgs e)
+    {
+      if (CityField.Text == "")
+      {
+        CityField.Text = "Введите город";
+        CityField.ForeColor = Color.Gray;
+      }
+    }
+
+    private void EmailField_TextChanged(object sender, EventArgs e)
+    {
+      person.Email = EmailField.Text;
+    }
+
+    private void EmailField_Enter(object sender, EventArgs e)
+    {
+      if (EmailField.Text == "Введите почту")
+      {
+        EmailField.Text = "";
+        EmailField.ForeColor = Color.Black;
+      }
+    }
+
+    private void EmailField_Leave(object sender, EventArgs e)
+    {
+      if (EmailField.Text == "")
+      {
+        EmailField.Text = "Введите почту";
+        EmailField.ForeColor = Color.Gray;
+      }
+    }
+
+    private void PhoneNumberField_TextChanged(object sender, EventArgs e)
+    {
+      person.PhoneNumber = PhoneNumberField.Text;
+    }
+
+    private void GenderField_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      person.Gender = GenderField.Items.ToString();
+      GenderField.ForeColor = Color.Black;
+    }
+
+    private void MaritalStatusField_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      person.MaritalStatus = MaritalStatusField.Items.ToString();
+      MaritalStatusField.ForeColor = Color.Black;
     }
   }
 }
