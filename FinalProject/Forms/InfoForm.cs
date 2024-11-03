@@ -1,32 +1,21 @@
-﻿using iTextSharp.text.pdf;
-using iTextSharp.text;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
 using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using iTextSharp.xmp.impl;
 using FinalProject.DataBase;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using FinalProject.Core;
+
 
 
 namespace FinalProject
 {
   public partial class InfoForm : Form
   {
-    
-
     readonly PersonalInfo person = new PersonalInfo();
     readonly DataBaseManager baseManager = new DataBaseManager();
 
@@ -34,18 +23,19 @@ namespace FinalProject
     {
       InitializeComponent();
 
-      GenderField.Text = "Выберите пол";
-
+    }
+    private void InfoForm_Load(object sender, EventArgs e)
+    {
+      GenderField.Text = "Пол";
       string[] maleStatus = { "Холост", "Женат" };
       MaritalStatusField.Items.AddRange(maleStatus);
     }
 
     private void FullNameField_Click(object sender, EventArgs e)
     {
-      if (FullNameField.Text == "Введите имя")
+      if (FullNameField.Text == "ФИО")
       {
         FullNameField.Text = "";
-        FullNameField.ForeColor = Color.Black;
       }
     }
     private void FullNameField_TextChanged(object sender, EventArgs e)
@@ -54,10 +44,9 @@ namespace FinalProject
     }
     private void FullNameField_Leave(object sender, EventArgs e)
     {
-      if (FullNameField.Text == "")
+      if ((FullNameField.Text == "")|| (FullNameField.Text == " ") || (FullNameField.Text.Contains("\n")))
       {
-        FullNameField.Text = "Введите имя";
-        FullNameField.ForeColor = Color.Gray;
+        FullNameField.Text = "ФИО";
       }
     }
     private void DateOfBirth_ValueChanged(object sender, EventArgs e)
@@ -74,7 +63,7 @@ namespace FinalProject
     {
       string selectedGender = GenderField.SelectedItem.ToString();
       string[] maritalStatus;
-      GenderField.ForeColor = Color.Black;
+     
 
       if (selectedGender == "Мужской")
       {
@@ -84,29 +73,22 @@ namespace FinalProject
       {
         maritalStatus = new string[] { "Холоста", "Замужем" };
       }
-      else
-      {
-        maritalStatus = new string[] { };
-        MaritalStatusField.Text = "Выберите статус";
-      }
-
-      MaritalStatusField.Items.Clear();
-      MaritalStatusField.Items.AddRange(maritalStatus);
-      MaritalStatusField.SelectedIndex = 0; 
+      
+      person.Gender = GenderField.Text;
   }
 
     private void MaritalStatusField_SelectedIndexChanged(object sender, EventArgs e)
     {
-      person.MaritalStatus = MaritalStatusField.Items.ToString();
-      MaritalStatusField.ForeColor = Color.Black;
+      person.MaritalStatus = MaritalStatusField.Text;
+      
     }
 
     private void CityField_Click(object sender, EventArgs e)
     {
-      if (CityField.Text == "Введите город")
+      if (CityField.Text == "Город")
       {
         CityField.Text = "";
-        CityField.ForeColor = Color.Black;
+
       }
     }
     private void CityField_TextChanged(object sender, EventArgs e)
@@ -115,19 +97,19 @@ namespace FinalProject
     }
     private void CityField_Leave(object sender, EventArgs e)
     {
-      if (CityField.Text == "")
+      if ((CityField.Text == "") || (CityField.Text == " ") || (CityField.Text.Contains("\n")))
       {
-        CityField.Text = "Введите город";
-        CityField.ForeColor = Color.Gray;
+        CityField.Text = "Город";
+
       }
     }
 
     private void EmailField_Click(object sender, EventArgs e)
     {
-      if (EmailField.Text == "Введите почту")
+      if (EmailField.Text == "Электронная почта")
       {
         EmailField.Text = "";
-        EmailField.ForeColor = Color.Black;
+
       }
     }
     private void EmailField_TextChanged(object sender, EventArgs e)
@@ -136,21 +118,21 @@ namespace FinalProject
     }
     private void EmailField_Leave(object sender, EventArgs e)
     {
-      if (EmailField.Text == "")
+      if ((EmailField.Text == "") || (EmailField.Text == " ") || (EmailField.Text.Contains("\n")))
       {
-        EmailField.Text = "Введите почту";
-        EmailField.ForeColor = Color.Gray;
+        EmailField.Text = "Электронная почта";
+
       }
-      if ((EmailField.Text!="Введите почту")&&(!Validator.IsValidEmail(EmailField.Text)))
+      if ((EmailField.Text!="Электронная почта")&&(!Validator.IsValidEmail(EmailField.Text)))
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста, введите адрес в формате example@example.com");
     }
 
     private void PhoneNumberField_Click(object sender, EventArgs e)
     {
-      if (PhoneNumberField.Text == "Введите номер телефона")
+      if (PhoneNumberField.Text == "Номер телефона")
       {
         PhoneNumberField.Text = "";
-        PhoneNumberField.ForeColor = Color.Black;
+
       }
     }
     private void PhoneNumberField_TextChanged(object sender, EventArgs e)
@@ -159,25 +141,17 @@ namespace FinalProject
     }
     private void PhoneNumberField_Leave(object sender, EventArgs e)
     {
-      if (PhoneNumberField.Text == "")
+      if ((PhoneNumberField.Text == "") || (PhoneNumberField.Text == " ") || (PhoneNumberField.Text.Contains("\n")))
       {
-        PhoneNumberField.Text = "Введите номер телефона";
-        PhoneNumberField.ForeColor = Color.Gray;
+        PhoneNumberField.Text = "Номер телефона";
+
       }
-      if ((PhoneNumberField.Text != "Введите номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
+      if ((PhoneNumberField.Text != "Номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста введите номер в формате 7 ХХХ ХХХ-ХХХХ");
     }
 
     private void ButtonSaveInfo_Click(object sender, EventArgs e)
     {
-      person.FullName = FullNameField.Text;
-      person.DateOfBirth = DateOfBirthField.Text;
-      person.Gender = GenderField.Text;
-      person.City = CityField.Text;
-      person.PhoneNumber = PhoneNumberField.Text;
-      person.Email = EmailField.Text;
-      person.MaritalStatus = MaritalStatusField.Text;
-
       if (IsFieldsFilled())
       {
         baseManager.SavePersonalInfo(person);
@@ -190,37 +164,42 @@ namespace FinalProject
 
     }
 
+    private void InfoForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      Application.Exit();
+    }
     public bool IsFieldsFilled()
     {
-      if (FullNameField.Text == "Введите имя")
+      if (FullNameField.Text == "ФИО")
       {
+
         FullNameField.ForeColor = Color.Red;
         return false;
       }
 
-      if (GenderField.Text == "Выберите пол")
+      if (GenderField.Text == "Пол")
       {
         GenderField.ForeColor = Color.Red;
         return false;
       }
 
-      if (MaritalStatusField.Text == "Выберите статус")
+      if (MaritalStatusField.Text == "Статус")
       {
         MaritalStatusField.ForeColor = Color.Red;
         return false;
       }
 
-      if (CityField.Text == "Введите город")
+      if (CityField.Text == "Город") 
       {
         CityField.ForeColor = Color.Red;
-        return false; 
+        return false;
       }
-      if (EmailField.Text == "Введите почту")
+      if (EmailField.Text == "Электронная почта") 
       {
         EmailField.ForeColor = Color.Red;
         return false;
       }
-      if (PhoneNumberField.Text == "Введите номер телефона")
+      if (PhoneNumberField.Text == "Номер телефона") 
       {
         PhoneNumberField.ForeColor = Color.Red;
         return false;

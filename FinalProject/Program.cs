@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace FinalProject
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new InfoForm());
+      Application.Run(new MainForm());
     }
   }
 }

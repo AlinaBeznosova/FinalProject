@@ -32,15 +32,9 @@
       this.FullNameField = new System.Windows.Forms.TextBox();
       this.DateOfBirthField = new System.Windows.Forms.DateTimePicker();
       this.ButtonNextFormWithSave = new System.Windows.Forms.Button();
-      this.labelFullName = new System.Windows.Forms.Label();
       this.labelDateOfBirth = new System.Windows.Forms.Label();
-      this.labelGender = new System.Windows.Forms.Label();
-      this.labelCity = new System.Windows.Forms.Label();
       this.CityField = new System.Windows.Forms.TextBox();
-      this.labelPhoneNumber = new System.Windows.Forms.Label();
-      this.labelEmail = new System.Windows.Forms.Label();
       this.EmailField = new System.Windows.Forms.TextBox();
-      this.labelStatus = new System.Windows.Forms.Label();
       this.GenderField = new System.Windows.Forms.ComboBox();
       this.MaritalStatusField = new System.Windows.Forms.ComboBox();
       this.PhoneNumberField = new System.Windows.Forms.TextBox();
@@ -53,13 +47,13 @@
       // FullNameField
       // 
       this.FullNameField.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.FullNameField.ForeColor = System.Drawing.Color.Gray;
+      this.FullNameField.ForeColor = System.Drawing.Color.Black;
       this.FullNameField.Location = new System.Drawing.Point(46, 82);
       this.FullNameField.Multiline = true;
       this.FullNameField.Name = "FullNameField";
       this.FullNameField.Size = new System.Drawing.Size(287, 41);
       this.FullNameField.TabIndex = 0;
-      this.FullNameField.Text = "Введите имя";
+      this.FullNameField.Text = "ФИО";
       this.FullNameField.Click += new System.EventHandler(this.FullNameField_Click);
       this.FullNameField.TextChanged += new System.EventHandler(this.FullNameField_TextChanged);
       this.FullNameField.Leave += new System.EventHandler(this.FullNameField_Leave);
@@ -85,15 +79,6 @@
       this.ButtonNextFormWithSave.UseVisualStyleBackColor = true;
       this.ButtonNextFormWithSave.Click += new System.EventHandler(this.ButtonSaveInfo_Click);
       // 
-      // labelFullName
-      // 
-      this.labelFullName.AutoSize = true;
-      this.labelFullName.Location = new System.Drawing.Point(50, 63);
-      this.labelFullName.Name = "labelFullName";
-      this.labelFullName.Size = new System.Drawing.Size(38, 16);
-      this.labelFullName.TabIndex = 5;
-      this.labelFullName.Text = "ФИО";
-      // 
       // labelDateOfBirth
       // 
       this.labelDateOfBirth.AutoSize = true;
@@ -103,82 +88,37 @@
       this.labelDateOfBirth.TabIndex = 6;
       this.labelDateOfBirth.Text = "Дата рождения";
       // 
-      // labelGender
-      // 
-      this.labelGender.AutoSize = true;
-      this.labelGender.Location = new System.Drawing.Point(50, 170);
-      this.labelGender.Name = "labelGender";
-      this.labelGender.Size = new System.Drawing.Size(33, 16);
-      this.labelGender.TabIndex = 7;
-      this.labelGender.Text = "Пол";
-      // 
-      // labelCity
-      // 
-      this.labelCity.AutoSize = true;
-      this.labelCity.Location = new System.Drawing.Point(341, 71);
-      this.labelCity.Name = "labelCity";
-      this.labelCity.Size = new System.Drawing.Size(131, 16);
-      this.labelCity.TabIndex = 8;
-      this.labelCity.Text = "Место проживания";
-      // 
       // CityField
       // 
       this.CityField.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.CityField.ForeColor = System.Drawing.Color.Gray;
+      this.CityField.ForeColor = System.Drawing.Color.Black;
       this.CityField.Location = new System.Drawing.Point(339, 90);
       this.CityField.Multiline = true;
       this.CityField.Name = "CityField";
       this.CityField.Size = new System.Drawing.Size(250, 41);
       this.CityField.TabIndex = 9;
-      this.CityField.Text = "Введите город";
+      this.CityField.Text = "Город";
       this.CityField.Click += new System.EventHandler(this.CityField_Click);
       this.CityField.TextChanged += new System.EventHandler(this.CityField_TextChanged);
       this.CityField.Leave += new System.EventHandler(this.CityField_Leave);
       // 
-      // labelPhoneNumber
-      // 
-      this.labelPhoneNumber.AutoSize = true;
-      this.labelPhoneNumber.Location = new System.Drawing.Point(341, 197);
-      this.labelPhoneNumber.Name = "labelPhoneNumber";
-      this.labelPhoneNumber.Size = new System.Drawing.Size(146, 16);
-      this.labelPhoneNumber.TabIndex = 10;
-      this.labelPhoneNumber.Text = "Контактный телефон";
-      // 
-      // labelEmail
-      // 
-      this.labelEmail.AutoSize = true;
-      this.labelEmail.Location = new System.Drawing.Point(341, 134);
-      this.labelEmail.Name = "labelEmail";
-      this.labelEmail.Size = new System.Drawing.Size(136, 16);
-      this.labelEmail.TabIndex = 12;
-      this.labelEmail.Text = "Электронная почта";
-      // 
       // EmailField
       // 
       this.EmailField.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.EmailField.ForeColor = System.Drawing.Color.Gray;
+      this.EmailField.ForeColor = System.Drawing.Color.Black;
       this.EmailField.Location = new System.Drawing.Point(339, 153);
       this.EmailField.Multiline = true;
       this.EmailField.Name = "EmailField";
       this.EmailField.Size = new System.Drawing.Size(250, 41);
       this.EmailField.TabIndex = 13;
-      this.EmailField.Text = "Введите почту";
+      this.EmailField.Text = "Электронная почта";
       this.EmailField.Click += new System.EventHandler(this.EmailField_Click);
       this.EmailField.TextChanged += new System.EventHandler(this.EmailField_TextChanged);
       this.EmailField.Leave += new System.EventHandler(this.EmailField_Leave);
       // 
-      // labelStatus
-      // 
-      this.labelStatus.AutoSize = true;
-      this.labelStatus.Location = new System.Drawing.Point(50, 216);
-      this.labelStatus.Name = "labelStatus";
-      this.labelStatus.Size = new System.Drawing.Size(149, 16);
-      this.labelStatus.TabIndex = 14;
-      this.labelStatus.Text = "Семейное положение";
-      // 
       // GenderField
       // 
-      this.GenderField.ForeColor = System.Drawing.Color.DimGray;
+      this.GenderField.ForeColor = System.Drawing.Color.Black;
       this.GenderField.FormattingEnabled = true;
       this.GenderField.Items.AddRange(new object[] {
             "Мужской",
@@ -187,30 +127,30 @@
       this.GenderField.Name = "GenderField";
       this.GenderField.Size = new System.Drawing.Size(287, 24);
       this.GenderField.TabIndex = 15;
-      this.GenderField.Text = "Выберите пол";
+      this.GenderField.Text = "Пол";
       this.GenderField.SelectedIndexChanged += new System.EventHandler(this.GenderField_SelectedIndexChanged);
       // 
       // MaritalStatusField
       // 
-      this.MaritalStatusField.ForeColor = System.Drawing.Color.DimGray;
+      this.MaritalStatusField.ForeColor = System.Drawing.Color.Black;
       this.MaritalStatusField.FormattingEnabled = true;
       this.MaritalStatusField.Location = new System.Drawing.Point(46, 235);
       this.MaritalStatusField.Name = "MaritalStatusField";
       this.MaritalStatusField.Size = new System.Drawing.Size(287, 24);
       this.MaritalStatusField.TabIndex = 16;
-      this.MaritalStatusField.Text = "Выберите статус";
+      this.MaritalStatusField.Text = "Статус";
       this.MaritalStatusField.SelectedIndexChanged += new System.EventHandler(this.MaritalStatusField_SelectedIndexChanged);
       // 
       // PhoneNumberField
       // 
       this.PhoneNumberField.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.PhoneNumberField.ForeColor = System.Drawing.Color.Gray;
+      this.PhoneNumberField.ForeColor = System.Drawing.Color.Black;
       this.PhoneNumberField.Location = new System.Drawing.Point(339, 218);
       this.PhoneNumberField.Multiline = true;
       this.PhoneNumberField.Name = "PhoneNumberField";
       this.PhoneNumberField.Size = new System.Drawing.Size(250, 41);
       this.PhoneNumberField.TabIndex = 17;
-      this.PhoneNumberField.Text = "Введите номер телефона";
+      this.PhoneNumberField.Text = "Номер телефона";
       this.PhoneNumberField.Click += new System.EventHandler(this.PhoneNumberField_Click);
       this.PhoneNumberField.TextChanged += new System.EventHandler(this.PhoneNumberField_TextChanged);
       this.PhoneNumberField.Leave += new System.EventHandler(this.PhoneNumberField_Leave);
@@ -249,20 +189,16 @@
       this.Controls.Add(this.PhoneNumberField);
       this.Controls.Add(this.MaritalStatusField);
       this.Controls.Add(this.GenderField);
-      this.Controls.Add(this.labelStatus);
       this.Controls.Add(this.EmailField);
-      this.Controls.Add(this.labelEmail);
-      this.Controls.Add(this.labelPhoneNumber);
       this.Controls.Add(this.CityField);
-      this.Controls.Add(this.labelCity);
-      this.Controls.Add(this.labelGender);
       this.Controls.Add(this.labelDateOfBirth);
-      this.Controls.Add(this.labelFullName);
       this.Controls.Add(this.ButtonNextFormWithSave);
       this.Controls.Add(this.DateOfBirthField);
       this.Controls.Add(this.FullNameField);
       this.Name = "InfoForm";
       this.Text = "Личная Инфомрация";
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InfoForm_FormClosing);
+      this.Load += new System.EventHandler(this.InfoForm_Load);
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
@@ -275,15 +211,9 @@
     private System.Windows.Forms.DateTimePicker DateOfBirthField;
     private System.Windows.Forms.BindingSource personalInfoBindingSource;
     private System.Windows.Forms.Button ButtonNextFormWithSave;
-    private System.Windows.Forms.Label labelFullName;
     private System.Windows.Forms.Label labelDateOfBirth;
-    private System.Windows.Forms.Label labelGender;
-    private System.Windows.Forms.Label labelCity;
     private System.Windows.Forms.TextBox CityField;
-    private System.Windows.Forms.Label labelPhoneNumber;
-    private System.Windows.Forms.Label labelEmail;
     private System.Windows.Forms.TextBox EmailField;
-    private System.Windows.Forms.Label labelStatus;
     private System.Windows.Forms.ComboBox GenderField;
     private System.Windows.Forms.ComboBox MaritalStatusField;
     private System.Windows.Forms.TextBox PhoneNumberField;
