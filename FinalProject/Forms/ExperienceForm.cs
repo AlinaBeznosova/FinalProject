@@ -8,18 +8,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FinalProject.DataBase;
+using FinalProject.Forms;
 
 namespace FinalProject
 {
   public partial class ExperienceForm : Form
   {
+    private InfoForm infoForm;
+    private EducationForm educationForm;
     readonly Experience experience = new Experience();
     readonly DataBaseManager baseManager = new DataBaseManager();
-    public ExperienceForm()
+    public ExperienceForm(InfoForm infoForm)
     {
       InitializeComponent();
+      this.infoForm = infoForm;
     }
 
+    private void ExperienceForm_Load(object sender, EventArgs e)
+    {
+      
+    }
     private void PositionField_Click(object sender, EventArgs e)
     {
       if (PositionField.Text == "Должность")
@@ -95,9 +103,33 @@ namespace FinalProject
 
       }
     }
-    private void SaveExperienceButton_Click(object sender, EventArgs e)
+    private void NextButton_Click(object sender, EventArgs e)
     {
-      baseManager.AddExperience(experience);
+      educationForm = new EducationForm(this);
+      this.Hide();
+    }
+    public bool IsFieldsFilled()
+    {
+      if (PositionField.Text == "Должность")
+      {
+
+        PositionField.ForeColor = Color.Red;
+        return false;
+      }
+
+      if (CompanyField.Text == "Компания")
+      {
+        CompanyField.ForeColor = Color.Red;
+        return false;
+      }
+
+      if (ResponsibilitiesField.Text == "Обязанности")
+      {
+        ResponsibilitiesField.ForeColor = Color.Red;
+        return false;
+      }
+
+      else return true;
     }
 
     private void ExperienceForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -105,6 +137,42 @@ namespace FinalProject
       Application.Exit();
     }
 
-    
+    private void AddMoreExperience_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+      {
+        baseManager.AddExperience(experience);
+
+        foreach (Control control in this.Controls)
+        {
+          if (control is TextBox textBox)
+          {
+            textBox.Text = string.Empty;
+          }
+        }
+      }
+      else MessageBox.Show("Сначала необходимо заполнить все поля");
+    }
+
+    private void NoExperienceButton_Click(object sender, EventArgs e)
+    {
+      educationForm = new EducationForm(this);
+      this.Hide();
+    }
+
+    private void PreviousFormButton_Click(object sender, EventArgs e)
+    {
+      infoForm.Show();
+      this.Hide();
+    }
+
+    private void SaveExperienceButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+        baseManager.AddExperience(experience);
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+
+    }
   }
 }

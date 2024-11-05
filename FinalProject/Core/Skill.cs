@@ -8,11 +8,13 @@ namespace FinalProject
 {
   public class Skill
   {
-    public string SkillName { get; set; }
+    public string Hardskill { get; set; }
+    public string Softskill { get; set; }
 
-    public Skill(string skillName)
+    public Skill(string hardSkill, string softSkill)
     {
-      SkillName = skillName;
+      Hardskill = hardSkill;
+      Softskill = softSkill;
     }
   }
 }

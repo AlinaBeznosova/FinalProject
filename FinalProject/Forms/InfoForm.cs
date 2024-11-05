@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FinalProject.DataBase;
 using FinalProject.Core;
+using FinalProject.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 
@@ -16,19 +18,21 @@ namespace FinalProject
 {
   public partial class InfoForm : Form
   {
+    
+    private ExperienceForm experienceForm;
     readonly PersonalInfo person = new PersonalInfo();
     readonly DataBaseManager baseManager = new DataBaseManager();
 
     public InfoForm()
     {
       InitializeComponent();
-
-    }
-    private void InfoForm_Load(object sender, EventArgs e)
-    {
       GenderField.Text = "Пол";
       string[] maleStatus = { "Холост", "Женат" };
       MaritalStatusField.Items.AddRange(maleStatus);
+    }
+    private void InfoForm_Load(object sender, EventArgs e)
+    {
+      
     }
 
     private void FullNameField_Click(object sender, EventArgs e)
@@ -39,15 +43,24 @@ namespace FinalProject
       }
     }
     private void FullNameField_TextChanged(object sender, EventArgs e)
-    { 
-      person.FullName = FullNameField.Text;
+    {
+     
+     person.FullName = FullNameField.Text;
+     
     }
     private void FullNameField_Leave(object sender, EventArgs e)
     {
+      
       if ((FullNameField.Text == "")|| (FullNameField.Text == " ") || (FullNameField.Text.Contains("\n")))
       {
         FullNameField.Text = "ФИО";
       }
+      if ((!Validator.ValidateFIO(FullNameField.Text) && FullNameField.Text !="ФИО"))
+      {
+        MessageBox.Show("Поле ФИО заполнено неверно");
+      }
+      
+
     }
     private void DateOfBirth_ValueChanged(object sender, EventArgs e)
     {
@@ -62,8 +75,8 @@ namespace FinalProject
     private void GenderField_SelectedIndexChanged(object sender, EventArgs e)
     {
       string selectedGender = GenderField.SelectedItem.ToString();
-      string[] maritalStatus;
-     
+      string[] maritalStatus ;
+
 
       if (selectedGender == "Мужской")
       {
@@ -73,9 +86,15 @@ namespace FinalProject
       {
         maritalStatus = new string[] { "Холоста", "Замужем" };
       }
-      
+      else
+      {
+        maritalStatus = new string[] { };
+      }
+
       person.Gender = GenderField.Text;
-  }
+      MaritalStatusField.Items.Clear(); 
+      MaritalStatusField.Items.AddRange(maritalStatus);
+    }
 
     private void MaritalStatusField_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -88,7 +107,6 @@ namespace FinalProject
       if (CityField.Text == "Город")
       {
         CityField.Text = "";
-
       }
     }
     private void CityField_TextChanged(object sender, EventArgs e)
@@ -100,7 +118,10 @@ namespace FinalProject
       if ((CityField.Text == "") || (CityField.Text == " ") || (CityField.Text.Contains("\n")))
       {
         CityField.Text = "Город";
-
+      }
+      if ((!Validator.ValidateCity(CityField.Text) && CityField.Text != "Город"))
+      {
+        MessageBox.Show("Поле город заполнено неверно");
       }
     }
 
@@ -109,7 +130,6 @@ namespace FinalProject
       if (EmailField.Text == "Электронная почта")
       {
         EmailField.Text = "";
-
       }
     }
     private void EmailField_TextChanged(object sender, EventArgs e)
@@ -149,19 +169,21 @@ namespace FinalProject
       if ((PhoneNumberField.Text != "Номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста введите номер в формате 7 ХХХ ХХХ-ХХХХ");
     }
-
-    private void ButtonSaveInfo_Click(object sender, EventArgs e)
+    private void SaveInfoButton_Click(object sender, EventArgs e)
     {
       if (IsFieldsFilled())
       {
         baseManager.SavePersonalInfo(person);
-        this.Hide();
-        ExperienceForm experienceForm = new ExperienceForm();
-        experienceForm.Show();
       }
 
       else MessageBox.Show("Необходимо заполнить все поля");
+    }
 
+    private void NextFormButton_Click(object sender, EventArgs e)
+    {
+        experienceForm = new ExperienceForm(this);
+        experienceForm.Show();
+        this.Hide();
     }
 
     private void InfoForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -208,5 +230,6 @@ namespace FinalProject
       else return true;
     }
 
+    
   }
 }

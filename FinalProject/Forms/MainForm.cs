@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace FinalProject.Forms
   
   public partial class MainForm : Form
   {
+    private InfoForm infoForm;
     readonly User user = new User();
     readonly DataBaseManager baseManager = new DataBaseManager();
     public MainForm()
@@ -67,7 +69,7 @@ namespace FinalProject.Forms
       if (baseManager.FindUser(user))
       {
         this.Hide();
-        InfoForm infoForm = new InfoForm();
+        infoForm = new InfoForm();
         infoForm.Show();
       }
       else MessageBox.Show("Пользователь не найден");

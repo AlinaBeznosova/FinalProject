@@ -30,7 +30,27 @@ namespace FinalProject.Core
       var phoneRegex = new Regex(@"^\+?7?\s?\d{3}\s?\d{3}-?\d{4}$");
       return phoneRegex.IsMatch(phoneNumber.Replace(" ", "").Replace("-", ""));
     }
+    public static bool ValidateFIO(string fio)
+    {
+      var fioRegex = new Regex(@"^[А-Яа-яЁё]+ [А-Яа-яЁё]+ [А-Яа-яЁё]+$");
+      return fioRegex.IsMatch(fio);
+    }
+    public static bool ValidateCity(string city)
+    {
+      var fioRegex = new Regex(@"^\s*[А-Яа-яЁё]+(\s+[А-Яа-яЁё]+)*\s*$");
+      return fioRegex.IsMatch(city);
+    }
+    /* public static string CapitalizeFirstLetters(string inputString)
+     {
+       string[] words = inputString.Split(' ');
 
+       for(int i =0; i < words.Length; i++)
+       {
+         words[i].Substring(0).ToUpper();
+       }
+       return string.Join(" ", words);
+
+     }*/
 
   }
 }

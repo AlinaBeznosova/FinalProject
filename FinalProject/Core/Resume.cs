@@ -157,43 +157,9 @@ namespace FinalProject
       Skills.Add(skill);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="skillName"></param>
-    /// <param name="updatedSkill"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void EditSkill(string skillName, Skill updatedSkill)
-    {
-      var skillToEdit = Skills.Find(s => s.SkillName == skillName);
-      if (skillToEdit != null)
-      {
-        skillToEdit.SkillName = updatedSkill.SkillName; 
-      }
-      else
-      {
-        throw new ArgumentException("Навык не найден");
-      }
-    }
+   
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="skillName"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void DeleteSkill(string skillName)
-    {
-      var skillToDelete = Skills.Find(s => s.SkillName == skillName);
-      if (skillToDelete != null)
-      {
-        Skills.Remove(skillToDelete);
-      }
-      else
-      {
-        throw new ArgumentException("Навык не найден");
-      }
-    }
-
+  
     /// <summary>
     /// 
     /// </summary>
