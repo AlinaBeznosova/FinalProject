@@ -40,7 +40,6 @@
       this.NoExperienceButton = new System.Windows.Forms.Button();
       this.AddMoreExperience = new System.Windows.Forms.Button();
       this.PreviousFormButton = new System.Windows.Forms.Button();
-      this.SaveExperienceButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // PositionField
@@ -154,9 +153,9 @@
       // 
       // AddMoreExperience
       // 
-      this.AddMoreExperience.Location = new System.Drawing.Point(430, 312);
+      this.AddMoreExperience.Location = new System.Drawing.Point(306, 312);
       this.AddMoreExperience.Name = "AddMoreExperience";
-      this.AddMoreExperience.Size = new System.Drawing.Size(168, 51);
+      this.AddMoreExperience.Size = new System.Drawing.Size(237, 51);
       this.AddMoreExperience.TabIndex = 10;
       this.AddMoreExperience.Text = "Добавить еще опыт";
       this.AddMoreExperience.UseVisualStyleBackColor = true;
@@ -172,22 +171,11 @@
       this.PreviousFormButton.UseVisualStyleBackColor = true;
       this.PreviousFormButton.Click += new System.EventHandler(this.PreviousFormButton_Click);
       // 
-      // SaveExperienceButton
-      // 
-      this.SaveExperienceButton.Location = new System.Drawing.Point(260, 312);
-      this.SaveExperienceButton.Name = "SaveExperienceButton";
-      this.SaveExperienceButton.Size = new System.Drawing.Size(164, 51);
-      this.SaveExperienceButton.TabIndex = 12;
-      this.SaveExperienceButton.Text = "Сохранить";
-      this.SaveExperienceButton.UseVisualStyleBackColor = true;
-      this.SaveExperienceButton.Click += new System.EventHandler(this.SaveExperienceButton_Click);
-      // 
       // ExperienceForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(629, 450);
-      this.Controls.Add(this.SaveExperienceButton);
       this.Controls.Add(this.PreviousFormButton);
       this.Controls.Add(this.AddMoreExperience);
       this.Controls.Add(this.NoExperienceButton);
@@ -203,7 +191,7 @@
       this.Name = "ExperienceForm";
       this.Text = "Опыт работы";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExperienceForm_FormClosed);
-      this.Load += new System.EventHandler(this.ExperienceForm_Load);
+
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -223,6 +211,5 @@
     private System.Windows.Forms.Button NoExperienceButton;
     private System.Windows.Forms.Button AddMoreExperience;
     private System.Windows.Forms.Button PreviousFormButton;
-    private System.Windows.Forms.Button SaveExperienceButton;
   }
 }

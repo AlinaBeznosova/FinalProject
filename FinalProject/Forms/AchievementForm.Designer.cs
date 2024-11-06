@@ -42,6 +42,7 @@
       this.SaveAndNextButton.TabIndex = 25;
       this.SaveAndNextButton.Text = "Далее";
       this.SaveAndNextButton.UseVisualStyleBackColor = true;
+      this.SaveAndNextButton.Click += new System.EventHandler(this.SaveAndNextButton_Click);
       // 
       // NoSkillsButton
       // 
@@ -51,6 +52,7 @@
       this.NoSkillsButton.TabIndex = 24;
       this.NoSkillsButton.Text = "Пропустить";
       this.NoSkillsButton.UseVisualStyleBackColor = true;
+      this.NoSkillsButton.Click += new System.EventHandler(this.NoSkillsButton_Click);
       // 
       // PreviousFormButton
       // 
@@ -70,6 +72,9 @@
       this.AchievementField.Size = new System.Drawing.Size(542, 84);
       this.AchievementField.TabIndex = 22;
       this.AchievementField.Text = "Профессиональные достижения";
+      this.AchievementField.Click += new System.EventHandler(this.AchievementField_Click);
+      this.AchievementField.TextChanged += new System.EventHandler(this.AchievementField_TextChanged);
+      this.AchievementField.Leave += new System.EventHandler(this.AchievementField_Leave);
       // 
       // AchievementForm
       // 
@@ -82,6 +87,7 @@
       this.Controls.Add(this.AchievementField);
       this.Name = "AchievementForm";
       this.Text = "Достижения";
+      this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AchievementForm_FormClosed);
       this.ResumeLayout(false);
       this.PerformLayout();
 

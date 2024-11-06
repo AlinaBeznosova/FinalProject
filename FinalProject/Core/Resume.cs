@@ -11,6 +11,7 @@ namespace FinalProject
   /// </summary>
   public class Resume
   {
+    public int UserId { get; set; }
     /// <summary>
     /// Личные данные.
     /// </summary>

@@ -12,6 +12,7 @@ namespace FinalProject
     public string Specialty { get; set; }
     public int YearOfGraduation { get; set; }
 
+    public Education() { }
     public Education(string institution, string specialty, int yearOfGraduation)
     {
       Institution = institution;

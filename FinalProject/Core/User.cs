@@ -8,7 +8,7 @@ namespace FinalProject.Core
 {
   public class User
   {
-    public static int CurrentUserId { get; set; }
+    public static int UserId { get; set; }
     public string Login {  get; set; }
     public string Password { get; set; }
 

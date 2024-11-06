@@ -11,6 +11,7 @@ namespace FinalProject
     public string Hardskill { get; set; }
     public string Softskill { get; set; }
 
+    public Skill() { }
     public Skill(string hardSkill, string softSkill)
     {
       Hardskill = hardSkill;

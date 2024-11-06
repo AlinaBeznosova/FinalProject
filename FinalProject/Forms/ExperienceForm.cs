@@ -14,7 +14,7 @@ namespace FinalProject
 {
   public partial class ExperienceForm : Form
   {
-    private InfoForm infoForm;
+    readonly private InfoForm infoForm;
     private EducationForm educationForm;
     readonly Experience experience = new Experience();
     readonly DataBaseManager baseManager = new DataBaseManager();
@@ -24,10 +24,7 @@ namespace FinalProject
       this.infoForm = infoForm;
     }
 
-    private void ExperienceForm_Load(object sender, EventArgs e)
-    {
-      
-    }
+   
     private void PositionField_Click(object sender, EventArgs e)
     {
       if (PositionField.Text == "Должность")
@@ -105,8 +102,16 @@ namespace FinalProject
     }
     private void NextButton_Click(object sender, EventArgs e)
     {
-      educationForm = new EducationForm(this);
-      this.Hide();
+      if (IsFieldsFilled())
+      {
+        baseManager.AddExperience(experience);
+        educationForm = new EducationForm(this);
+        educationForm.Show();
+        this.Hide();
+      }
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+      
     }
     public bool IsFieldsFilled()
     {
@@ -157,6 +162,7 @@ namespace FinalProject
     private void NoExperienceButton_Click(object sender, EventArgs e)
     {
       educationForm = new EducationForm(this);
+      educationForm.Show();
       this.Hide();
     }
 
@@ -164,15 +170,6 @@ namespace FinalProject
     {
       infoForm.Show();
       this.Hide();
-    }
-
-    private void SaveExperienceButton_Click(object sender, EventArgs e)
-    {
-      if (IsFieldsFilled())
-        baseManager.AddExperience(experience);
-
-      else MessageBox.Show("Необходимо заполнить все поля");
-
     }
   }
 }

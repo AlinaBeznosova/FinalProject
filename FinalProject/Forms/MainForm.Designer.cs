@@ -100,7 +100,7 @@
       this.labelpass.TabIndex = 5;
       this.labelpass.Text = "Пароль";
       // 
-      // MainForm
+      // LoginForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -111,7 +111,7 @@
       this.Controls.Add(this.LoginButton);
       this.Controls.Add(this.PasswordField);
       this.Controls.Add(this.LoginField);
-      this.Name = "MainForm";
+      this.Name = "LoginForm";
       this.Text = "Авторизация";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
       this.ResumeLayout(false);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -68,9 +69,24 @@ namespace FinalProject.Forms
     {
       if (baseManager.FindUser(user))
       {
-        this.Hide();
-        infoForm = new InfoForm();
-        infoForm.Show();
+        if (baseManager.CheckForDrafts(User.UserId))
+        {
+          DialogResult dialogResult = MessageBox.Show("Есть черновики. Хотите продолжить редактирование?", "Черновики", MessageBoxButtons.YesNo);
+          if (dialogResult == DialogResult.Yes)
+          {
+            this.Hide();
+            DraftForm draftForm = new DraftForm();
+            draftForm.Show();
+          }
+          else
+          {
+            this.Hide();
+            infoForm = new InfoForm();
+            infoForm.Show();
+            
+          }
+          
+        }
       }
       else MessageBox.Show("Пользователь не найден");
     }
@@ -79,5 +95,6 @@ namespace FinalProject.Forms
     {
       Application.Exit();
     }
+   
   }
 }

@@ -43,7 +43,9 @@
       this.HardSkillField.Size = new System.Drawing.Size(542, 84);
       this.HardSkillField.TabIndex = 0;
       this.HardSkillField.Text = "Технические навыки";
+      this.HardSkillField.Click += new System.EventHandler(this.HardSkillField_Click);
       this.HardSkillField.TextChanged += new System.EventHandler(this.HardSkillField_TextChanged);
+      this.HardSkillField.Leave += new System.EventHandler(this.HardSkillField_Leave);
       // 
       // SaveAndNextButton
       // 
@@ -83,7 +85,9 @@
       this.SoftSkillField.Size = new System.Drawing.Size(542, 84);
       this.SoftSkillField.TabIndex = 21;
       this.SoftSkillField.Text = "Универсальные навыки";
+      this.SoftSkillField.Click += new System.EventHandler(this.SoftSkillField_Click);
       this.SoftSkillField.TextChanged += new System.EventHandler(this.SoftSkillField_TextChanged);
+      this.SoftSkillField.Leave += new System.EventHandler(this.SoftSkillField_Leave);
       // 
       // SkillsForm
       // 
@@ -97,6 +101,7 @@
       this.Controls.Add(this.HardSkillField);
       this.Name = "SkillsForm";
       this.Text = "Навыки";
+      this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SkillsForm_FormClosed);
       this.ResumeLayout(false);
       this.PerformLayout();
 

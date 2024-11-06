@@ -99,6 +99,12 @@
     <Compile Include="Forms\AchievementForm.Designer.cs">
       <DependentUpon>AchievementForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DraftForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DraftForm.Designer.cs">
+      <DependentUpon>DraftForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EducationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,18 @@
     <Compile Include="Forms\RegisterForm.Designer.cs">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ResumeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ResumeDialog.Designer.cs">
+      <DependentUpon>ResumeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ResumeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ResumeForm.Designer.cs">
+      <DependentUpon>ResumeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SkillsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +160,9 @@
     <Compile Include="Core\Skill.cs" />
     <EmbeddedResource Include="Forms\AchievementForm.resx">
       <DependentUpon>AchievementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DraftForm.resx">
+      <DependentUpon>DraftForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EducationForm.resx">
       <DependentUpon>EducationForm.cs</DependentUpon>
@@ -157,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ResumeDialog.resx">
+      <DependentUpon>ResumeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SkillsForm.resx">
       <DependentUpon>SkillsForm.cs</DependentUpon>

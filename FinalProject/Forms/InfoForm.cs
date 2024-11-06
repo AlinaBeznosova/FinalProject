@@ -18,11 +18,26 @@ namespace FinalProject
 {
   public partial class InfoForm : Form
   {
-    
+    readonly PersonalInfo personal;
     private ExperienceForm experienceForm;
     readonly PersonalInfo person = new PersonalInfo();
     readonly DataBaseManager baseManager = new DataBaseManager();
 
+    
+
+    public InfoForm(PersonalInfo personalInfo)
+    {
+      InitializeComponent();
+      this.personal = personalInfo;
+      FullNameField.Text = personalInfo.FullName;
+      DateOfBirthField.Text = personalInfo.DateOfBirth;
+      GenderField.Text = personalInfo.Gender;
+      CityField.Text = personalInfo.City;
+      PhoneNumberField.Text = personalInfo.PhoneNumber;
+      EmailField.Text = personalInfo.Email;
+      MaritalStatusField.Text = personalInfo.MaritalStatus;
+    }
+    
     public InfoForm()
     {
       InitializeComponent();
@@ -30,10 +45,7 @@ namespace FinalProject
       string[] maleStatus = { "Холост", "Женат" };
       MaritalStatusField.Items.AddRange(maleStatus);
     }
-    private void InfoForm_Load(object sender, EventArgs e)
-    {
-      
-    }
+
 
     private void FullNameField_Click(object sender, EventArgs e)
     {
@@ -169,21 +181,24 @@ namespace FinalProject
       if ((PhoneNumberField.Text != "Номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста введите номер в формате 7 ХХХ ХХХ-ХХХХ");
     }
-    private void SaveInfoButton_Click(object sender, EventArgs e)
+
+    private void SaveButton_Click(object sender, EventArgs e)
     {
       if (IsFieldsFilled())
       {
         baseManager.SavePersonalInfo(person);
+        
       }
 
       else MessageBox.Show("Необходимо заполнить все поля");
-    }
 
+    }
     private void NextFormButton_Click(object sender, EventArgs e)
     {
-        experienceForm = new ExperienceForm(this);
-        experienceForm.Show();
-        this.Hide();
+      experienceForm = new ExperienceForm(this);
+      experienceForm.Show();
+      this.Hide();
+
     }
 
     private void InfoForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -230,6 +245,6 @@ namespace FinalProject
       else return true;
     }
 
-    
+   
   }
 }

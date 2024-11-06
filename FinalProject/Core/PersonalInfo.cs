@@ -13,9 +13,12 @@ namespace FinalProject
   /// </summary>
   public class PersonalInfo
   {
+    public static int PersonalInfoId { get; set; }
+
     /// <summary>
     /// ФИО.
     /// </summary>
+    /// 
     public string FullName { get; set; }
 
     /// <summary>

@@ -41,7 +41,7 @@
       this.labelInfo = new System.Windows.Forms.Label();
       this.labelContacts = new System.Windows.Forms.Label();
       this.personalInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-      this.SaveInfoButton = new System.Windows.Forms.Button();
+      this.SaveButton = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
@@ -72,7 +72,7 @@
       // 
       // NextFormButton
       // 
-      this.NextFormButton.Location = new System.Drawing.Point(289, 394);
+      this.NextFormButton.Location = new System.Drawing.Point(284, 394);
       this.NextFormButton.Name = "NextFormButton";
       this.NextFormButton.Size = new System.Drawing.Size(156, 44);
       this.NextFormButton.TabIndex = 3;
@@ -176,26 +176,22 @@
       this.labelContacts.TabIndex = 19;
       this.labelContacts.Text = "Контактные данные";
       // 
-      // personalInfoBindingSource
+      // SaveButton
       // 
-      this.personalInfoBindingSource.DataSource = typeof(FinalProject.InfoForm);
-      // 
-      // SaveInfoButton
-      // 
-      this.SaveInfoButton.Location = new System.Drawing.Point(127, 394);
-      this.SaveInfoButton.Name = "SaveInfoButton";
-      this.SaveInfoButton.Size = new System.Drawing.Size(156, 44);
-      this.SaveInfoButton.TabIndex = 20;
-      this.SaveInfoButton.Text = "Сохранить";
-      this.SaveInfoButton.UseVisualStyleBackColor = true;
-      this.SaveInfoButton.Click += new System.EventHandler(this.SaveInfoButton_Click);
+      this.SaveButton.Location = new System.Drawing.Point(122, 394);
+      this.SaveButton.Name = "SaveButton";
+      this.SaveButton.Size = new System.Drawing.Size(156, 44);
+      this.SaveButton.TabIndex = 20;
+      this.SaveButton.Text = "Сохранить";
+      this.SaveButton.UseVisualStyleBackColor = true;
+      this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
       // 
       // InfoForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(617, 450);
-      this.Controls.Add(this.SaveInfoButton);
+      this.Controls.Add(this.SaveButton);
       this.Controls.Add(this.labelContacts);
       this.Controls.Add(this.labelInfo);
       this.Controls.Add(this.PhoneNumberField);
@@ -210,7 +206,6 @@
       this.Name = "InfoForm";
       this.Text = "Личная Инфомрация";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InfoForm_FormClosing);
-      this.Load += new System.EventHandler(this.InfoForm_Load);
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
@@ -231,7 +226,7 @@
     private System.Windows.Forms.TextBox PhoneNumberField;
     private System.Windows.Forms.Label labelInfo;
     private System.Windows.Forms.Label labelContacts;
-    private System.Windows.Forms.Button SaveInfoButton;
+    private System.Windows.Forms.Button SaveButton;
   }
 }
 

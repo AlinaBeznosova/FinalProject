@@ -10,6 +10,7 @@ namespace FinalProject
   {
     public string AchievementName { get; set; }
 
+    public Achievement() { }
     public Achievement(string achievementName)
     {
       AchievementName = achievementName;

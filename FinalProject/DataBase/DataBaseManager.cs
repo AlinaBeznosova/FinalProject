@@ -1,12 +1,8 @@
-﻿using System;
+﻿using FinalProject.Core;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using FinalProject.Core;
 
 namespace FinalProject.DataBase
 {
@@ -15,6 +11,10 @@ namespace FinalProject.DataBase
     const string connectionString = "Data Source=\"C:\\Users\\Алина\\source\\repos\\FinalProject\\DataBase.db\"";
     public DataBaseManager() { }
 
+    /// <summary>
+    /// Регистрация пользователя. Добавление в таблицу Users.
+    /// </summary>
+    /// <param name="user">Пользователь.</param>
     public void RegisterUser(User user)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -33,12 +33,10 @@ namespace FinalProject.DataBase
                      @password)";
 
           command.Parameters.AddWithValue("@login", user.Login);
-          
+
           command.Parameters.AddWithValue("@password", user.Password);
 
           int rowsAffected = command.ExecuteNonQuery();
-          
-          
 
           if (rowsAffected > 0)
           {
@@ -48,7 +46,7 @@ namespace FinalProject.DataBase
           {
             MessageBox.Show("Пользователь не зарегистрирован");
           }
-         
+
         }
         catch (SQLiteException ex)
         {
@@ -60,6 +58,7 @@ namespace FinalProject.DataBase
         }
       }
     }
+
 
     public bool FindUser(User user)
     {
@@ -79,19 +78,19 @@ namespace FinalProject.DataBase
 
           if (userId != null)
           {
-            User.CurrentUserId = Convert.ToInt32(userId);
+            User.UserId = Convert.ToInt32(userId);
             return true;
           }
           else
           {
             return false;
           }
-        
+
         }
       }
     }
-    
-    public void SavePersonalInfo(PersonalInfo person) 
+
+    public void SavePersonalInfo(PersonalInfo person)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
@@ -108,19 +107,20 @@ namespace FinalProject.DataBase
                      Gender,
                      City,
                      PhoneNumber,
-                     Email,
-                     MaritalStatus) 
-                   VALUES (
-                     @userId,
-                     @name, 
-                     @date, 
-                     @gender,
-                     @city,
-                     @phoneNumber,
-                     @email,
-                     @maritalStatus)";
+Email,
+MaritalStatus)
+VALUES (
+@userId,
+@name,
+@date,
+@gender,
+@city,
+@phoneNumber,
+@email,
+@maritalStatus)";
 
-            command.Parameters.AddWithValue("@userId", User.CurrentUserId);
+
+            command.Parameters.AddWithValue("@userId", User.UserId);
             command.Parameters.AddWithValue("@name", person.FullName);
             command.Parameters.AddWithValue("@date", person.DateOfBirth);
             command.Parameters.AddWithValue("@gender", person.Gender);
@@ -148,8 +148,9 @@ namespace FinalProject.DataBase
         {
           connection.Close();
         }
+
       }
-  }
+    }
 
     public void AddExperience(Experience experience)
     {
@@ -176,7 +177,8 @@ namespace FinalProject.DataBase
                      @endDate,
                      @responsibilities)";
 
-            command.Parameters.AddWithValue("@userId", User.CurrentUserId);
+
+            command.Parameters.AddWithValue("@userId", User.UserId);
             command.Parameters.AddWithValue("@position", experience.Position);
             command.Parameters.AddWithValue("@company", experience.Company);
             command.Parameters.AddWithValue("@startDate", experience.StartDate);
@@ -204,5 +206,215 @@ namespace FinalProject.DataBase
         }
       }
     }
+
+    public void AddEducation(Education education)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          connection.Open();
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                   INSERT INTO Education (
+                     UserId,
+                     Institution,
+                     Specialty,
+                     YearOfGraduation) 
+                   VALUES (
+                     @userId,
+                     @institution, 
+                     @specialty, 
+                     @yearOfGraduation)";
+
+
+            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@institution", education.Institution);
+            command.Parameters.AddWithValue("@specialty", education.Specialty);
+            command.Parameters.AddWithValue("@yearOfGraduation", education.YearOfGraduation);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+              MessageBox.Show("Данные сохранены");
+            }
+            else
+            {
+              MessageBox.Show("Данные не сохранены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          MessageBox.Show("Ошибка сохранения данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+        }
+      }
+    }
+    public void AddSkill(Skill skill)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          connection.Open();
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                   INSERT INTO Skills (
+                     UserId,
+                     HardSkill,
+                     SoftSkill) 
+                   VALUES (
+                     @userId,
+                     @hardSkill, 
+                     @softSkill)";
+
+            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@hardSkill", skill.Hardskill);
+            command.Parameters.AddWithValue("@softSkill", skill.Softskill);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+              MessageBox.Show("Данные сохранены");
+            }
+            else
+            {
+              MessageBox.Show("Данные не сохранены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          MessageBox.Show("Ошибка сохранения данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+        }
+      }
+    }
+    public void AddAchievement(Achievement achievement)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          connection.Open();
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                   INSERT INTO Achievements (
+                     UserId,
+                     AchievementName) 
+                   VALUES (
+                     @userId,
+                     @achievementName)";
+
+
+            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@achievementName", achievement.AchievementName);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+              MessageBox.Show("Данные сохранены");
+            }
+            else
+            {
+              MessageBox.Show("Данные не сохранены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          MessageBox.Show("Ошибка сохранения данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+        }
+      }
+    }
+
+    public bool CheckForDrafts(int currentUserId)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM PersonalInfo WHERE UserId = @userId";
+          command.Parameters.AddWithValue("@userId", currentUserId);
+
+          object result = command.ExecuteScalar();
+          return result != null;
+        }
+      }
+    }
+
+    public List<string> DraftNames(int currentUserId)
+    {
+      List<string> fullNames = new List<string>();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT FullName FROM PersonalInfo WHERE UserId = @userId";
+          command.Parameters.AddWithValue("@userId", currentUserId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            while (reader.Read())
+            {
+              fullNames.Add(reader["FullName"].ToString());
+            }
+          }
+        }
+      }
+      return fullNames;
+    }
+
+    public PersonalInfo FindInfoByFullName(string FIO)
+    {
+      PersonalInfo person = new PersonalInfo();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM PersonalInfo 
+                   WHERE FullName = @fullName AND UserId = @userId";
+
+          command.Parameters.AddWithValue("@fullName", FIO);
+          command.Parameters.AddWithValue("@userId", User.UserId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              person.FullName = reader["FullName"].ToString();
+              person.DateOfBirth = reader["DateOfBirth"].ToString();
+              person.Gender = reader["Gender"].ToString();
+              person.MaritalStatus = reader["MaritalStatus"].ToString();
+              person.City = reader["City"].ToString();
+              person.Email = reader["Email"].ToString();
+              person.PhoneNumber = reader["PhoneNumber"].ToString();
+
+            }
+          }
+        }
+      }
+      return person;
+    }
+
+
   }
 }

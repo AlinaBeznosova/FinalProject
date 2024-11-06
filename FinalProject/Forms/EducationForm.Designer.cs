@@ -46,7 +46,9 @@
       this.InstitutionField.Size = new System.Drawing.Size(482, 98);
       this.InstitutionField.TabIndex = 0;
       this.InstitutionField.Text = "Учебное заведение";
+      this.InstitutionField.Click += new System.EventHandler(this.InstitutionField_Click);
       this.InstitutionField.TextChanged += new System.EventHandler(this.InstitutionField_TextChanged);
+      this.InstitutionField.Leave += new System.EventHandler(this.InstitutionField_Leave);
       // 
       // SpecialtyField
       // 
@@ -56,7 +58,9 @@
       this.SpecialtyField.Size = new System.Drawing.Size(482, 91);
       this.SpecialtyField.TabIndex = 1;
       this.SpecialtyField.Text = "Специальность";
+      this.SpecialtyField.Click += new System.EventHandler(this.SpecialtyField_Click);
       this.SpecialtyField.TextChanged += new System.EventHandler(this.SpecialtyField_TextChanged);
+      this.SpecialtyField.Leave += new System.EventHandler(this.SpecialtyField_Leave);
       // 
       // YearOfGraduationField
       // 
@@ -132,6 +136,7 @@
       this.Controls.Add(this.InstitutionField);
       this.Name = "EducationForm";
       this.Text = "ОБразование";
+      this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.EducationForm_FormClosed);
       this.ResumeLayout(false);
       this.PerformLayout();
 
