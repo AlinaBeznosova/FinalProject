@@ -8,15 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FinalProject.Core;
 
 namespace FinalProject.Forms
 {
   public partial class EducationForm : Form
   {
     readonly DataBaseManager baseManager = new DataBaseManager();
-   readonly private ExperienceForm experienceForm;
+    readonly private ExperienceForm experienceForm;
     private SkillsForm skillsForm;
    readonly Education education = new Education();
+    public EducationForm()
+    {
+      InitializeComponent();
+    }
+   
     public EducationForm(ExperienceForm experienceForm)
     {
       InitializeComponent();
@@ -60,9 +66,25 @@ namespace FinalProject.Forms
 
       }
     }
-    private void YearOfGraduationField_ValueChanged(object sender, EventArgs e)
+    private void YearOfGraduationField_Click(object sender, EventArgs e)
     {
-      education.YearOfGraduation = Convert.ToInt32(YearOfGraduationField.Text);
+      if (YearOfGraduationField.Text == "Год окончания")
+      {
+        YearOfGraduationField.Text = "";
+      }
+    }
+    private void YearOfGraduationField_TextChanged(object sender, EventArgs e)
+    {
+      education.YearOfGraduation = YearOfGraduationField.Text;
+    }
+    private void YearOfGraduationField_Leave(object sender, EventArgs e)
+    {
+      if ((YearOfGraduationField.Text == "") || (YearOfGraduationField.Text == " ") || (YearOfGraduationField.Text.Contains("\n")))
+      {
+        YearOfGraduationField.Text = "Год окончания";
+      }
+      if ((!Validator.IsValidYear(YearOfGraduationField.Text) && (YearOfGraduationField.Text != "Год окончания")))
+        MessageBox.Show("Некорректный формат даты. Пожалуйста, введите дату в формате гггг");
     }
 
     private void AddMoreEducation_Click(object sender, EventArgs e)
@@ -84,7 +106,8 @@ namespace FinalProject.Forms
 
     private void PreviousFormButton_Click(object sender, EventArgs e)
     {
-      experienceForm.Show();
+      ExperienceForm exp = new ExperienceForm();
+      exp.Show();
       this.Hide();
     }
 
@@ -121,6 +144,11 @@ namespace FinalProject.Forms
         SpecialtyField.ForeColor = Color.Red;
         return false;
       }
+      if (YearOfGraduationField.Text == "Год окончания")
+      {
+        YearOfGraduationField.ForeColor = Color.Red;
+        return false;
+      }
 
       else return true;
     }
@@ -129,5 +157,7 @@ namespace FinalProject.Forms
     {
       Application.Exit();
     }
+
+    
   }
 }

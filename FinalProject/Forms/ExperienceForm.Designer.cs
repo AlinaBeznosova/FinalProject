@@ -30,16 +30,15 @@
     {
       this.PositionField = new System.Windows.Forms.TextBox();
       this.CompanyField = new System.Windows.Forms.TextBox();
-      this.StartDateField = new System.Windows.Forms.DateTimePicker();
-      this.EndDateField = new System.Windows.Forms.DateTimePicker();
       this.ResponsibilitiesField = new System.Windows.Forms.TextBox();
       this.NextButton = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
-      this.label2 = new System.Windows.Forms.Label();
-      this.label3 = new System.Windows.Forms.Label();
       this.NoExperienceButton = new System.Windows.Forms.Button();
       this.AddMoreExperience = new System.Windows.Forms.Button();
       this.PreviousFormButton = new System.Windows.Forms.Button();
+      this.StartDateField = new System.Windows.Forms.TextBox();
+      this.EndDateField = new System.Windows.Forms.TextBox();
+      this.ShowExperienceListButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // PositionField
@@ -68,26 +67,6 @@
       this.CompanyField.TextChanged += new System.EventHandler(this.CompanyField_TextChanged);
       this.CompanyField.Leave += new System.EventHandler(this.CompanyField_Leave);
       // 
-      // StartDateField
-      // 
-      this.StartDateField.CustomFormat = "MM.yyyy";
-      this.StartDateField.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-      this.StartDateField.Location = new System.Drawing.Point(52, 312);
-      this.StartDateField.Name = "StartDateField";
-      this.StartDateField.Size = new System.Drawing.Size(202, 22);
-      this.StartDateField.TabIndex = 2;
-      this.StartDateField.ValueChanged += new System.EventHandler(this.StartDateField_ValueChanged);
-      // 
-      // EndDateField
-      // 
-      this.EndDateField.CustomFormat = "MM.yyyy";
-      this.EndDateField.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-      this.EndDateField.Location = new System.Drawing.Point(52, 340);
-      this.EndDateField.Name = "EndDateField";
-      this.EndDateField.Size = new System.Drawing.Size(202, 22);
-      this.EndDateField.TabIndex = 3;
-      this.EndDateField.ValueChanged += new System.EventHandler(this.EndDateField_ValueChanged);
-      // 
       // ResponsibilitiesField
       // 
       this.ResponsibilitiesField.ForeColor = System.Drawing.Color.Black;
@@ -115,31 +94,11 @@
       // 
       this.label1.AutoSize = true;
       this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label1.Location = new System.Drawing.Point(49, 293);
+      this.label1.Location = new System.Drawing.Point(19, 293);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(121, 16);
       this.label1.TabIndex = 6;
       this.label1.Text = "Период работы";
-      // 
-      // label2
-      // 
-      this.label2.AutoSize = true;
-      this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label2.Location = new System.Drawing.Point(29, 317);
-      this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(17, 16);
-      this.label2.TabIndex = 7;
-      this.label2.Text = "С";
-      // 
-      // label3
-      // 
-      this.label3.AutoSize = true;
-      this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label3.Location = new System.Drawing.Point(20, 345);
-      this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(26, 16);
-      this.label3.TabIndex = 8;
-      this.label3.Text = "До";
       // 
       // NoExperienceButton
       // 
@@ -153,9 +112,9 @@
       // 
       // AddMoreExperience
       // 
-      this.AddMoreExperience.Location = new System.Drawing.Point(306, 312);
+      this.AddMoreExperience.Location = new System.Drawing.Point(260, 317);
       this.AddMoreExperience.Name = "AddMoreExperience";
-      this.AddMoreExperience.Size = new System.Drawing.Size(237, 51);
+      this.AddMoreExperience.Size = new System.Drawing.Size(164, 51);
       this.AddMoreExperience.TabIndex = 10;
       this.AddMoreExperience.Text = "Добавить еще опыт";
       this.AddMoreExperience.UseVisualStyleBackColor = true;
@@ -171,27 +130,57 @@
       this.PreviousFormButton.UseVisualStyleBackColor = true;
       this.PreviousFormButton.Click += new System.EventHandler(this.PreviousFormButton_Click);
       // 
+      // StartDateField
+      // 
+      this.StartDateField.Location = new System.Drawing.Point(22, 317);
+      this.StartDateField.Name = "StartDateField";
+      this.StartDateField.Size = new System.Drawing.Size(232, 22);
+      this.StartDateField.TabIndex = 12;
+      this.StartDateField.Text = "С";
+      this.StartDateField.Click += new System.EventHandler(this.StartDateField_Click);
+      this.StartDateField.TextChanged += new System.EventHandler(this.StartDateField_TextChanged);
+      this.StartDateField.Leave += new System.EventHandler(this.StartDateField_Leave);
+      // 
+      // EndDateField
+      // 
+      this.EndDateField.Location = new System.Drawing.Point(22, 345);
+      this.EndDateField.Name = "EndDateField";
+      this.EndDateField.Size = new System.Drawing.Size(232, 22);
+      this.EndDateField.TabIndex = 13;
+      this.EndDateField.Text = "До";
+      this.EndDateField.Click += new System.EventHandler(this.EndDateField_Click);
+      this.EndDateField.TextChanged += new System.EventHandler(this.EndDateField_TextChanged);
+      this.EndDateField.Leave += new System.EventHandler(this.EndDateField_Leave);
+      // 
+      // ShowExperienceListButton
+      // 
+      this.ShowExperienceListButton.Location = new System.Drawing.Point(430, 316);
+      this.ShowExperienceListButton.Name = "ShowExperienceListButton";
+      this.ShowExperienceListButton.Size = new System.Drawing.Size(168, 51);
+      this.ShowExperienceListButton.TabIndex = 14;
+      this.ShowExperienceListButton.Text = "Показать список опыта работы";
+      this.ShowExperienceListButton.UseVisualStyleBackColor = true;
+      this.ShowExperienceListButton.Click += new System.EventHandler(this.ShowExperienceListButton_Click);
+      // 
       // ExperienceForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(629, 450);
+      this.Controls.Add(this.ShowExperienceListButton);
+      this.Controls.Add(this.EndDateField);
+      this.Controls.Add(this.StartDateField);
       this.Controls.Add(this.PreviousFormButton);
       this.Controls.Add(this.AddMoreExperience);
       this.Controls.Add(this.NoExperienceButton);
-      this.Controls.Add(this.label3);
-      this.Controls.Add(this.label2);
       this.Controls.Add(this.label1);
       this.Controls.Add(this.NextButton);
       this.Controls.Add(this.ResponsibilitiesField);
-      this.Controls.Add(this.EndDateField);
-      this.Controls.Add(this.StartDateField);
       this.Controls.Add(this.CompanyField);
       this.Controls.Add(this.PositionField);
       this.Name = "ExperienceForm";
       this.Text = "Опыт работы";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExperienceForm_FormClosed);
-
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -201,15 +190,14 @@
 
     private System.Windows.Forms.TextBox PositionField;
     private System.Windows.Forms.TextBox CompanyField;
-    private System.Windows.Forms.DateTimePicker StartDateField;
-    private System.Windows.Forms.DateTimePicker EndDateField;
     private System.Windows.Forms.TextBox ResponsibilitiesField;
     private System.Windows.Forms.Button NextButton;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.Label label2;
-    private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button NoExperienceButton;
     private System.Windows.Forms.Button AddMoreExperience;
     private System.Windows.Forms.Button PreviousFormButton;
+    private System.Windows.Forms.TextBox StartDateField;
+    private System.Windows.Forms.TextBox EndDateField;
+    private System.Windows.Forms.Button ShowExperienceListButton;
   }
 }

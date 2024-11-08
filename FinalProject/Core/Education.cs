@@ -10,10 +10,10 @@ namespace FinalProject
   {
     public string Institution { get; set; }
     public string Specialty { get; set; }
-    public int YearOfGraduation { get; set; }
+    public string YearOfGraduation { get; set; }
 
     public Education() { }
-    public Education(string institution, string specialty, int yearOfGraduation)
+    public Education(string institution, string specialty, string yearOfGraduation)
     {
       Institution = institution;
       Specialty = specialty;

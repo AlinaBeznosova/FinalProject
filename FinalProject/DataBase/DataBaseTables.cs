@@ -63,14 +63,12 @@ namespace FinalProject
             CREATE TABLE IF NOT EXISTS Experience (
                 ExperienceId	INTEGER PRIMARY KEY AUTOINCREMENT,
 	              PersonalInfoId	INTEGER NOT NULL,
-	              UserId	INTEGER NOT NULL,
 	              Position	TEXT NOT NULL,
 	              Company	TEXT NOT NULL,
 	              StartDate	TEXT NOT NULL,
 	              EndDate	TEXT NOT NULL,
 	              Responsibilities	TEXT NOT NULL,
-	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId),
-	              FOREIGN KEY(UserId) REFERENCES Users(UserId)
+	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId)
             );
         ";
       if (command.ExecuteNonQuery() == 0)
@@ -84,13 +82,11 @@ namespace FinalProject
       command.CommandText = @"
             CREATE TABLE IF NOT EXIST Education (
 	              EducationId	INTEGER PRIMARY KEY AUTOINCREMENT,
-	              UserId	INTEGER NOT NULL,
 	              PersonalInfoId	INTEGER NOT NULL,
 	              Institution	TEXT NOT NULL,
 	              Specialty	TEXT NOT NULL,
 	              YearOfGraduation	INTEGER NOT NULL,
-	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId),
-	              FOREIGN KEY(UserId) REFERENCES Users(UserId)
+	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId)
             );
         ";
       if (command.ExecuteNonQuery() == 0)
@@ -104,12 +100,10 @@ namespace FinalProject
       command.CommandText = @"
             CREATE TABLE IF NOT EXIST Skills (
 	              SkillId INTEGER PRIMARY KEY AUTOINCREMENT,
-	              UserId	INTEGER NOT NULL,
 	              PersonalInfoId	INTEGER NOT NULL,
 	              HardSkill	TEXT NOT NULL,
 	              SoftSkill	TEXT NOT NULL,
-	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId),
-	              FOREIGN KEY(UserId) REFERENCES Users(UserId)
+	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId)
             );
         ";
       if (command.ExecuteNonQuery() == 0)
@@ -124,11 +118,9 @@ namespace FinalProject
       command.CommandText = @"
             CREATE TABLE IF NOT EXIST Achievements (
 	              AchievementId	INTEGER PRIMARY KEY AUTOINCREMENT,
-	              UserId	INTEGER NOT NULL,
 	              PersonalInfoId	INTEGER NOT NULL,
 	              AchievementName TEXT NOT NULL,
-	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId),
-	              FOREIGN KEY(UserId) REFERENCES Users(UserId)
+	              FOREIGN KEY(PersonalInfoId) REFERENCES PersonalInfo(PersonalInfoId)
             );
         ";
       if (command.ExecuteNonQuery() == 0)
@@ -142,7 +134,6 @@ namespace FinalProject
       command.CommandText = @"
              CREATE TABLE IF NOT EXISTS Resumes (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    UserId INTEGER NOT NULL,
                     FullName TEXT,
                     Address TEXT,
                     Gender TEXT,

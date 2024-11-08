@@ -11,6 +11,8 @@ namespace FinalProject
   /// </summary>
   public class Experience
   {
+    public static int ExperienceId { get; set; } 
+
     /// <summary>
     /// Должность.
     /// </summary>

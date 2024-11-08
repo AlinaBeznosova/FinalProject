@@ -67,7 +67,7 @@ namespace FinalProject.Forms
 
     private void LoginButton_Click(object sender, EventArgs e)
     {
-      if (baseManager.FindUser(user))
+      if (baseManager.IsUserExist(user))
       {
         if (baseManager.CheckForDrafts(User.UserId))
         {
@@ -85,8 +85,15 @@ namespace FinalProject.Forms
             infoForm.Show();
             
           }
-          
         }
+          else
+          {
+            this.Hide();
+            infoForm = new InfoForm();
+            infoForm.Show();
+
+          }
+        
       }
       else MessageBox.Show("Пользователь не найден");
     }

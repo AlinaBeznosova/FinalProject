@@ -60,6 +60,7 @@ namespace FinalProject.Forms
     private void NoSkillsButton_Click(object sender, EventArgs e)
     {
       achievementForm = new AchievementForm(this);
+      achievementForm.Show();
       this.Hide();
     }
 
@@ -69,6 +70,7 @@ namespace FinalProject.Forms
       {
         baseManager.AddSkill(skill);
         achievementForm = new AchievementForm(this);
+        achievementForm.Show();
         this.Hide();
       }
 

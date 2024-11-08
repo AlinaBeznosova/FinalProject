@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FinalProject.DataBase;
 using FinalProject.Forms;
+using FinalProject.Core;
 
 namespace FinalProject
 {
@@ -18,6 +19,21 @@ namespace FinalProject
     private EducationForm educationForm;
     readonly Experience experience = new Experience();
     readonly DataBaseManager baseManager = new DataBaseManager();
+
+    public ExperienceForm() 
+    {
+      InitializeComponent();
+    }
+    public ExperienceForm(Experience experience)
+    {
+      InitializeComponent();
+      this.experience = experience;
+      PositionField.Text = experience.Position;
+      CompanyField.Text = experience.Company;
+      StartDateField.Text = experience.StartDate;
+      EndDateField.Text = experience.EndDate;
+      ResponsibilitiesField.Text = experience.Responsibilities;
+    }
     public ExperienceForm(InfoForm infoForm)
     {
       InitializeComponent();
@@ -36,6 +52,7 @@ namespace FinalProject
     private void PositionField_TextChanged(object sender, EventArgs e)
     {
       experience.Position = PositionField.Text;
+      PositionField.ForeColor = Color.Black;
     }
 
     private void PositionField_Leave(object sender, EventArgs e)
@@ -59,6 +76,7 @@ namespace FinalProject
     private void CompanyField_TextChanged(object sender, EventArgs e)
     {
       experience.Company = CompanyField.Text;
+      CompanyField.ForeColor = Color.Black;
     }
 
     private void CompanyField_Leave(object sender, EventArgs e)
@@ -69,28 +87,61 @@ namespace FinalProject
 
       }
     }
-
-    private void StartDateField_ValueChanged(object sender, EventArgs e)
+    private void StartDateField_Click(object sender, EventArgs e)
     {
-      experience.StartDate = StartDateField.Text;
+      if (StartDateField.Text == "С")
+        StartDateField.Text = "";
     }
 
-    private void EndDateField_ValueChanged(object sender, EventArgs e)
+    private void StartDateField_TextChanged(object sender, EventArgs e)
+    {
+      experience.StartDate = StartDateField.Text;
+      StartDateField.ForeColor = Color.Black;
+    }
+
+    private void StartDateField_Leave(object sender, EventArgs e)
+    {
+      if ((StartDateField.Text == "") || (StartDateField.Text == " ") || (StartDateField.Text.Contains("\n")))
+      {
+        StartDateField.Text = "С";
+      }
+      if ((!Validator.IsValidMonth(StartDateField.Text) && (StartDateField.Text != "С")))
+        MessageBox.Show("Некорректный формат электронной даты. Пожалуйста, введите дату в формате мм.гггг");
+    }
+
+    private void EndDateField_Click(object sender, EventArgs e)
+    {
+      if (EndDateField.Text == "До")
+        EndDateField.Text = "";
+    }
+
+    private void EndDateField_TextChanged(object sender, EventArgs e)
     {
       experience.EndDate = EndDateField.Text;
     }
+
+    private void EndDateField_Leave(object sender, EventArgs e)
+    {
+      if ((EndDateField.Text == "") || (EndDateField.Text == " ") || (EndDateField.Text.Contains("\n")))
+      {
+        EndDateField.Text = "До";
+      }
+      if ((!Validator.IsValidMonth(EndDateField.Text) && (EndDateField.Text != "До")))
+        MessageBox.Show("Некорректный формат электронной даты. Пожалуйста, введите дату в формате мм.гггг");
+    }
+  
 
     private void ResponsibilitiesField_Click(object sender, EventArgs e)
     {
       if (ResponsibilitiesField.Text == "Обязанности")
       {
         ResponsibilitiesField.Text = "";
-
       }
     }
     private void ResponsibilitiesField_TextChanged(object sender, EventArgs e)
     {
       experience.Responsibilities = ResponsibilitiesField.Text;
+      ResponsibilitiesField.ForeColor = Color.Black;
     }
     private void ResponsibilitiesField_Leave(object sender, EventArgs e)
     {
@@ -104,14 +155,20 @@ namespace FinalProject
     {
       if (IsFieldsFilled())
       {
-        baseManager.AddExperience(experience);
-        educationForm = new EducationForm(this);
-        educationForm.Show();
-        this.Hide();
+        if (baseManager.FindExperienceByPosition(PositionField.Text) != null)
+          baseManager.EditExperience(experience);
+         
+        else
+          baseManager.AddExperience(experience);
+
+          educationForm = new EducationForm(this);
+          educationForm.Show();
+          this.Hide();
+        
       }
 
       else MessageBox.Show("Необходимо заполнить все поля");
-      
+
     }
     public bool IsFieldsFilled()
     {
@@ -131,6 +188,18 @@ namespace FinalProject
       if (ResponsibilitiesField.Text == "Обязанности")
       {
         ResponsibilitiesField.ForeColor = Color.Red;
+        return false;
+      }
+
+      if (StartDateField.Text == "С")
+      {
+        StartDateField.ForeColor = Color.Red;
+        return false;
+      }
+
+      if (EndDateField.Text == "До")
+      {
+        EndDateField.ForeColor = Color.Red;
         return false;
       }
 
@@ -170,6 +239,18 @@ namespace FinalProject
     {
       infoForm.Show();
       this.Hide();
+    }
+
+    private void ShowExperienceListButton_Click(object sender, EventArgs e)
+    {
+      if (baseManager.IsExperienceExist(PersonalInfo.PersonalInfoId))
+      {
+            EditExperienceForm editExperienceForm = new EditExperienceForm();
+            editExperienceForm.Show();
+            this.Hide();
+       
+        }
+      else MessageBox.Show("Опыт еще не добавлен. Добавьте его.");
     }
   }
 }

@@ -38,7 +38,7 @@ namespace FinalProject.Forms
 
     private void RegisterButton_Click(object sender, EventArgs e)
     {
-      if (baseManager.FindUser(user))
+      if (baseManager.IsUserExist(user))
         MessageBox.Show("Такой пользователь уже существует");
 
       else

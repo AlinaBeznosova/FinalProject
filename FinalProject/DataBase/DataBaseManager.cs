@@ -6,13 +6,20 @@ using System.Windows.Forms;
 
 namespace FinalProject.DataBase
 {
+  /// <summary>
+  /// Управление базой данных.
+  /// </summary>
   public class DataBaseManager
   {
+    /// <summary>
+    /// Путь подключения к баз данных.
+    /// </summary>
     const string connectionString = "Data Source=\"C:\\Users\\Алина\\source\\repos\\FinalProject\\DataBase.db\"";
+
     public DataBaseManager() { }
 
     /// <summary>
-    /// Регистрация пользователя. Добавление в таблицу Users.
+    /// Зарегистрировать пользователя. Добавить в таблицу Users.
     /// </summary>
     /// <param name="user">Пользователь.</param>
     public void RegisterUser(User user)
@@ -59,8 +66,12 @@ namespace FinalProject.DataBase
       }
     }
 
-
-    public bool FindUser(User user)
+    /// <summary>
+    /// Существует пользователь в таблице Users? Авторизовать, если да.
+    /// </summary>
+    /// <param name="user">Пользователь.</param>
+    /// <returns>true - если сущесвует, false -  если не существует.</returns>
+    public bool IsUserExist(User user)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
@@ -85,11 +96,136 @@ namespace FinalProject.DataBase
           {
             return false;
           }
-
         }
       }
     }
 
+    /// <summary>
+    /// Существует личность в таблице PersonalInfo? 
+    /// </summary>
+    /// <param name="person">Личность.</param>
+    /// <returns>true - если существует, false - если не существует.</returns>
+    public bool IsIdenticPersonExist(PersonalInfo person)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM PersonalInfo 
+                   WHERE
+                     FullName = @name AND
+                     DateOfBirth = @date AND 
+                     Gender = @gender AND 
+                     City =  @city AND 
+                     PhoneNumber = @phoneNumber AND
+                     Email = @email AND 
+                     MaritalStatus = @maritalStatus
+                      ";
+
+          command.Parameters.AddWithValue("@name", person.FullName);
+          command.Parameters.AddWithValue("@date", person.DateOfBirth);
+          command.Parameters.AddWithValue("@gender", person.Gender);
+          command.Parameters.AddWithValue("@city", person.City);
+          command.Parameters.AddWithValue("@phoneNumber", person.PhoneNumber);
+          command.Parameters.AddWithValue("@email", person.Email);
+          command.Parameters.AddWithValue("@maritalStatus", person.MaritalStatus);
+
+
+          object personId = command.ExecuteScalar();
+
+          if (personId != null)
+          {
+            PersonalInfo.PersonalInfoId = Convert.ToInt32(personId);
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Существует ли личность с текущим userId и personalInfoId.
+    /// </summary>
+    /// <param name="person">Личность.</param>
+    public bool IsCurrentPersonExist(PersonalInfo person)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM PersonalInfo 
+                   WHERE
+                     PersonalInfoId = @personalInfoId AND
+                     UserId = @userId
+                      ";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@userId", User.UserId);
+
+          
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              return true;
+            }
+            return false;
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Обновить личные данные.
+    /// </summary>
+    /// <param name="person">Личность.</param>
+    public void UpdatePersonalInfo(PersonalInfo person)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                  UPDATE PersonalInfo
+                       SET FullName = @name,
+                           DateOfBirth = @date,
+                           Gender = @gender,
+                           City = @city,
+                           PhoneNumber = @phoneNumber,
+                           Email = @email,
+                           MaritalStatus = @maritalStatus
+                       WHERE UserId = @userId AND PersonalInfoId = @personalInfoId
+                    ";
+
+          command.Parameters.Clear();
+          command.Parameters.AddWithValue("@userId", User.UserId);
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@name", person.FullName);
+          command.Parameters.AddWithValue("@date", person.DateOfBirth);
+          command.Parameters.AddWithValue("@gender", person.Gender);
+          command.Parameters.AddWithValue("@city", person.City);
+          command.Parameters.AddWithValue("@phoneNumber", person.PhoneNumber);
+          command.Parameters.AddWithValue("@email", person.Email);
+          command.Parameters.AddWithValue("@maritalStatus", person.MaritalStatus);
+
+          command.ExecuteNonQuery();
+          MessageBox.Show("Данные обновлены");
+        }
+      }
+    } 
+
+    /// <summary>
+    /// Сохранить личные данные в таблицу PersonalInfo.
+    /// </summary>
+    /// <param name="person">Личность.</param>
     public void SavePersonalInfo(PersonalInfo person)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -107,18 +243,17 @@ namespace FinalProject.DataBase
                      Gender,
                      City,
                      PhoneNumber,
-Email,
-MaritalStatus)
-VALUES (
-@userId,
-@name,
-@date,
-@gender,
-@city,
-@phoneNumber,
-@email,
-@maritalStatus)";
-
+                     Email,
+                     MaritalStatus)
+                     VALUES (
+                     @userId,
+                     @name,
+                     @date,
+                     @gender,
+                     @city,
+                     @phoneNumber,
+                     @email,
+                     @maritalStatus)";
 
             command.Parameters.AddWithValue("@userId", User.UserId);
             command.Parameters.AddWithValue("@name", person.FullName);
@@ -129,15 +264,15 @@ VALUES (
             command.Parameters.AddWithValue("@email", person.Email);
             command.Parameters.AddWithValue("@maritalStatus", person.MaritalStatus);
 
-            int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
+            command.ExecuteNonQuery();
+
+           
+            var personId = connection.LastInsertRowId;
+            PersonalInfo.PersonalInfoId = Convert.ToInt32(personId);
+
+            
               MessageBox.Show("Данные сохранены");
-            }
-            else
-            {
-              MessageBox.Show("Данные не сохранены");
-            }
+            
           }
         }
         catch (SQLiteException ex)
@@ -148,10 +283,14 @@ VALUES (
         {
           connection.Close();
         }
-
       }
     }
 
+
+    /// <summary>
+    /// Добавить опыт работы в таблицу Experience.
+    /// </summary>
+    /// <param name="experience">Опыт работы.</param>
     public void AddExperience(Experience experience)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -163,14 +302,14 @@ VALUES (
           {
             command.CommandText = @"
                    INSERT INTO Experience (
-                     UserId,
+                     PersonalInfoId,
                      Position,
                      Company,
                      StartDate,
                      EndDate,
                      Responsibilities) 
                    VALUES (
-                     @userId,
+                     @personalInfoId,
                      @position, 
                      @company, 
                      @startDate,
@@ -178,7 +317,7 @@ VALUES (
                      @responsibilities)";
 
 
-            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@position", experience.Position);
             command.Parameters.AddWithValue("@company", experience.Company);
             command.Parameters.AddWithValue("@startDate", experience.StartDate);
@@ -186,14 +325,12 @@ VALUES (
             command.Parameters.AddWithValue("@responsibilities", experience.Responsibilities);
 
             int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
-              MessageBox.Show("Данные сохранены");
-            }
-            else
-            {
-              MessageBox.Show("Данные не сохранены");
-            }
+
+            var experienceId = connection.LastInsertRowId;
+            Experience.ExperienceId = Convert.ToInt32(experienceId);
+
+            MessageBox.Show("Данные сохранены");
+            
           }
         }
         catch (SQLiteException ex)
@@ -207,6 +344,190 @@ VALUES (
       }
     }
 
+    /// <summary>
+    /// Существует ли
+    /// </summary>
+    /// <param name="experience"></param>
+    /// <returns></returns>
+    public bool IsExperienceExist(int currentPersonId)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Experience WHERE PersonalInfoId = @personalInfoId";
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          object result = command.ExecuteScalar();
+          return result != null;
+        }
+      }
+    }
+
+    /// <summary>
+    /// Список имеющегося опыта работы конкретной личности.
+    /// </summary>
+    /// <param name="currentPersonId">Текущий id личности.</param>
+    /// <returns>Список должностей.</returns>
+    public List<string> ExperienceList(int currentPersonId)
+    {
+      List<string> experienceList = new List<string>();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT Position FROM Experience WHERE PersonalInfoId = @personalInfoId";
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            while (reader.Read())
+            {
+              experienceList.Add(reader["Position"].ToString());
+            }
+          }
+        }
+      }
+      return experienceList;
+    }
+
+    //доработать метод, чтобы находил с одинаковой должностью, но разными id
+    public Experience FindExperienceByPosition(string position)
+    {
+      Experience experience = new Experience();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                  SELECT * FROM Experience 
+                   WHERE
+                     PersonalInfoId = @personalInfoId AND
+                   
+                     Position = @position";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          //command.Parameters.AddWithValue("@experienceId", Experience.ExperienceId);
+          command.Parameters.AddWithValue("@position",position);
+          
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              experience.Position = reader["Position"].ToString();
+              experience.Company = reader["Company"].ToString();
+              experience.StartDate = reader["StartDate"].ToString();
+              experience.EndDate = reader["EndDate"].ToString();
+              experience.Responsibilities = reader["Responsibilities"].ToString();
+
+            }
+          }
+        }
+      }
+      return experience;
+    }
+
+
+    public void EditExperience(Experience experience)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          connection.Open();
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                          UPDATE Experience
+                          SET Position = @position,
+                              Company = @company,
+                              StartDate = @startDate,
+                              EndDate = @endDate,
+                              Responsibilities = @responsibilities
+                          WHERE PersonalInfoId = @personalInfoId AND Position = @position
+                        ";
+
+            command.Parameters.Clear();
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@position", experience.Position);
+            command.Parameters.AddWithValue("@company", experience.Company);
+            command.Parameters.AddWithValue("@startDate", experience.StartDate);
+            command.Parameters.AddWithValue("@endDate", experience.EndDate);
+            command.Parameters.AddWithValue("@responsibilities", experience.Responsibilities);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+              MessageBox.Show("Данные обновлены");
+
+            else
+              MessageBox.Show("Данные не обновлены");
+
+          }
+        }
+
+        catch (SQLiteException ex)
+        {
+          MessageBox.Show("Ошибка обновления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+        }
+      }
+    }
+
+    public void DeleteExperience(string position)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          connection.Open();
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                   DELETE FROM Experience 
+                     WHERE 
+                     PersonalInfoId = @personalInfoId AND
+                     Position = @position";
+
+
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@position", position);
+
+
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+              MessageBox.Show("Должность удалена успешно");
+            }
+            else
+            {
+              MessageBox.Show("Должность не найдена или не удалена");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          MessageBox.Show("Ошибка удаления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+        }
+      }
+    }
+
+
+
+    /// <summary>
+    /// Добавить образование в таблицу Education.
+    /// </summary>
+    /// <param name="education">Образование.</param>
     public void AddEducation(Education education)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -218,18 +539,18 @@ VALUES (
           {
             command.CommandText = @"
                    INSERT INTO Education (
-                     UserId,
+                     PersonalInfoId,
                      Institution,
                      Specialty,
                      YearOfGraduation) 
                    VALUES (
-                     @userId,
+                     @personalInfoId,
                      @institution, 
                      @specialty, 
                      @yearOfGraduation)";
 
 
-            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@institution", education.Institution);
             command.Parameters.AddWithValue("@specialty", education.Specialty);
             command.Parameters.AddWithValue("@yearOfGraduation", education.YearOfGraduation);
@@ -255,6 +576,11 @@ VALUES (
         }
       }
     }
+
+    /// <summary>
+    /// Добавить навык в таблицу Skills.
+    /// </summary>
+    /// <param name="skill">Навык.</param>
     public void AddSkill(Skill skill)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -266,15 +592,15 @@ VALUES (
           {
             command.CommandText = @"
                    INSERT INTO Skills (
-                     UserId,
+                     PersonalInfoId,
                      HardSkill,
                      SoftSkill) 
                    VALUES (
-                     @userId,
+                     @personalInfoId,
                      @hardSkill, 
                      @softSkill)";
 
-            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@hardSkill", skill.Hardskill);
             command.Parameters.AddWithValue("@softSkill", skill.Softskill);
 
@@ -299,6 +625,11 @@ VALUES (
         }
       }
     }
+
+    /// <summary>
+    /// Добавить достижение в таблицу Achievements.
+    /// </summary>
+    /// <param name="achievement">Достижение.</param>
     public void AddAchievement(Achievement achievement)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -310,14 +641,14 @@ VALUES (
           {
             command.CommandText = @"
                    INSERT INTO Achievements (
-                     UserId,
+                     PersonalInfoId,
                      AchievementName) 
                    VALUES (
-                     @userId,
+                     @personalInfoId,
                      @achievementName)";
 
 
-            command.Parameters.AddWithValue("@userId", User.UserId);
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@achievementName", achievement.AchievementName);
 
             int rowsAffected = command.ExecuteNonQuery();
@@ -342,6 +673,11 @@ VALUES (
       }
     }
 
+    /// <summary>
+    /// Проверка есть ли у пользователя черновики.
+    /// </summary>
+    /// <param name="currentUserId">Текущий id пользователя.</param>
+    /// <returns>true - если есть, false - если нет.</returns>
     public bool CheckForDrafts(int currentUserId)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -358,6 +694,11 @@ VALUES (
       }
     }
 
+    /// <summary>
+    /// Список черновиков пользователя.
+    /// </summary>
+    /// <param name="currentUserId">Текущий id пользователя.</param>
+    /// <returns></returns>
     public List<string> DraftNames(int currentUserId)
     {
       List<string> fullNames = new List<string>();
@@ -381,6 +722,11 @@ VALUES (
       return fullNames;
     }
 
+    /// <summary>
+    /// Найти личность по ФИО.
+    /// </summary>
+    /// <param name="FIO">ФИО.</param>
+    /// <returns>Личность из таблицы PersonalInfo.</returns>
     public PersonalInfo FindInfoByFullName(string FIO)
     {
       PersonalInfo person = new PersonalInfo();

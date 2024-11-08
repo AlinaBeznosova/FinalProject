@@ -19,12 +19,25 @@ namespace FinalProject.Core
       var emailRegex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"); // example@example.com
       return emailRegex.IsMatch(email);
     }
-    public static bool IsValidDate(string date)
+    public static bool IsValidDate(string date) //dd.MM.yyyy
     {
       var dateRegex = new Regex(@"^\d{2}\.\d{2}\.\d{4}$");
       return dateRegex.IsMatch(date);
 
     }
+
+    public static bool IsValidYear(string date) //yyyy
+    {
+      var dateRegex = new Regex(@"\b(?:19|20)\d{2}\b");
+      return dateRegex.IsMatch(date);
+
+    }
+    public static bool IsValidMonth(string date) //MM.yyyy
+    {
+      var dateRegex = new Regex(@"\b(0[1-9]|1[0-2]).(19|20)\d{2}\b");
+      return dateRegex.IsMatch(date);
+    }
+
     public static bool IsValidPhoneNumber(string phoneNumber)
     {
       var phoneRegex = new Regex(@"^\+?7?\s?\d{3}\s?\d{3}-?\d{4}$");
@@ -40,17 +53,7 @@ namespace FinalProject.Core
       var fioRegex = new Regex(@"^\s*[А-Яа-яЁё]+(\s+[А-Яа-яЁё]+)*\s*$");
       return fioRegex.IsMatch(city);
     }
-    /* public static string CapitalizeFirstLetters(string inputString)
-     {
-       string[] words = inputString.Split(' ');
-
-       for(int i =0; i < words.Length; i++)
-       {
-         words[i].Substring(0).ToUpper();
-       }
-       return string.Join(" ", words);
-
-     }*/
+    
 
   }
 }

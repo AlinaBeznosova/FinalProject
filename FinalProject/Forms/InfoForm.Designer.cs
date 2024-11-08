@@ -30,9 +30,7 @@
     {
       this.components = new System.ComponentModel.Container();
       this.FullNameField = new System.Windows.Forms.TextBox();
-      this.DateOfBirthField = new System.Windows.Forms.DateTimePicker();
       this.NextFormButton = new System.Windows.Forms.Button();
-      this.labelDateOfBirth = new System.Windows.Forms.Label();
       this.CityField = new System.Windows.Forms.TextBox();
       this.EmailField = new System.Windows.Forms.TextBox();
       this.GenderField = new System.Windows.Forms.ComboBox();
@@ -41,7 +39,7 @@
       this.labelInfo = new System.Windows.Forms.Label();
       this.labelContacts = new System.Windows.Forms.Label();
       this.personalInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-      this.SaveButton = new System.Windows.Forms.Button();
+      this.DateOfBirthField = new System.Windows.Forms.TextBox();
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
@@ -59,35 +57,15 @@
       this.FullNameField.TextChanged += new System.EventHandler(this.FullNameField_TextChanged);
       this.FullNameField.Leave += new System.EventHandler(this.FullNameField_Leave);
       // 
-      // DateOfBirthField
-      // 
-      this.DateOfBirthField.CustomFormat = "dd.MM.yyyy";
-      this.DateOfBirthField.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-      this.DateOfBirthField.Location = new System.Drawing.Point(36, 130);
-      this.DateOfBirthField.Name = "DateOfBirthField";
-      this.DateOfBirthField.Size = new System.Drawing.Size(185, 22);
-      this.DateOfBirthField.TabIndex = 1;
-      this.DateOfBirthField.ValueChanged += new System.EventHandler(this.DateOfBirth_ValueChanged);
-      this.DateOfBirthField.Leave += new System.EventHandler(this.DateOfBirthField_Leave);
-      // 
       // NextFormButton
       // 
-      this.NextFormButton.Location = new System.Drawing.Point(284, 394);
+      this.NextFormButton.Location = new System.Drawing.Point(430, 394);
       this.NextFormButton.Name = "NextFormButton";
       this.NextFormButton.Size = new System.Drawing.Size(156, 44);
       this.NextFormButton.TabIndex = 3;
       this.NextFormButton.Text = "Далее";
       this.NextFormButton.UseVisualStyleBackColor = true;
       this.NextFormButton.Click += new System.EventHandler(this.NextFormButton_Click);
-      // 
-      // labelDateOfBirth
-      // 
-      this.labelDateOfBirth.AutoSize = true;
-      this.labelDateOfBirth.Location = new System.Drawing.Point(33, 111);
-      this.labelDateOfBirth.Name = "labelDateOfBirth";
-      this.labelDateOfBirth.Size = new System.Drawing.Size(106, 16);
-      this.labelDateOfBirth.TabIndex = 6;
-      this.labelDateOfBirth.Text = "Дата рождения";
       // 
       // CityField
       // 
@@ -176,22 +154,24 @@
       this.labelContacts.TabIndex = 19;
       this.labelContacts.Text = "Контактные данные";
       // 
-      // SaveButton
+      // DateOfBirthField
       // 
-      this.SaveButton.Location = new System.Drawing.Point(122, 394);
-      this.SaveButton.Name = "SaveButton";
-      this.SaveButton.Size = new System.Drawing.Size(156, 44);
-      this.SaveButton.TabIndex = 20;
-      this.SaveButton.Text = "Сохранить";
-      this.SaveButton.UseVisualStyleBackColor = true;
-      this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+      this.DateOfBirthField.Location = new System.Drawing.Point(36, 128);
+      this.DateOfBirthField.Multiline = true;
+      this.DateOfBirthField.Name = "DateOfBirthField";
+      this.DateOfBirthField.Size = new System.Drawing.Size(185, 24);
+      this.DateOfBirthField.TabIndex = 20;
+      this.DateOfBirthField.Text = "Дата рождения";
+      this.DateOfBirthField.Click += new System.EventHandler(this.DateOfBirthField_Click);
+      this.DateOfBirthField.TextChanged += new System.EventHandler(this.DateOfBirthField_TextChanged);
+      this.DateOfBirthField.Leave += new System.EventHandler(this.DateOfBirthField_Leave);
       // 
       // InfoForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(617, 450);
-      this.Controls.Add(this.SaveButton);
+      this.Controls.Add(this.DateOfBirthField);
       this.Controls.Add(this.labelContacts);
       this.Controls.Add(this.labelInfo);
       this.Controls.Add(this.PhoneNumberField);
@@ -199,9 +179,7 @@
       this.Controls.Add(this.GenderField);
       this.Controls.Add(this.EmailField);
       this.Controls.Add(this.CityField);
-      this.Controls.Add(this.labelDateOfBirth);
       this.Controls.Add(this.NextFormButton);
-      this.Controls.Add(this.DateOfBirthField);
       this.Controls.Add(this.FullNameField);
       this.Name = "InfoForm";
       this.Text = "Личная Инфомрация";
@@ -215,10 +193,8 @@
     #endregion
 
     private System.Windows.Forms.TextBox FullNameField;
-    private System.Windows.Forms.DateTimePicker DateOfBirthField;
     private System.Windows.Forms.BindingSource personalInfoBindingSource;
     private System.Windows.Forms.Button NextFormButton;
-    private System.Windows.Forms.Label labelDateOfBirth;
     private System.Windows.Forms.TextBox CityField;
     private System.Windows.Forms.TextBox EmailField;
     private System.Windows.Forms.ComboBox GenderField;
@@ -226,7 +202,7 @@
     private System.Windows.Forms.TextBox PhoneNumberField;
     private System.Windows.Forms.Label labelInfo;
     private System.Windows.Forms.Label labelContacts;
-    private System.Windows.Forms.Button SaveButton;
+    private System.Windows.Forms.TextBox DateOfBirthField;
   }
 }
 
