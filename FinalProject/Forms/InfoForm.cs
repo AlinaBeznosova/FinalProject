@@ -18,6 +18,7 @@ namespace FinalProject
 {
   public partial class InfoForm : Form
   {
+    readonly Resume resume = new Resume();
     readonly PersonalInfo personal;
     private ExperienceForm experienceForm;
     readonly PersonalInfo person = new PersonalInfo();
@@ -191,7 +192,7 @@ namespace FinalProject
         PhoneNumberField.Text = "Номер телефона";
 
       }
-      if ((PhoneNumberField.Text != "Номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
+     if ((PhoneNumberField.Text != "Номер телефона") && (!Validator.IsValidPhoneNumber(PhoneNumberField.Text)))
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста введите номер в формате 7 ХХХ ХХХ-ХХХХ");
     }
 

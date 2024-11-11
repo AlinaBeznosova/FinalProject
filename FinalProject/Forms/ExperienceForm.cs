@@ -155,7 +155,7 @@ namespace FinalProject
     {
       if (IsFieldsFilled())
       {
-        if (baseManager.FindExperienceByPosition(PositionField.Text) != null)
+        if (baseManager.FindExperienceByPosition(PositionField.Text, Experience.ExperienceId) != null)
           baseManager.EditExperience(experience);
          
         else

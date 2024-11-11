@@ -32,6 +32,11 @@ namespace FinalProject
     public string Gender { get; set; }
 
     /// <summary>
+    /// Семейное положение.
+    /// </summary>
+    public string MaritalStatus { get; set; }
+
+    /// <summary>
     /// Город проживания.
     /// </summary>
     public string City { get; set; }
@@ -46,10 +51,7 @@ namespace FinalProject
     /// </summary>
     public string Email { get; set; }
 
-    /// <summary>
-    /// Семейное положение.
-    /// </summary>
-    public string MaritalStatus { get; set; }
+    
 
     /// <summary>
     /// Конструктор.
@@ -72,8 +74,7 @@ namespace FinalProject
       if (!Validator.IsValidDate(dateOfBirth))
         throw new ArgumentException("Дата рождения должна быть в формате dd.MM.yyyy.", nameof(dateOfBirth));
 
-      if (!Validator.IsValidPhoneNumber(phoneNumber))
-        throw new ArgumentException("Номер телефона имеет неверный формат.", nameof(phoneNumber));
+      
 
       if (!Validator.IsValidEmail(email))
         throw new ArgumentException("Электронная почта имеет неверный формат.", nameof(email));

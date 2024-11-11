@@ -11,7 +11,7 @@ namespace FinalProject
   /// </summary>
   public class Resume
   {
-    public int UserId { get; set; }
+    
     /// <summary>
     /// Личные данные.
     /// </summary>
@@ -48,7 +48,10 @@ namespace FinalProject
       Skills = new List<Skill>();
       Achievements = new List<Achievement>();
     }
-
+    public void AddInfo(PersonalInfo personalInfo)
+    {
+      PersonalInfo = personalInfo;
+    }
     /// <summary>
     /// Добавить опыт работы.
     /// </summary>

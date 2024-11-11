@@ -394,7 +394,7 @@ namespace FinalProject.DataBase
     }
 
     //доработать метод, чтобы находил с одинаковой должностью, но разными id
-    public Experience FindExperienceByPosition(string position)
+    public Experience FindExperienceByPosition(string position, int currentExpId)
     {
       Experience experience = new Experience();
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -406,11 +406,11 @@ namespace FinalProject.DataBase
                   SELECT * FROM Experience 
                    WHERE
                      PersonalInfoId = @personalInfoId AND
-                   
+                     ExperienceId = @experienceId AND
                      Position = @position";
 
           command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
-          //command.Parameters.AddWithValue("@experienceId", Experience.ExperienceId);
+          command.Parameters.AddWithValue("@experienceId", Experience.ExperienceId);
           command.Parameters.AddWithValue("@position",position);
           
 

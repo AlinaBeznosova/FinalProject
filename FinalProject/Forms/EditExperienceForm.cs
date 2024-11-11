@@ -78,7 +78,7 @@ namespace FinalProject.Forms
       }
       else
       {
-        Experience experience = baseManager.FindExperienceByPosition(PositionChoiseField.Text);
+        Experience experience = baseManager.FindExperienceByPosition(PositionChoiseField.Text, Experience.ExperienceId);
         if (experience != null && !string.IsNullOrEmpty(experience.Position))
         {
           this.Hide();
