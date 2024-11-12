@@ -16,7 +16,7 @@ namespace FinalProject.Forms
   public partial class EditExperienceForm : Form
   {
     
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly Experience experience = new Experience();
     public EditExperienceForm()
     {
@@ -78,7 +78,7 @@ namespace FinalProject.Forms
       }
       else
       {
-        Experience experience = baseManager.FindExperienceByPosition(PositionChoiseField.Text, Experience.ExperienceId);
+        Experience experience = baseManager.FindExperienceByPosition(PositionChoiseField.Text);
         if (experience != null && !string.IsNullOrEmpty(experience.Position))
         {
           this.Hide();

@@ -15,7 +15,7 @@ namespace FinalProject.Forms
   public partial class RegisterForm : Form
   {
     readonly User user = new User();
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     public RegisterForm()
     {
       InitializeComponent();

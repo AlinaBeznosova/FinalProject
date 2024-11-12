@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using FinalProject.DataBase;
 using FinalProject.Core;
 using FinalProject.Forms;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 
 
@@ -22,9 +22,8 @@ namespace FinalProject
     readonly PersonalInfo personal;
     private ExperienceForm experienceForm;
     readonly PersonalInfo person = new PersonalInfo();
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
 
-    
 
     public InfoForm(PersonalInfo personalInfo)
     {
@@ -274,8 +273,11 @@ namespace FinalProject
       else return true;
     }
 
-
-
-
+    private void ReturnToDreftButton_Click(object sender, EventArgs e)
+    {
+      this.Hide();
+      DraftForm draftForm = new DraftForm();
+      draftForm.Show();
+    }
   }
 }

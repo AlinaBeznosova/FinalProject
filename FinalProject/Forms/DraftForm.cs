@@ -14,7 +14,7 @@ namespace FinalProject.Forms
 {
   public partial class DraftForm : Form
   {
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     public DraftForm()
     {
       InitializeComponent();

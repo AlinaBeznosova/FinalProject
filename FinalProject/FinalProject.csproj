@@ -57,12 +57,6 @@
     <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
       <HintPath>packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="EasyDox, Version=2.0.39.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EasyDox.2.0.39\lib\EasyDox.dll</HintPath>
     </Reference>
@@ -78,17 +72,18 @@
     <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.3.0.3\lib\net462\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ReachFramework" />
-    <Reference Include="SkiaSharp, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>packages\SkiaSharp.2.88.6\lib\net462\SkiaSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll</HintPath>
@@ -116,6 +111,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -129,10 +125,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Achievement.cs" />
+    <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\User.cs" />
     <Compile Include="Core\Validator.cs" />
     <Compile Include="DataBase\DataBaseManager.cs" />
-    <Compile Include="DataBase\DataBaseTables.cs" />
+    <Compile Include="DataBase\DataBaseManager.Tables.cs" />
     <Compile Include="Core\Education.cs" />
     <Compile Include="Core\Experience.cs" />
     <Compile Include="Forms\AchievementForm.cs">
@@ -158,6 +155,12 @@
     </Compile>
     <Compile Include="Forms\EducationForm.Designer.cs">
       <DependentUpon>EducationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EducationListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EducationListForm.Designer.cs">
+      <DependentUpon>EducationListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExperienceForm.cs">
       <SubType>Form</SubType>
@@ -211,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EducationForm.resx">
       <DependentUpon>EducationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EducationListForm.resx">
+      <DependentUpon>EducationListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExperienceForm.resx">
       <DependentUpon>ExperienceForm.cs</DependentUpon>

@@ -18,18 +18,20 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.CompilerServices;
 
 
+
 namespace FinalProject.Forms
 {
   public partial class ResumeForm : Form
   {
     
-    Resume resume = new Resume();
+    readonly Resume resume = new Resume();
+  
     readonly string filePath = "resume.docx";
     private readonly AchievementForm achievementForm;
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly string connectionString = "Data Source=\"C:\\Users\\Алина\\source\\repos\\FinalProject\\DataBase.db\"";
-    PersonalInfo person = new PersonalInfo();
-    Experience experience = new Experience();
+    readonly PersonalInfo person = new PersonalInfo();
+    readonly Experience experience = new Experience();
     
 
     public ResumeForm() 
@@ -121,6 +123,8 @@ namespace FinalProject.Forms
     private void CreateResumeDOCButton_Click(object sender, EventArgs e)
     {
       CreateResume();
+      Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+
     }
 
 
@@ -253,13 +257,23 @@ namespace FinalProject.Forms
             resume.Achievements.Add(achievement);
           }
         }
-        
-          CreateDocument(resume);
-        
+
+        if (Template1RadioButton.Checked)
+        {
+          CreateDocumentFirstTemplate(resume);
+        }
+        else if (Template2RadioButton.Checked)
+        {
+          CreateDocumentSecondTemplate(resume);
+        }
+        else if (Template3RadioButton.Checked)
+        {
+          CreateDocumentThirdTemplate(resume);
+        }
       }
     }
 
-    public void CreateDocument(Resume resume)
+    public void CreateDocumentFirstTemplate(Resume resume)
     {
       try
       {
@@ -422,13 +436,13 @@ namespace FinalProject.Forms
         builder.Write("Достижения");
         builder.Writeln();
 
-        foreach (var skill in resume.Skills)
+        foreach (var achievement  in resume.Achievements)
         {
           builder.Font.Size = 12;
           builder.Font.Bold = true;
           builder.Write("Профессиональные достижения: ");
           builder.Font.Bold = false;
-          builder.Write(skill.Hardskill);
+          builder.Write(achievement.AchievementName);
           builder.Writeln();
 
         }
@@ -437,19 +451,19 @@ namespace FinalProject.Forms
       }
       catch (Aspose.Words.FileCorruptedException e)
       {
-        Console.WriteLine("Файл коррумпирован: " + e.Message);
+        MessageBox.Show("Файл коррумпирован: " + e.Message);
       }
       catch (System.IO.IOException e)
       {
-        Console.WriteLine("Ошибка ввода/вывода: " + e.Message);
+        MessageBox.Show("Ошибка ввода/вывода: " + e.Message);
       }
       catch (System.InvalidOperationException e)
       {
-        Console.WriteLine("Недопустимая операция: " + e.Message);
+        MessageBox.Show("Недопустимая операция: " + e.Message);
       }
       catch (Exception e)
       {
-        Console.WriteLine("Общая ошибка: " + e.Message);
+        MessageBox.Show("Общая ошибка: " + e.Message);
       }
 
     }
@@ -498,9 +512,401 @@ namespace FinalProject.Forms
       }
     }
 
-   
+    public void CreateDocumentSecondTemplate(Resume resume)
+    {
+      {
+        try
+        {
+          var doc = new Aspose.Words.Document();
+          var builder = new Aspose.Words.DocumentBuilder(doc);
 
-   
+          builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+          // Конфигурация страницы для трех колонок
+          builder.PageSetup.TextColumns.SetCount(2);
+          builder.PageSetup.TextColumns.EvenlySpaced = true; // Равномерное распределение ширины между колонками
+          builder.PageSetup.TextColumns.LineBetween = true;
+
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Личные данные");
+          builder.Writeln();
+
+          builder.Font.Size = 12;
+          builder.Font.Bold = true;
+          builder.Write("ФИО: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.FullName);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Дата рождения: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.DateOfBirth);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Пол: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.Gender);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Семейное положение: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.MaritalStatus);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Город проживания: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.City);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Электронная почта: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.Email);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Номер телефона: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.PhoneNumber);
+          builder.Writeln();
+          builder.Writeln();
+
+          // Опыт работы в первой колонке
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Опыт работы");
+          builder.Writeln();
+
+          foreach (var experience in resume.Experiences)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Должность: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Position);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Компания: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Company);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Дата начала: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.StartDate);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Дата окончания: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.EndDate);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Обязанности: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Responsibilities);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          // Переход во вторую колонку
+          builder.InsertBreak(Aspose.Words.BreakType.ColumnBreak);
+
+          
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Образование");
+          builder.Writeln();
+
+          foreach (var education in resume.Educations)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Учебное заведение: ");
+            builder.Font.Bold = false;
+            builder.Write(education.Institution);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Специальность: ");
+            builder.Font.Bold = false;
+            builder.Write(education.Specialty);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Год окончания: ");
+            builder.Font.Bold = false;
+            builder.Write(education.YearOfGraduation);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Навыки и достижения");
+          builder.Writeln();
+
+          // Навыки
+          foreach (var skill in resume.Skills)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Технические навыки: ");
+            builder.Font.Bold = false;
+            builder.Write(skill.Hardskill);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Универсальные навыки: ");
+            builder.Font.Bold = false;
+            builder.Write(skill.Softskill);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          // Достижения
+          foreach (var achievement in resume.Achievements)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Профессиональные достижения: ");
+            builder.Font.Bold = false;
+            builder.Write(achievement.AchievementName);
+            builder.Writeln();
+          }
+
+          doc.Save(filePath);
+        }
+        catch (Aspose.Words.FileCorruptedException e)
+        {
+          MessageBox.Show("Файл коррумпирован: " + e.Message);
+        }
+        catch (System.IO.IOException e)
+        {
+          MessageBox.Show("Ошибка ввода/вывода: " + e.Message);
+        }
+        catch (System.InvalidOperationException e)
+        {
+          MessageBox.Show("Недопустимая операция: " + e.Message);
+        }
+        catch (Exception e)
+        {
+          MessageBox.Show("Общая ошибка: " + e.Message);
+        }
+      }
+    }
+
+
+    public void CreateDocumentThirdTemplate(Resume resume)
+    {
+      {
+        try
+        {
+          var doc = new Aspose.Words.Document();
+          var builder = new Aspose.Words.DocumentBuilder(doc);
+
+          builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+          // Конфигурация страницы для трех колонок
+          builder.PageSetup.TextColumns.SetCount(3);
+          builder.PageSetup.TextColumns.EvenlySpaced = true; // Равномерное распределение ширины между колонками
+          builder.PageSetup.TextColumns.LineBetween = true;
+
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Личные данные");
+          builder.Writeln();
+
+          builder.Font.Size = 12;
+          builder.Font.Bold = true;
+          builder.Write("ФИО: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.FullName);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Дата рождения: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.DateOfBirth);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Пол: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.Gender);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Семейное положение: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.MaritalStatus);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Город проживания: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.City);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Электронная почта: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.Email);
+          builder.Writeln();
+
+          builder.Font.Bold = true;
+          builder.Write("Номер телефона: ");
+          builder.Font.Bold = false;
+          builder.Write(resume.PersonalInfo.PhoneNumber);
+          builder.Writeln();
+          builder.Writeln();
+
+          builder.InsertBreak(Aspose.Words.BreakType.ColumnBreak);
+          // Опыт работы в первой колонке
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Опыт работы");
+          builder.Writeln();
+
+          foreach (var experience in resume.Experiences)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Должность: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Position);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Компания: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Company);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Дата начала: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.StartDate);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Дата окончания: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.EndDate);
+            builder.Writeln();
+
+            builder.Font.Bold = true;
+            builder.Write("Обязанности: ");
+            builder.Font.Bold = false;
+            builder.Write(experience.Responsibilities);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          // Переход во вторую колонку
+          
+
+
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Образование");
+          builder.Writeln();
+
+          foreach (var education in resume.Educations)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Учебное заведение: ");
+            builder.Font.Bold = false;
+            builder.Write(education.Institution);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Специальность: ");
+            builder.Font.Bold = false;
+            builder.Write(education.Specialty);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Год окончания: ");
+            builder.Font.Bold = false;
+            builder.Write(education.YearOfGraduation);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          builder.InsertBreak(Aspose.Words.BreakType.ColumnBreak);
+
+          builder.Font.Size = 20;
+          builder.Font.Bold = false;
+          builder.Write("Навыки и достижения");
+          builder.Writeln();
+
+          // Навыки
+          foreach (var skill in resume.Skills)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Технические навыки: ");
+            builder.Font.Bold = false;
+            builder.Write(skill.Hardskill);
+            builder.Writeln();
+
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Универсальные навыки: ");
+            builder.Font.Bold = false;
+            builder.Write(skill.Softskill);
+            builder.Writeln();
+            builder.Writeln();
+          }
+
+          // Достижения
+          foreach (var achievement in resume.Achievements)
+          {
+            builder.Font.Size = 12;
+            builder.Font.Bold = true;
+            builder.Write("Профессиональные достижения: ");
+            builder.Font.Bold = false;
+            builder.Write(achievement.AchievementName);
+            builder.Writeln();
+          }
+
+          doc.Save(filePath);
+        }
+        catch (Aspose.Words.FileCorruptedException e)
+        {
+          MessageBox.Show("Файл коррумпирован: " + e.Message);
+        }
+        catch (System.IO.IOException e)
+        {
+          MessageBox.Show("Ошибка ввода/вывода: " + e.Message);
+        }
+        catch (System.InvalidOperationException e)
+        {
+          MessageBox.Show("Недопустимая операция: " + e.Message);
+        }
+        catch (Exception e)
+        {
+          MessageBox.Show("Общая ошибка: " + e.Message);
+        }
+      }
+    }
+
   }
 }
 

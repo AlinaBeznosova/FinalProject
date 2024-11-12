@@ -13,6 +13,10 @@ namespace FinalProject
   /// </summary>
   public class PersonalInfo
   {
+    #region Поля и свойства
+    /// <summary>
+    /// Id личности.
+    /// </summary>
     public static int PersonalInfoId { get; set; }
 
     /// <summary>
@@ -50,9 +54,9 @@ namespace FinalProject
     /// Электронная почта.
     /// </summary>
     public string Email { get; set; }
+    #endregion
 
-    
-
+    #region Конструкторы
     /// <summary>
     /// Конструктор.
     /// </summary>
@@ -73,9 +77,6 @@ namespace FinalProject
     {
       if (!Validator.IsValidDate(dateOfBirth))
         throw new ArgumentException("Дата рождения должна быть в формате dd.MM.yyyy.", nameof(dateOfBirth));
-
-      
-
       if (!Validator.IsValidEmail(email))
         throw new ArgumentException("Электронная почта имеет неверный формат.", nameof(email));
 
@@ -87,5 +88,6 @@ namespace FinalProject
       Email = email;
       MaritalStatus = maritalStatus;
     }
+    #endregion
   }
 }

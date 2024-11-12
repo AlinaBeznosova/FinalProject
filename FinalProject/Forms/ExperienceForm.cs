@@ -18,7 +18,7 @@ namespace FinalProject
     readonly private InfoForm infoForm;
     private EducationForm educationForm;
     readonly Experience experience = new Experience();
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
 
     public ExperienceForm() 
     {
@@ -151,11 +151,11 @@ namespace FinalProject
 
       }
     }
-    private void NextButton_Click(object sender, EventArgs e)
+    private void NextButton_Click(object sender, EventArgs e) //доработать кнопку, чтобы не сохраняла по несколько раз, а обновляла.
     {
       if (IsFieldsFilled())
       {
-        if (baseManager.FindExperienceByPosition(PositionField.Text, Experience.ExperienceId) != null)
+        if (baseManager.FindExperienceByPosition(PositionField.Text) != null)
           baseManager.EditExperience(experience);
          
         else

@@ -17,9 +17,10 @@ namespace FinalProject.Forms
   
   public partial class MainForm : Form
   {
+    private Logger _logger = new Logger();
     private InfoForm infoForm;
     readonly User user = new User();
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     public MainForm()
     {
       InitializeComponent();
@@ -67,35 +68,50 @@ namespace FinalProject.Forms
 
     private void LoginButton_Click(object sender, EventArgs e)
     {
-      if (baseManager.IsUserExist(user))
+      try
       {
-        if (baseManager.CheckForDrafts(User.UserId))
+        if (baseManager.IsUserExist(user))
         {
-          DialogResult dialogResult = MessageBox.Show("Есть черновики. Хотите продолжить редактирование?", "Черновики", MessageBoxButtons.YesNo);
-          if (dialogResult == DialogResult.Yes)
+          _logger.LogInfo("Пользователь найден.");
+          if (baseManager.CheckForDrafts(User.UserId))
           {
-            this.Hide();
-            DraftForm draftForm = new DraftForm();
-            draftForm.Show();
+            _logger.LogInfo("Найдены черновики для пользователя.");
+            DialogResult dialogResult = MessageBox.Show("Есть черновики. Хотите продолжить редактирование?", "Черновики", MessageBoxButtons.YesNo);
+            _logger.LogInfo("Показан диалог о черновиках.");
+            if (dialogResult == DialogResult.Yes)
+            {
+              _logger.LogInfo("Пользователь выбрал продолжить редактирование черновиков.");
+              this.Hide();
+              DraftForm draftForm = new DraftForm();
+              draftForm.Show();
+            }
+            else
+            {
+              _logger.LogInfo("Пользователь отказался продолжить редактирование черновиков.");
+              this.Hide();
+              infoForm = new InfoForm();
+              infoForm.Show();
+            }
           }
           else
           {
+            _logger.LogInfo("Черновики для пользователя не найдены.");
             this.Hide();
             infoForm = new InfoForm();
             infoForm.Show();
-            
           }
         }
-          else
-          {
-            this.Hide();
-            infoForm = new InfoForm();
-            infoForm.Show();
-
-          }
-        
+        else
+        {
+          _logger.LogInfo("Пользователь не найден.");
+          MessageBox.Show("Пользователь не найден");
+        }
       }
-      else MessageBox.Show("Пользователь не найден");
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при обработке кнопки входа.", ex);
+        MessageBox.Show("Произошла ошибка при обработке кнопки входа.");
+      }
     }
 
     private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

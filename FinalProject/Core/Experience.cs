@@ -11,8 +11,7 @@ namespace FinalProject
   /// </summary>
   public class Experience
   {
-    public static int ExperienceId { get; set; } 
-
+    #region Поля и свойства
     /// <summary>
     /// Должность.
     /// </summary>
@@ -37,7 +36,9 @@ namespace FinalProject
     /// Обязанности.
     /// </summary>
     public string Responsibilities { get; set; }
+    #endregion
 
+    #region Конструкторы
     /// <summary>
     /// Конструктор.
     /// </summary>
@@ -60,5 +61,6 @@ namespace FinalProject
       EndDate = endDate;
       Responsibilities = responsibilities;
     }
+    #endregion
   }
 }

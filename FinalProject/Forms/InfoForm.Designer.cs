@@ -40,6 +40,7 @@
       this.labelContacts = new System.Windows.Forms.Label();
       this.personalInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
       this.DateOfBirthField = new System.Windows.Forms.TextBox();
+      this.ReturnToDreftButton = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
@@ -166,11 +167,22 @@
       this.DateOfBirthField.TextChanged += new System.EventHandler(this.DateOfBirthField_TextChanged);
       this.DateOfBirthField.Leave += new System.EventHandler(this.DateOfBirthField_Leave);
       // 
+      // ReturnToDreftButton
+      // 
+      this.ReturnToDreftButton.Location = new System.Drawing.Point(36, 394);
+      this.ReturnToDreftButton.Name = "ReturnToDreftButton";
+      this.ReturnToDreftButton.Size = new System.Drawing.Size(156, 44);
+      this.ReturnToDreftButton.TabIndex = 21;
+      this.ReturnToDreftButton.Text = "Вернуться к черновикам";
+      this.ReturnToDreftButton.UseVisualStyleBackColor = true;
+      this.ReturnToDreftButton.Click += new System.EventHandler(this.ReturnToDreftButton_Click);
+      // 
       // InfoForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(617, 450);
+      this.Controls.Add(this.ReturnToDreftButton);
       this.Controls.Add(this.DateOfBirthField);
       this.Controls.Add(this.labelContacts);
       this.Controls.Add(this.labelInfo);
@@ -203,6 +215,7 @@
     private System.Windows.Forms.Label labelInfo;
     private System.Windows.Forms.Label labelContacts;
     private System.Windows.Forms.TextBox DateOfBirthField;
+    private System.Windows.Forms.Button ReturnToDreftButton;
   }
 }
 

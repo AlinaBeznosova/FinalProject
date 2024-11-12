@@ -13,7 +13,7 @@ namespace FinalProject.Forms
 {
   public partial class SkillsForm : Form
   {
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly Skill skill = new Skill();
     readonly private EducationForm educationForm;
     private AchievementForm achievementForm;

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
+using log4net.Config;
+using FinalProject.Core;
+using System.Windows;
+using Aspose.Words.Drawing;
 
 namespace FinalProject
 {
@@ -11,7 +16,7 @@ namespace FinalProject
   /// </summary>
   public class Resume
   {
-    
+    #region Поля и свойства
     /// <summary>
     /// Личные данные.
     /// </summary>
@@ -37,39 +42,56 @@ namespace FinalProject
     /// </summary>
     public List<Achievement> Achievements { get; set; }
 
-
     /// <summary>
-    /// Конструктор.
+    /// Логер.
     /// </summary>
-    public Resume()
-    {
-      Experiences = new List<Experience>();
-      Educations = new List<Education>();
-      Skills = new List<Skill>();
-      Achievements = new List<Achievement>();
-    }
+    private readonly Logger _logger;
+    #endregion
+
+    #region Методы
+    /// <summary>
+    /// Добавить личные данные.
+    /// </summary>
+    /// <param name="personalInfo">Личные данные.</param>
     public void AddInfo(PersonalInfo personalInfo)
     {
-      PersonalInfo = personalInfo;
+      try
+      {
+        PersonalInfo = personalInfo;
+        _logger.LogInfo("Добавлены личные данные: " + personalInfo.FullName);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при добавлении личных данных", ex);
+      }
     }
+    
     /// <summary>
     /// Добавить опыт работы.
     /// </summary>
     /// <param name="experience">Опыт работы.</param>
     public void AddExperience(Experience experience)
-    {
-      Experiences.Add(experience);
+    { 
+      try
+      {
+        Experiences.Add(experience);
+        _logger.LogInfo("Добавлен опыт работы: " + experience.Position);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при добавлении опыта работы", ex);
+      }
     }
 
     /// <summary>
-    /// Изменить опыт работы.
+    /// Редактировать опыт работы.
     /// </summary>
-    /// <param name="position">Должность, которую нужно изменить.</param>
-    /// <param name="updatedExperience">Новый опыт работы.</param>
-    /// <exception cref="ArgumentException">Исключение, которое возникает, если должность не найдена.</exception>
+    /// <param name="position">Должность.</param>
+    /// <param name="updatedExperience">Отредактированный опыт работы.</param>
     public void EditExperience(string position, Experience updatedExperience)
     {
-      
+      try
+      {
         var experienceToEdit = Experiences.Find(e => e.Position == position);
         if (experienceToEdit != null)
         {
@@ -83,44 +105,64 @@ namespace FinalProject
         {
           throw new ArgumentException("Опыт с указанной должностью не найден");
         }
-      
+        _logger.LogInfo("Опыт отредактирован: " + updatedExperience.Position);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при редактировании опыта", ex);
+      }
     }
 
     /// <summary>
     /// Удалить опыт работы.
     /// </summary>
-    /// <param name="position">Должность, которую нужно удалить.</param>
-    /// <exception cref="ArgumentException">Исключение, если должность не найдена.</exception>
+    /// <param name="position">Должность.</param>
     public void DeleteExperience(string position)
     {
-      var experienceToDelete = Experiences.Find(e => e.Position == position);
-      if (experienceToDelete != null)
+      try
       {
-        Experiences.Remove(experienceToDelete);
+        var experienceToDelete = Experiences.Find(e => e.Position == position);
+        if (experienceToDelete != null)
+        {
+          Experiences.Remove(experienceToDelete);
+        }
+        else
+        {
+          throw new ArgumentException("Опыт с указанной должностью не найден");
+        }
+        _logger.LogInfo("Опыт с дольжностью"  + position + "удален:");
       }
-      else
+      catch (Exception ex)
       {
-        throw new ArgumentException("Опыт с указанной должностью не найден");
+        _logger.LogError("Ошибка при удалении опыта", ex);
       }
     }
 
     /// <summary>
-    /// 
+    /// Добавить образование.
     /// </summary>
-    /// <param name="education"></param>
+    /// <param name="education">Образование.</param>
     public void AddEducation(Education education)
     {
-      Educations.Add(education);
+      try
+      {
+        Educations.Add(education);
+        _logger.LogInfo("Добавлено образование: " + education.Institution);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при добавлении образования", ex);
+      }
     }
 
     /// <summary>
-    /// 
+    /// Редактировать образование.
     /// </summary>
-    /// <param name="institution"></param>
-    /// <param name="updatedEducation"></param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="institution">Учебное заведение.</param>
+    /// <param name="updatedEducation">Отредактированное образование.</param>
     public void EditEducation(string institution, Education updatedEducation)
-    {
+    { try
+      {
         var educationToEdit = Educations.Find(e => e.Institution == institution);
         if (educationToEdit != null)
         {
@@ -132,82 +174,190 @@ namespace FinalProject
         {
           throw new ArgumentException("Образование с указанным учреждением не найдено");
         }
+        _logger.LogInfo("Образование отредактивроано"+ updatedEducation.Institution );
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при редактировании образования", ex);
+      }
     }
 
     /// <summary>
-    /// 
+    /// Удалить образование.
     /// </summary>
-    /// <param name="institution"></param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="institution">Учебное заведение.</param>
     public void DeleteEducation(string institution)
     {
-      var educationToDelete = Educations.Find(e => e.Institution == institution);
-      if (educationToDelete != null)
+      try
       {
-        Educations.Remove(educationToDelete);
+        var educationToDelete = Educations.Find(e => e.Institution == institution);
+        if (educationToDelete != null)
+        {
+          Educations.Remove(educationToDelete);
+        }
+        else
+        {
+          throw new ArgumentException("Образование с указанным учреждением не найдено");
+        }
+        _logger.LogInfo("Образование удалено" + institution);
       }
-      else
+      catch (Exception ex)
       {
-        throw new ArgumentException("Образование с указанным учреждением не найдено");
+        _logger.LogError("Ошибка при удалении образования", ex);
       }
     }
 
     /// <summary>
-    /// 
+    /// Добавить навык.
     /// </summary>
-    /// <param name="skill"></param>
+    /// <param name="skill">Навык.</param>
     public void AddSkill(Skill skill)
     {
-      Skills.Add(skill);
+      try
+      {
+        Skills.Add(skill);
+        _logger.LogInfo("Добавлены навыки: " + skill.Hardskill);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при добавлении навыков", ex);
+      }
     }
 
-   
-
-  
     /// <summary>
-    /// 
+    /// Редактировать навык.
     /// </summary>
-    /// <param name="achievement"></param>
-    public void AddAchievement(Achievement achievement)
+    /// <param name="hardSkill">Навык.</param>
+    /// <param name="updatedSkill">Отредактированный навык.</param>
+    public void EditSkill(string hardSkill, Skill updatedSkill)
     {
-      Achievements.Add(achievement);
+      try
+      {
+        var skillToEdit = Skills.Find(s => s.Hardskill == hardSkill);
+        if (skillToEdit != null)
+        {
+          skillToEdit.Hardskill = updatedSkill.Hardskill;
+          skillToEdit.Softskill = updatedSkill.Softskill;
+          
+        }
+        else
+        {
+          throw new ArgumentException("Навык не найден");
+        }
+        _logger.LogInfo("Навыки отредактированы");
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при редактировании навыков", ex);
+      }
     }
 
     /// <summary>
-    /// 
+    /// Удалить навык.
     /// </summary>
-    /// <param name="achievementName"></param>
-    /// <param name="updatedAchievement"></param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="hardSkill">Навык.</param>
+    public void DeleteSkill(string hardSkill)
+    {
+      try
+      {
+        var skillToDelete = Skills.Find(s => s.Hardskill == hardSkill);
+        if (skillToDelete != null)
+        {
+          Skills.Remove(skillToDelete);
+        }
+        else
+        {
+          throw new ArgumentException("Навык не найден");
+        }
+        _logger.LogInfo("Навыки удалены" + hardSkill);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при удалении навыка", ex);
+      }
+    }
+
+      /// <summary>
+      /// Добавить достижение.
+      /// </summary>
+      /// <param name="achievement">Достижение.</param>
+      public void AddAchievement(Achievement achievement)
+    {
+       try
+      {
+        Achievements.Add(achievement);
+        _logger.LogInfo("Добавлены достижения: " + achievement.AchievementName);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Ошибка при добавлении достижений", ex);
+      }
+    }
+
+    /// <summary>
+    /// Редактировать достижения.
+    /// </summary>
+    /// <param name="achievementName">Достижение.</param>
+    /// <param name="updatedAchievement">Отредактированное достижение.</param>
     public void EditAchievement(string achievementName, Achievement updatedAchievement)
     {
-      var achievementToEdit = Achievements.Find(a => a.AchievementName == achievementName);
-      if (achievementToEdit != null)
+      try
       {
-        achievementToEdit.AchievementName = updatedAchievement.AchievementName;
+        var achievementToEdit = Achievements.Find(a => a.AchievementName == achievementName);
+        if (achievementToEdit != null)
+        {
+          achievementToEdit.AchievementName = updatedAchievement.AchievementName;
+        }
+        else
+        {
+          throw new ArgumentException("Достижение не найдено");
+        }
+        _logger.LogInfo("Достижение отредактировано: " + updatedAchievement.AchievementName);
       }
-      else
+      catch (Exception ex)
       {
-        throw new ArgumentException("Достижение не найдено");
+        _logger.LogError("Ошибка при редактировании достижений", ex);
       }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="achievementName"></param>
-    /// <exception cref="ArgumentException"></exception>
+   /// <summary>
+   /// Удалить достижения.
+   /// </summary>
+   /// <param name="achievementName">Достижение.</param>
     public void DeleteAchievement(string achievementName)
     {
-      var achievementToDelete = Achievements.Find(a => a.AchievementName == achievementName);
-      if (achievementToDelete != null)
+      try
       {
-        Achievements.Remove(achievementToDelete);
+        var achievementToDelete = Achievements.Find(a => a.AchievementName == achievementName);
+        if (achievementToDelete != null)
+        {
+          Achievements.Remove(achievementToDelete);
+        }
+        else
+        {
+          throw new ArgumentException("Достижение не найдено");
+        }
+        _logger.LogInfo("Удалены достижения: " + achievementName);
       }
-      else
+      catch (Exception ex)
       {
-        throw new ArgumentException("Достижение не найдено");
+        _logger.LogError("Ошибка при удалении достижений", ex);
       }
     }
+    #endregion
+
+    #region Конструктор
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    public Resume()
+    {
+      _logger = new Logger();
+      Experiences = new List<Experience>();
+      Educations = new List<Education>();
+      Skills = new List<Skill>();
+      Achievements = new List<Achievement>();
+    }
+    #endregion
   }
 }

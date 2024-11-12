@@ -15,7 +15,7 @@ namespace FinalProject.Forms
   {
 
     readonly Achievement achievement = new Achievement();
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly private SkillsForm skillsForm;
     private ResumeForm resumeForm;
     public AchievementForm(SkillsForm skillsForm)

@@ -35,6 +35,7 @@
       this.NoEducationButton = new System.Windows.Forms.Button();
       this.SaveAndNextButton = new System.Windows.Forms.Button();
       this.YearOfGraduationField = new System.Windows.Forms.TextBox();
+      this.EducationListButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // InstitutionField
@@ -73,11 +74,11 @@
       // 
       // AddMoreEducation
       // 
-      this.AddMoreEducation.Location = new System.Drawing.Point(285, 271);
+      this.AddMoreEducation.Location = new System.Drawing.Point(263, 283);
       this.AddMoreEducation.Name = "AddMoreEducation";
-      this.AddMoreEducation.Size = new System.Drawing.Size(254, 72);
+      this.AddMoreEducation.Size = new System.Drawing.Size(156, 51);
       this.AddMoreEducation.TabIndex = 13;
-      this.AddMoreEducation.Text = "Добавить образование";
+      this.AddMoreEducation.Text = "Добавить еще образование";
       this.AddMoreEducation.UseVisualStyleBackColor = true;
       this.AddMoreEducation.Click += new System.EventHandler(this.AddMoreEducation_Click);
       // 
@@ -113,11 +114,22 @@
       this.YearOfGraduationField.TextChanged += new System.EventHandler(this.YearOfGraduationField_TextChanged);
       this.YearOfGraduationField.Leave += new System.EventHandler(this.YearOfGraduationField_Leave);
       // 
+      // EducationListButton
+      // 
+      this.EducationListButton.Location = new System.Drawing.Point(425, 283);
+      this.EducationListButton.Name = "EducationListButton";
+      this.EducationListButton.Size = new System.Drawing.Size(156, 51);
+      this.EducationListButton.TabIndex = 17;
+      this.EducationListButton.Text = "Показать список образования";
+      this.EducationListButton.UseVisualStyleBackColor = true;
+      this.EducationListButton.Click += new System.EventHandler(this.EducationListButton_Click);
+      // 
       // EducationForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(629, 450);
+      this.Controls.Add(this.EducationListButton);
       this.Controls.Add(this.YearOfGraduationField);
       this.Controls.Add(this.SaveAndNextButton);
       this.Controls.Add(this.NoEducationButton);
@@ -142,5 +154,6 @@
     private System.Windows.Forms.Button NoEducationButton;
     private System.Windows.Forms.Button SaveAndNextButton;
     private System.Windows.Forms.TextBox YearOfGraduationField;
+    private System.Windows.Forms.Button EducationListButton;
   }
 }

@@ -14,7 +14,7 @@ namespace FinalProject.Forms
 {
   public partial class EducationForm : Form
   {
-    readonly DataBaseManager baseManager = new DataBaseManager();
+    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly private ExperienceForm experienceForm;
     private SkillsForm skillsForm;
    readonly Education education = new Education();
@@ -158,6 +158,16 @@ namespace FinalProject.Forms
       Application.Exit();
     }
 
-    
+    private void EducationListButton_Click(object sender, EventArgs e)
+    {
+      if (baseManager.IsEducationExist(PersonalInfo.PersonalInfoId))
+      {
+        EducationListForm educationListForm = new EducationListForm();
+        educationListForm.Show();
+        this.Hide();
+
+      }
+      else MessageBox.Show("Опыт еще не добавлен. Добавьте его.");
+    }
   }
 }
