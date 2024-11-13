@@ -30,7 +30,7 @@
     {
       this.components = new System.ComponentModel.Container();
       this.FullNameField = new System.Windows.Forms.TextBox();
-      this.NextFormButton = new System.Windows.Forms.Button();
+      this.AddInfoButton = new System.Windows.Forms.Button();
       this.CityField = new System.Windows.Forms.TextBox();
       this.EmailField = new System.Windows.Forms.TextBox();
       this.GenderField = new System.Windows.Forms.ComboBox();
@@ -40,7 +40,9 @@
       this.labelContacts = new System.Windows.Forms.Label();
       this.personalInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
       this.DateOfBirthField = new System.Windows.Forms.TextBox();
-      this.ReturnToDreftButton = new System.Windows.Forms.Button();
+      this.ReturnToDraftButton = new System.Windows.Forms.Button();
+      this.UpdateInfoButton = new System.Windows.Forms.Button();
+      this.NextFormButton = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.personalInfoBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
@@ -58,15 +60,15 @@
       this.FullNameField.TextChanged += new System.EventHandler(this.FullNameField_TextChanged);
       this.FullNameField.Leave += new System.EventHandler(this.FullNameField_Leave);
       // 
-      // NextFormButton
+      // AddInfoButton
       // 
-      this.NextFormButton.Location = new System.Drawing.Point(430, 394);
-      this.NextFormButton.Name = "NextFormButton";
-      this.NextFormButton.Size = new System.Drawing.Size(156, 44);
-      this.NextFormButton.TabIndex = 3;
-      this.NextFormButton.Text = "Далее";
-      this.NextFormButton.UseVisualStyleBackColor = true;
-      this.NextFormButton.Click += new System.EventHandler(this.NextFormButton_Click);
+      this.AddInfoButton.Location = new System.Drawing.Point(309, 394);
+      this.AddInfoButton.Name = "AddInfoButton";
+      this.AddInfoButton.Size = new System.Drawing.Size(149, 44);
+      this.AddInfoButton.TabIndex = 3;
+      this.AddInfoButton.Text = "Создать новую запись";
+      this.AddInfoButton.UseVisualStyleBackColor = true;
+      this.AddInfoButton.Click += new System.EventHandler(this.AddInfoButton_Click);
       // 
       // CityField
       // 
@@ -98,6 +100,7 @@
       // 
       // GenderField
       // 
+      this.GenderField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.GenderField.ForeColor = System.Drawing.Color.Black;
       this.GenderField.FormattingEnabled = true;
       this.GenderField.Items.AddRange(new object[] {
@@ -105,18 +108,19 @@
             "Женский"});
       this.GenderField.Location = new System.Drawing.Point(227, 128);
       this.GenderField.Name = "GenderField";
-      this.GenderField.Size = new System.Drawing.Size(170, 24);
+      this.GenderField.Size = new System.Drawing.Size(170, 26);
       this.GenderField.TabIndex = 15;
       this.GenderField.Text = "Пол";
       this.GenderField.SelectedIndexChanged += new System.EventHandler(this.GenderField_SelectedIndexChanged);
       // 
       // MaritalStatusField
       // 
+      this.MaritalStatusField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.MaritalStatusField.ForeColor = System.Drawing.Color.Black;
       this.MaritalStatusField.FormattingEnabled = true;
       this.MaritalStatusField.Location = new System.Drawing.Point(403, 128);
       this.MaritalStatusField.Name = "MaritalStatusField";
-      this.MaritalStatusField.Size = new System.Drawing.Size(183, 24);
+      this.MaritalStatusField.Size = new System.Drawing.Size(183, 26);
       this.MaritalStatusField.TabIndex = 16;
       this.MaritalStatusField.Text = "Статус";
       this.MaritalStatusField.SelectedIndexChanged += new System.EventHandler(this.MaritalStatusField_SelectedIndexChanged);
@@ -157,6 +161,7 @@
       // 
       // DateOfBirthField
       // 
+      this.DateOfBirthField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.DateOfBirthField.Location = new System.Drawing.Point(36, 128);
       this.DateOfBirthField.Multiline = true;
       this.DateOfBirthField.Name = "DateOfBirthField";
@@ -167,22 +172,44 @@
       this.DateOfBirthField.TextChanged += new System.EventHandler(this.DateOfBirthField_TextChanged);
       this.DateOfBirthField.Leave += new System.EventHandler(this.DateOfBirthField_Leave);
       // 
-      // ReturnToDreftButton
+      // ReturnToDraftButton
       // 
-      this.ReturnToDreftButton.Location = new System.Drawing.Point(36, 394);
-      this.ReturnToDreftButton.Name = "ReturnToDreftButton";
-      this.ReturnToDreftButton.Size = new System.Drawing.Size(156, 44);
-      this.ReturnToDreftButton.TabIndex = 21;
-      this.ReturnToDreftButton.Text = "Вернуться к черновикам";
-      this.ReturnToDreftButton.UseVisualStyleBackColor = true;
-      this.ReturnToDreftButton.Click += new System.EventHandler(this.ReturnToDreftButton_Click);
+      this.ReturnToDraftButton.Location = new System.Drawing.Point(12, 394);
+      this.ReturnToDraftButton.Name = "ReturnToDraftButton";
+      this.ReturnToDraftButton.Size = new System.Drawing.Size(146, 44);
+      this.ReturnToDraftButton.TabIndex = 21;
+      this.ReturnToDraftButton.Text = "Вернуться к черновикам";
+      this.ReturnToDraftButton.UseVisualStyleBackColor = true;
+      this.ReturnToDraftButton.Click += new System.EventHandler(this.ReturnToDraftButton_Click);
+      // 
+      // UpdateInfoButton
+      // 
+      this.UpdateInfoButton.Location = new System.Drawing.Point(164, 394);
+      this.UpdateInfoButton.Name = "UpdateInfoButton";
+      this.UpdateInfoButton.Size = new System.Drawing.Size(139, 44);
+      this.UpdateInfoButton.TabIndex = 22;
+      this.UpdateInfoButton.Text = "Обновить данные";
+      this.UpdateInfoButton.UseVisualStyleBackColor = true;
+      this.UpdateInfoButton.Click += new System.EventHandler(this.UpdateInfoButton_Click);
+      // 
+      // NextFormButton
+      // 
+      this.NextFormButton.Location = new System.Drawing.Point(464, 394);
+      this.NextFormButton.Name = "NextFormButton";
+      this.NextFormButton.Size = new System.Drawing.Size(141, 44);
+      this.NextFormButton.TabIndex = 23;
+      this.NextFormButton.Text = "Далее";
+      this.NextFormButton.UseVisualStyleBackColor = true;
+      this.NextFormButton.Click += new System.EventHandler(this.NextFormButton_Click);
       // 
       // InfoForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(617, 450);
-      this.Controls.Add(this.ReturnToDreftButton);
+      this.ClientSize = new System.Drawing.Size(612, 453);
+      this.Controls.Add(this.NextFormButton);
+      this.Controls.Add(this.UpdateInfoButton);
+      this.Controls.Add(this.ReturnToDraftButton);
       this.Controls.Add(this.DateOfBirthField);
       this.Controls.Add(this.labelContacts);
       this.Controls.Add(this.labelInfo);
@@ -191,8 +218,9 @@
       this.Controls.Add(this.GenderField);
       this.Controls.Add(this.EmailField);
       this.Controls.Add(this.CityField);
-      this.Controls.Add(this.NextFormButton);
+      this.Controls.Add(this.AddInfoButton);
       this.Controls.Add(this.FullNameField);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Name = "InfoForm";
       this.Text = "Личная Инфомрация";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InfoForm_FormClosing);
@@ -206,7 +234,7 @@
 
     private System.Windows.Forms.TextBox FullNameField;
     private System.Windows.Forms.BindingSource personalInfoBindingSource;
-    private System.Windows.Forms.Button NextFormButton;
+    private System.Windows.Forms.Button AddInfoButton;
     private System.Windows.Forms.TextBox CityField;
     private System.Windows.Forms.TextBox EmailField;
     private System.Windows.Forms.ComboBox GenderField;
@@ -215,7 +243,9 @@
     private System.Windows.Forms.Label labelInfo;
     private System.Windows.Forms.Label labelContacts;
     private System.Windows.Forms.TextBox DateOfBirthField;
-    private System.Windows.Forms.Button ReturnToDreftButton;
+    private System.Windows.Forms.Button ReturnToDraftButton;
+    private System.Windows.Forms.Button UpdateInfoButton;
+    private System.Windows.Forms.Button NextFormButton;
   }
 }
 

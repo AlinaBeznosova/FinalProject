@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using log4net;
 
 namespace FinalProject
 {
@@ -16,6 +17,11 @@ namespace FinalProject
   public class DataBaseManager
   {
     #region Поля и свойства
+    /// <summary>
+    /// Логер.
+    /// </summary>
+    private static readonly ILog _logger = LogManager.GetLogger(typeof(DataBaseManager));
+
     /// <summary>
     /// Путь к базе данных.
     /// </summary>
@@ -39,19 +45,53 @@ namespace FinalProject
       }
     }
 
+    public bool TableExists(string tableName)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name=@tableName";
+          command.Parameters.AddWithValue("@tableName", tableName);
+          object result = command.ExecuteScalar();
+          return result != null;
+        }
+      }
+    }
     /// <summary>
     /// Проверяет существование всех необходимых таблиц и создает их, если они не существуют.
     /// </summary>
     public void EnsureTablesCreated()
     {
-      connection.Open();
-
-      CreateUsersTable();
-      CreatePersonalInfoTable();
-      CreateExperienceTable();
-      CreateEducationTable();
-      CreateSkillsTable();
-      CreateAchievementsTable();
+     
+      try
+      {
+        connection.Open();
+        _logger.Debug("Соединение с базой данных открыто");
+        if (!TableExists("Users"))
+          CreateUsersTable();
+        if (!TableExists("PersonalInfo"))
+          CreatePersonalInfoTable();
+        if (!TableExists("Experience"))
+          CreateExperienceTable();
+        if (!TableExists("Education"))
+          CreateEducationTable();
+        if (!TableExists("Skills"))
+          CreateSkillsTable();
+        if (!TableExists("Achievements"))
+          CreateAchievementsTable();
+      }
+      catch (SQLiteException ex)
+      {
+        _logger.Error("Ошибка создания таблиц", ex);
+        MessageBox.Show("Ошибка создания таблиц: " + ex.Message);
+      }
+      finally
+      {
+        connection.Close();
+        _logger.Debug("Соединение с базой данных закрыто");
+      }
     }
 
     /// <summary>

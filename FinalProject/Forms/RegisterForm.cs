@@ -16,10 +16,7 @@ namespace FinalProject.Forms
   {
     readonly User user = new User();
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-    public RegisterForm()
-    {
-      InitializeComponent();
-    }
+    
 
     private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
     {
@@ -49,6 +46,10 @@ namespace FinalProject.Forms
         mainForm.Show();
         
       }
+    }
+    public RegisterForm()
+    {
+      InitializeComponent();
     }
   }
 }

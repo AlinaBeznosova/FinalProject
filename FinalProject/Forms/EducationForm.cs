@@ -15,19 +15,9 @@ namespace FinalProject.Forms
   public partial class EducationForm : Form
   {
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-    readonly private ExperienceForm experienceForm;
-    private SkillsForm skillsForm;
-   readonly Education education = new Education();
-    public EducationForm()
-    {
-      InitializeComponent();
-    }
+    readonly Education education = new Education();
    
-    public EducationForm(ExperienceForm experienceForm)
-    {
-      InitializeComponent();
-      this.experienceForm = experienceForm;
-    }
+   
     private void InstitutionField_Click(object sender, EventArgs e)
     {
       if (InstitutionField.Text == "Учебное заведение")
@@ -89,10 +79,6 @@ namespace FinalProject.Forms
 
     private void AddMoreEducation_Click(object sender, EventArgs e)
     {
-      if (IsFieldsFilled())
-      {
-        baseManager.AddEducation(education);
-
         foreach (Control control in this.Controls)
         {
           if (control is TextBox textBox)
@@ -100,32 +86,25 @@ namespace FinalProject.Forms
             textBox.Text = string.Empty;
           }
         }
-      }
-      else MessageBox.Show("Сначала необходимо заполнить все поля");
     }
 
     private void PreviousFormButton_Click(object sender, EventArgs e)
     {
-      ExperienceForm exp = new ExperienceForm();
-      exp.Show();
+      ExperienceForm experienceForm = new ExperienceForm();
+      experienceForm.Show();
       this.Hide();
     }
 
-    private void NoEducationButton_Click(object sender, EventArgs e)
-    {
-      skillsForm = new SkillsForm(this);
-      skillsForm.Show();
-      this.Hide();
-    }
 
-    private void SaveAndNextButton_Click(object sender, EventArgs e)
+    private void AddEducationButton_Click(object sender, EventArgs e)
     {
       if (IsFieldsFilled())
       {
-        baseManager.AddEducation(education);
-        skillsForm = new SkillsForm(this);
-        skillsForm.Show();
-        this.Hide();
+        if (baseManager.IsIdenticEducationExist(education))
+          MessageBox.Show("Такое образование уже сущестувует.");
+
+        else
+          baseManager.AddEducation(education);
       }
 
       else MessageBox.Show("Необходимо заполнить все поля");
@@ -167,7 +146,36 @@ namespace FinalProject.Forms
         this.Hide();
 
       }
-      else MessageBox.Show("Опыт еще не добавлен. Добавьте его.");
+      else MessageBox.Show("Образование еще не добавлено. Добавьте его.");
+    }
+
+    private void UpdateEducationButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+        baseManager.UpdateEducation(education);
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+    }
+
+    private void NextFormButton_Click_1(object sender, EventArgs e)
+    {
+      SkillsForm skillsForm = new SkillsForm();
+      skillsForm.Show();
+      this.Hide();
+    }
+
+    public EducationForm()
+    {
+      InitializeComponent();
+    }
+
+    public EducationForm(Education education)
+    {
+      InitializeComponent();
+      this.education = education;
+      InstitutionField.Text = education.Institution;
+      SpecialtyField.Text = education.Specialty;
+      YearOfGraduationField.Text = education.YearOfGraduation;
     }
   }
 }

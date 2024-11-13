@@ -23,27 +23,10 @@ namespace FinalProject.Forms
 {
   public partial class ResumeForm : Form
   {
-    
-    readonly Resume resume = new Resume();
   
     readonly string filePath = "resume.docx";
-    private readonly AchievementForm achievementForm;
-    readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly string connectionString = "Data Source=\"C:\\Users\\Алина\\source\\repos\\FinalProject\\DataBase.db\"";
-    readonly PersonalInfo person = new PersonalInfo();
-    readonly Experience experience = new Experience();
     
-
-    public ResumeForm() 
-    {
-      InitializeComponent();
-    }
-    public ResumeForm(AchievementForm achievementForm)
-    {
-      InitializeComponent();
-      this.achievementForm = achievementForm;
-    }
-
     private void ResumeForm_FormClosed(object sender, FormClosedEventArgs e)
     {
      System.Windows.Forms.Application.Exit();
@@ -127,20 +110,20 @@ namespace FinalProject.Forms
 
     }
 
-
     private void CreateResume()
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
         connection.Open();
 
-        var resume = new Resume();
-        resume.Experiences = new List<Experience>();
-        resume.Educations = new List<Education>();
-        resume.Skills = new List<Skill>();
-        resume.Achievements = new List<Achievement>();
+        Resume resume = new Resume
+        {
+          Experiences = new List<Experience>(),
+          Educations = new List<Education>(),
+          Skills = new List<Skill>(),
+          Achievements = new List<Achievement>()
+        };
 
-        // Чтение личных данных
         var command = connection.CreateCommand();
         command.CommandText = @"
             SELECT *
@@ -172,7 +155,6 @@ namespace FinalProject.Forms
           }
         }
 
-        // Чтение опыта работы
         command.CommandText = @"
             SELECT *
             FROM Experience e
@@ -196,7 +178,6 @@ namespace FinalProject.Forms
           }
         }
 
-        // Чтение образования
         command.CommandText = @"
             SELECT *
             FROM Education ed
@@ -280,13 +261,11 @@ namespace FinalProject.Forms
         var doc = new Aspose.Words.Document();
         var builder = new DocumentBuilder(doc);
 
-        // Заголовок
         builder.Font.Size = 20;
         builder.Font.Bold = false;
         builder.Write("Личные данные");
         builder.Writeln();
 
-        // ФИО
         builder.Font.Size = 12;
         builder.Font.Bold = true;
         builder.Write("ФИО: ");
@@ -294,42 +273,36 @@ namespace FinalProject.Forms
         builder.Write(resume.PersonalInfo.FullName);
         builder.Writeln();
 
-        // Дата рождения
         builder.Font.Bold = true;
         builder.Write("Дата рождения: ");
         builder.Font.Bold = false;
         builder.Write(resume.PersonalInfo.DateOfBirth);
         builder.Writeln();
 
-        // Пол
         builder.Font.Bold = true;
         builder.Write("Пол: ");
         builder.Font.Bold = false;
         builder.Write(resume.PersonalInfo.Gender);
         builder.Writeln();
 
-        // Семейное положение
         builder.Font.Bold = true;
         builder.Write("Семейное положение: ");
         builder.Font.Bold = false;
         builder.Write(resume.PersonalInfo.MaritalStatus);
         builder.Writeln();
 
-        // Город проживания
         builder.Font.Bold = true;
         builder.Write("Город проживания: ");
         builder.Font.Bold = false;
         builder.Write(resume.PersonalInfo.City);
         builder.Writeln();
 
-        // Электронная почта
         builder.Font.Bold = true;
         builder.Write("Электронная почта: ");
         builder.Font.Bold = false;
         builder.Write(resume.PersonalInfo.Email);
         builder.Writeln();
 
-        // Номер телефона
         builder.Font.Bold = true;
         builder.Write("Номер телефона: ");
         builder.Font.Bold = false;
@@ -337,7 +310,6 @@ namespace FinalProject.Forms
         builder.Writeln();
         builder.Writeln();
 
-        // Опыт работы
         builder.Font.Size = 20;
         builder.Font.Bold = false;
         builder.Write("Опыт работы");
@@ -472,25 +444,22 @@ namespace FinalProject.Forms
     {
       try
       {
-        // Создание диалогового окна для сохранения файла
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filter = "PDF files (*.pdf)|*.pdf";
-        saveFileDialog.Title = "Save as PDF";
-        saveFileDialog.DefaultExt = "pdf";
-        saveFileDialog.AddExtension = true;
+        SaveFileDialog saveFileDialog = new SaveFileDialog()
+        {
+          Filter = "PDF files (*.pdf)|*.pdf",
+          Title = "Save as PDF",
+          DefaultExt = "pdf",
+          AddExtension = true
+        };
 
-        // Отображение диалогового окна
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
         {
           string outputFilePath = saveFileDialog.FileName;
 
-          // Загрузка документа DOCX
           var doc = new Document(inputFilePath);
 
-          // Сохранение документа в формате PDF
           doc.Save(outputFilePath, SaveFormat.Pdf);
 
-          // Открытие полученного PDF файла
           Process.Start(new ProcessStartInfo(outputFilePath) { UseShellExecute = true });
         }
       }
@@ -522,9 +491,8 @@ namespace FinalProject.Forms
 
           builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
 
-          // Конфигурация страницы для трех колонок
           builder.PageSetup.TextColumns.SetCount(2);
-          builder.PageSetup.TextColumns.EvenlySpaced = true; // Равномерное распределение ширины между колонками
+          builder.PageSetup.TextColumns.EvenlySpaced = true; 
           builder.PageSetup.TextColumns.LineBetween = true;
 
           builder.Font.Size = 20;
@@ -576,7 +544,6 @@ namespace FinalProject.Forms
           builder.Writeln();
           builder.Writeln();
 
-          // Опыт работы в первой колонке
           builder.Font.Size = 20;
           builder.Font.Bold = false;
           builder.Write("Опыт работы");
@@ -617,10 +584,9 @@ namespace FinalProject.Forms
             builder.Writeln();
           }
 
-          // Переход во вторую колонку
+
           builder.InsertBreak(Aspose.Words.BreakType.ColumnBreak);
 
-          
           builder.Font.Size = 20;
           builder.Font.Bold = false;
           builder.Write("Образование");
@@ -651,13 +617,11 @@ namespace FinalProject.Forms
             builder.Writeln();
           }
 
-          
           builder.Font.Size = 20;
           builder.Font.Bold = false;
           builder.Write("Навыки и достижения");
           builder.Writeln();
 
-          // Навыки
           foreach (var skill in resume.Skills)
           {
             builder.Font.Size = 12;
@@ -676,7 +640,6 @@ namespace FinalProject.Forms
             builder.Writeln();
           }
 
-          // Достижения
           foreach (var achievement in resume.Achievements)
           {
             builder.Font.Size = 12;
@@ -708,7 +671,6 @@ namespace FinalProject.Forms
       }
     }
 
-
     public void CreateDocumentThirdTemplate(Resume resume)
     {
       {
@@ -719,9 +681,9 @@ namespace FinalProject.Forms
 
           builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
 
-          // Конфигурация страницы для трех колонок
+          
           builder.PageSetup.TextColumns.SetCount(3);
-          builder.PageSetup.TextColumns.EvenlySpaced = true; // Равномерное распределение ширины между колонками
+          builder.PageSetup.TextColumns.EvenlySpaced = true;
           builder.PageSetup.TextColumns.LineBetween = true;
 
           builder.Font.Size = 20;
@@ -774,7 +736,7 @@ namespace FinalProject.Forms
           builder.Writeln();
 
           builder.InsertBreak(Aspose.Words.BreakType.ColumnBreak);
-          // Опыт работы в первой колонке
+          
           builder.Font.Size = 20;
           builder.Font.Bold = false;
           builder.Write("Опыт работы");
@@ -815,10 +777,6 @@ namespace FinalProject.Forms
             builder.Writeln();
           }
 
-          // Переход во вторую колонку
-          
-
-
           builder.Font.Size = 20;
           builder.Font.Bold = false;
           builder.Write("Образование");
@@ -856,7 +814,6 @@ namespace FinalProject.Forms
           builder.Write("Навыки и достижения");
           builder.Writeln();
 
-          // Навыки
           foreach (var skill in resume.Skills)
           {
             builder.Font.Size = 12;
@@ -875,7 +832,6 @@ namespace FinalProject.Forms
             builder.Writeln();
           }
 
-          // Достижения
           foreach (var achievement in resume.Achievements)
           {
             builder.Font.Size = 12;
@@ -905,6 +861,10 @@ namespace FinalProject.Forms
           MessageBox.Show("Общая ошибка: " + e.Message);
         }
       }
+    }
+    public ResumeForm()
+    {
+      InitializeComponent();
     }
 
   }

@@ -15,13 +15,7 @@ namespace FinalProject.Forms
   {
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
     readonly Skill skill = new Skill();
-    readonly private EducationForm educationForm;
-    private AchievementForm achievementForm;
-    public SkillsForm(EducationForm educationForm)
-    {
-      InitializeComponent();
-      this.educationForm = educationForm;
-    }
+
     private void HardSkillField_Click(object sender, EventArgs e)
     {
       if (HardSkillField.Text == "Технические навыки")
@@ -51,32 +45,7 @@ namespace FinalProject.Forms
       if (SoftSkillField.Text == "")
         SoftSkillField.Text = "Универсальные навыки";
     }
-    private void PreviousFormButton_Click(object sender, EventArgs e)
-    {
-      educationForm.Show();
-      this.Hide();
-    }
-
-    private void NoSkillsButton_Click(object sender, EventArgs e)
-    {
-      achievementForm = new AchievementForm(this);
-      achievementForm.Show();
-      this.Hide();
-    }
-
-    private void SaveAndNextButton_Click(object sender, EventArgs e)
-    {
-      if (IsFieldsFilled())
-      {
-        baseManager.AddSkill(skill);
-        achievementForm = new AchievementForm(this);
-        achievementForm.Show();
-        this.Hide();
-      }
-
-      else MessageBox.Show("Необходимо заполнить все поля");
-      
-    }
+    
     public bool IsFieldsFilled()
     {
       if (HardSkillField.Text == "Технические навыки")
@@ -97,6 +66,77 @@ namespace FinalProject.Forms
     private void SkillsForm_FormClosed(object sender, FormClosedEventArgs e)
     {
       Application.Exit();
+    }
+
+    private void ClearFieldsButton_Click(object sender, EventArgs e)
+    {
+      foreach (Control control in this.Controls)
+      {
+        if (control is TextBox textBox)
+        {
+          textBox.Text = string.Empty;
+        }
+      }
+    }
+
+    private void PreviousFormButton_Click_1(object sender, EventArgs e)
+    {
+      EducationForm educationForm = new EducationForm();
+      educationForm.Show();
+      this.Hide();
+    }
+
+    private void NextFormButton_Click(object sender, EventArgs e)
+    {
+      AchievementForm achievementForm = new AchievementForm();
+      achievementForm.Show();
+      this.Hide();
+    }
+
+    private void AddSkillsButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+      {
+        if (baseManager.IsIdenticSkillExist(skill))
+          MessageBox.Show("Такой навык уже сущестувует.");
+
+        else
+          baseManager.AddSkill(skill);
+      }
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+    }
+    private void UpdateSkillsButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+        baseManager.UpdateSkill(skill);
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+    }
+
+    private void SkillsListButton_Click(object sender, EventArgs e)
+    {
+      if (baseManager.IsSkillExist(PersonalInfo.PersonalInfoId))
+      {
+        SkillsListForm skillsListForm = new SkillsListForm();
+        skillsListForm.Show();
+        this.Hide();
+
+      }
+      else MessageBox.Show("Навык еще не добавлен. Добавьте его.");
+    }
+
+    public SkillsForm()
+    {
+      InitializeComponent();
+    }
+
+    public SkillsForm(Skill skill)
+    {
+      InitializeComponent();
+      this.skill = skill;
+      HardSkillField.Text = skill.Hardskill;
+      SoftSkillField.Text = skill.Softskill;
     }
   }
 }

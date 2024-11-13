@@ -18,34 +18,10 @@ namespace FinalProject
 {
   public partial class InfoForm : Form
   {
-    readonly Resume resume = new Resume();
+
     readonly PersonalInfo personal;
-    private ExperienceForm experienceForm;
     readonly PersonalInfo person = new PersonalInfo();
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-
-
-    public InfoForm(PersonalInfo personalInfo)
-    {
-      InitializeComponent();
-      this.personal = personalInfo;
-      FullNameField.Text = personalInfo.FullName;
-      DateOfBirthField.Text = personalInfo.DateOfBirth;
-      GenderField.Text = personalInfo.Gender;
-      CityField.Text = personalInfo.City;
-      PhoneNumberField.Text = personalInfo.PhoneNumber;
-      EmailField.Text = personalInfo.Email;
-      MaritalStatusField.Text = personalInfo.MaritalStatus;
-    }
-    
-    public InfoForm()
-    {
-      InitializeComponent();
-      string[] maleStatus = { "Холост", "Женат" };
-      MaritalStatusField.Items.AddRange(maleStatus);
-      GenderField.Text = "Пол";
-    }
-
 
     private void FullNameField_Click(object sender, EventArgs e)
     {
@@ -195,32 +171,15 @@ namespace FinalProject
         MessageBox.Show("Некорректный формат электронной почты. Пожалуйста введите номер в формате 7 ХХХ ХХХ-ХХХХ");
     }
 
-    private void NextFormButton_Click(object sender, EventArgs e)
+    private void AddInfoButton_Click(object sender, EventArgs e)
     {
       if (IsFieldsFilled())
       {
         if (baseManager.IsIdenticPersonExist(person))
-        {
-          experienceForm = new ExperienceForm(this);
-          experienceForm.Show();
-          this.Hide();
-        }
-        else if (baseManager.IsCurrentPersonExist(person))
-        {
-          baseManager.UpdatePersonalInfo(person);
-          experienceForm = new ExperienceForm(this);
-          experienceForm.Show();
-          this.Hide();
-        }
+          MessageBox.Show("Пользователь с такими данными уже сущестувует.");
         else
-        {
-          baseManager.SavePersonalInfo(person);
-          experienceForm = new ExperienceForm(this);
-          experienceForm.Show();
-          this.Hide();
-        }
-        }
-
+          baseManager.AddPersonalInfo(person);
+      }
       else MessageBox.Show("Необходимо заполнить все поля");
 
     }
@@ -273,11 +232,47 @@ namespace FinalProject
       else return true;
     }
 
-    private void ReturnToDreftButton_Click(object sender, EventArgs e)
+    private void ReturnToDraftButton_Click(object sender, EventArgs e)
     {
       this.Hide();
       DraftForm draftForm = new DraftForm();
       draftForm.Show();
+    }
+
+    private void UpdateInfoButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+       baseManager.UpdatePersonalInfo(person);
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+      }
+
+    private void NextFormButton_Click(object sender, EventArgs e)
+    {
+      ExperienceForm experienceForm = new ExperienceForm();
+      experienceForm.Show();
+      this.Hide();
+    }
+
+    public InfoForm(PersonalInfo personalInfo)
+    {
+      InitializeComponent();
+      this.personal = personalInfo;
+      FullNameField.Text = personal.FullName;
+      DateOfBirthField.Text = personal.DateOfBirth;
+      GenderField.Text = personal.Gender;
+      CityField.Text = personal.City;
+      PhoneNumberField.Text = personal.PhoneNumber;
+      EmailField.Text = personal.Email;
+      MaritalStatusField.Text = personal.MaritalStatus;
+    }
+
+    public InfoForm()
+    {
+      InitializeComponent();
+      string[] maleStatus = { "Холост", "Женат" };
+      MaritalStatusField.Items.AddRange(maleStatus);
+      GenderField.Text = "Пол";
     }
   }
 }

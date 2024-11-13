@@ -10,37 +10,15 @@ using System.Windows.Forms;
 using FinalProject.DataBase;
 using FinalProject.Forms;
 using FinalProject.Core;
+using Aspose.Words.Bibliography;
 
 namespace FinalProject
 {
   public partial class ExperienceForm : Form
   {
-    readonly private InfoForm infoForm;
-    private EducationForm educationForm;
     readonly Experience experience = new Experience();
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
 
-    public ExperienceForm() 
-    {
-      InitializeComponent();
-    }
-    public ExperienceForm(Experience experience)
-    {
-      InitializeComponent();
-      this.experience = experience;
-      PositionField.Text = experience.Position;
-      CompanyField.Text = experience.Company;
-      StartDateField.Text = experience.StartDate;
-      EndDateField.Text = experience.EndDate;
-      ResponsibilitiesField.Text = experience.Responsibilities;
-    }
-    public ExperienceForm(InfoForm infoForm)
-    {
-      InitializeComponent();
-      this.infoForm = infoForm;
-    }
-
-   
     private void PositionField_Click(object sender, EventArgs e)
     {
       if (PositionField.Text == "Должность")
@@ -89,7 +67,7 @@ namespace FinalProject
     }
     private void StartDateField_Click(object sender, EventArgs e)
     {
-      if (StartDateField.Text == "С")
+      if (StartDateField.Text == "С мм.гггг")
         StartDateField.Text = "";
     }
 
@@ -103,15 +81,15 @@ namespace FinalProject
     {
       if ((StartDateField.Text == "") || (StartDateField.Text == " ") || (StartDateField.Text.Contains("\n")))
       {
-        StartDateField.Text = "С";
+        StartDateField.Text = "С мм.гггг";
       }
-      if ((!Validator.IsValidMonth(StartDateField.Text) && (StartDateField.Text != "С")))
+      if ((!Validator.IsValidMonth(StartDateField.Text) && (StartDateField.Text != "С мм.гггг")))
         MessageBox.Show("Некорректный формат электронной даты. Пожалуйста, введите дату в формате мм.гггг");
     }
 
     private void EndDateField_Click(object sender, EventArgs e)
     {
-      if (EndDateField.Text == "До")
+      if (EndDateField.Text == "До мм.гггг")
         EndDateField.Text = "";
     }
 
@@ -124,9 +102,9 @@ namespace FinalProject
     {
       if ((EndDateField.Text == "") || (EndDateField.Text == " ") || (EndDateField.Text.Contains("\n")))
       {
-        EndDateField.Text = "До";
+        EndDateField.Text = "До мм.гггг";
       }
-      if ((!Validator.IsValidMonth(EndDateField.Text) && (EndDateField.Text != "До")))
+      if ((!Validator.IsValidMonth(EndDateField.Text) && (EndDateField.Text != "До мм.гггг")))
         MessageBox.Show("Некорректный формат электронной даты. Пожалуйста, введите дату в формате мм.гггг");
     }
   
@@ -151,25 +129,7 @@ namespace FinalProject
 
       }
     }
-    private void NextButton_Click(object sender, EventArgs e) //доработать кнопку, чтобы не сохраняла по несколько раз, а обновляла.
-    {
-      if (IsFieldsFilled())
-      {
-        if (baseManager.FindExperienceByPosition(PositionField.Text) != null)
-          baseManager.EditExperience(experience);
-         
-        else
-          baseManager.AddExperience(experience);
-
-          educationForm = new EducationForm(this);
-          educationForm.Show();
-          this.Hide();
-        
-      }
-
-      else MessageBox.Show("Необходимо заполнить все поля");
-
-    }
+  
     public bool IsFieldsFilled()
     {
       if (PositionField.Text == "Должность")
@@ -191,13 +151,13 @@ namespace FinalProject
         return false;
       }
 
-      if (StartDateField.Text == "С")
+      if (StartDateField.Text == "С мм.гггг")
       {
         StartDateField.ForeColor = Color.Red;
         return false;
       }
 
-      if (EndDateField.Text == "До")
+      if (EndDateField.Text == "До мм.гггг")
       {
         EndDateField.ForeColor = Color.Red;
         return false;
@@ -211,12 +171,8 @@ namespace FinalProject
       Application.Exit();
     }
 
-    private void AddMoreExperience_Click(object sender, EventArgs e)
+    private void ClearFieldsButton_Click(object sender, EventArgs e)
     {
-      if (IsFieldsFilled())
-      {
-        baseManager.AddExperience(experience);
-
         foreach (Control control in this.Controls)
         {
           if (control is TextBox textBox)
@@ -224,19 +180,18 @@ namespace FinalProject
             textBox.Text = string.Empty;
           }
         }
-      }
-      else MessageBox.Show("Сначала необходимо заполнить все поля");
     }
 
-    private void NoExperienceButton_Click(object sender, EventArgs e)
+    private void NextFormButton_Click(object sender, EventArgs e)
     {
-      educationForm = new EducationForm(this);
+      EducationForm educationForm = new EducationForm();
       educationForm.Show();
       this.Hide();
     }
 
     private void PreviousFormButton_Click(object sender, EventArgs e)
     {
+      InfoForm infoForm = new InfoForm();
       infoForm.Show();
       this.Hide();
     }
@@ -251,6 +206,42 @@ namespace FinalProject
        
         }
       else MessageBox.Show("Опыт еще не добавлен. Добавьте его.");
+    }
+
+    private void AddExperienceButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+      {
+        if (baseManager.IsIdenticExperienceExist(experience))
+          MessageBox.Show("Такой опыт работы уже сущестувует.");
+
+        else
+          baseManager.AddExperience(experience);
+      }
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+    }
+
+    private void UpdateExperienceButton_Click(object sender, EventArgs e)
+    {
+      if (IsFieldsFilled())
+        baseManager.UpdateExperience(experience);
+
+      else MessageBox.Show("Необходимо заполнить все поля");
+    }
+    public ExperienceForm()
+    {
+      InitializeComponent();
+    }
+    public ExperienceForm(Experience experience)
+    {
+      InitializeComponent();
+      this.experience = experience;
+      PositionField.Text = experience.Position;
+      CompanyField.Text = experience.Company;
+      StartDateField.Text = experience.StartDate;
+      EndDateField.Text = experience.EndDate;
+      ResponsibilitiesField.Text = experience.Responsibilities;
     }
   }
 }

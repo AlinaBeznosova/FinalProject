@@ -12,19 +12,16 @@ using System.Windows.Forms;
 using FinalProject.Core;
 using FinalProject.DataBase;
 
+
 namespace FinalProject.Forms
 {
   
   public partial class MainForm : Form
   {
-    private Logger _logger = new Logger();
+    readonly private Logger _logger = new Logger();
     private InfoForm infoForm;
     readonly User user = new User();
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-    public MainForm()
-    {
-      InitializeComponent();
-    }
 
     private void LoginField_Click(object sender, EventArgs e)
     {
@@ -118,6 +115,11 @@ namespace FinalProject.Forms
     {
       Application.Exit();
     }
-   
+
+    public MainForm()
+    {
+      InitializeComponent();
+    }
+
   }
 }

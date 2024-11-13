@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using log4net;
+using Aspose.Words.Bibliography;
+
 
 namespace FinalProject.DataBase
 {
@@ -129,8 +131,10 @@ namespace FinalProject.DataBase
           command.CommandText = "SELECT * FROM PersonalInfo WHERE UserId = @userId";
           command.Parameters.AddWithValue("@userId", currentUserId);
 
-          object result = command.ExecuteScalar();
-          return result != null;
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
         }
       }
     }
@@ -182,8 +186,11 @@ namespace FinalProject.DataBase
 
           command.Parameters.AddWithValue("@fullName", FIO);
           command.Parameters.AddWithValue("@userId", User.UserId);
+          
+          object personId = command.ExecuteScalar();
+          PersonalInfo.PersonalInfoId = Convert.ToInt32(personId);
 
-          using (SQLiteDataReader reader = command.ExecuteReader())
+            using (SQLiteDataReader reader = command.ExecuteReader())
           {
             if (reader.Read())
             {
@@ -251,40 +258,6 @@ namespace FinalProject.DataBase
     }
 
     /// <summary>
-    /// Существует ли личность с текущим userId и personalInfoId.
-    /// </summary>
-    /// <param name="person">Личность.</param>
-    public bool IsCurrentPersonExist(PersonalInfo person)
-    {
-      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-      {
-        connection.Open();
-        using (SQLiteCommand command = connection.CreateCommand())
-        {
-          command.CommandText = @"
-                   SELECT * FROM PersonalInfo 
-                   WHERE
-                     PersonalInfoId = @personalInfoId AND
-                     UserId = @userId
-                      ";
-
-          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
-          command.Parameters.AddWithValue("@userId", User.UserId);
-
-          
-          using (SQLiteDataReader reader = command.ExecuteReader())
-          {
-            if (reader.Read())
-            {
-              return true;
-            }
-            return false;
-          }
-        }
-      }
-    }
-
-    /// <summary>
     /// Обновить личные данные.
     /// </summary>
     /// <param name="person">Личность.</param>
@@ -314,7 +287,7 @@ namespace FinalProject.DataBase
 
             command.Parameters.Clear();
             command.Parameters.AddWithValue("@userId", User.UserId);
-            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@personalInfoId",PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@name", person.FullName);
             command.Parameters.AddWithValue("@date", person.DateOfBirth);
             command.Parameters.AddWithValue("@gender", person.Gender);
@@ -327,7 +300,7 @@ namespace FinalProject.DataBase
             int rowsAffected = command.ExecuteNonQuery();
             _logger.Debug("Запрос на обновление личной информации пользователя выполнен");
 
-            if (rowsAffected > 0)
+            if (rowsAffected != 0)
             {
               _logger.Info("Личная информация пользователя обновлена успешно");
               MessageBox.Show("Данные обновлены");
@@ -356,7 +329,7 @@ namespace FinalProject.DataBase
     /// Сохранить личные данные в таблицу PersonalInfo.
     /// </summary>
     /// <param name="person">Личность.</param>
-    public void SavePersonalInfo(PersonalInfo person)
+    public void AddPersonalInfo(PersonalInfo person)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
@@ -421,6 +394,142 @@ namespace FinalProject.DataBase
       }
     }
 
+   /// <summary>
+   /// Удалить черновик.
+   /// </summary>
+   /// <param name="fullName">ФИО.</param>
+   /// <param name="currentPersonalInfo">Текущий id личности.</param>
+    public void DeleteDraft(string fullName, int currentPersonalInfo)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка удаления личных данных");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteTransaction transaction = connection.BeginTransaction())
+          {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+              
+              command.CommandText = @"
+                        DELETE FROM Experience 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId";
+              command.Parameters.AddWithValue("@personalInfoId", currentPersonalInfo);
+              _logger.Debug("Выполнение запроса на удаление опыта работы");
+              command.ExecuteNonQuery();
+              _logger.Debug("Запрос на удаление опыта работы выполнен");
+
+              command.CommandText = @"
+                        DELETE FROM Education 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId";
+              command.Parameters.Clear();
+              command.Parameters.AddWithValue("@personalInfoId", currentPersonalInfo);
+              _logger.Debug("Выполнение запроса на удаление образования");
+              command.ExecuteNonQuery();
+              _logger.Debug("Запрос на удаление образования выполнен");
+
+              command.CommandText = @"
+                        DELETE FROM Skills 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId";
+              command.Parameters.Clear();
+              command.Parameters.AddWithValue("@personalInfoId", currentPersonalInfo);
+              _logger.Debug("Выполнение запроса на удаление навыков");
+              command.ExecuteNonQuery();
+              _logger.Debug("Запрос на удаление навыков выполнен");
+
+              command.CommandText = @"
+                        DELETE FROM Achievements 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId";
+              command.Parameters.Clear();
+              command.Parameters.AddWithValue("@personalInfoId", currentPersonalInfo);
+              _logger.Debug("Выполнение запроса на удаление достижений");
+              command.ExecuteNonQuery();
+              _logger.Debug("Запрос на удаление достижений выполнен");
+
+              command.CommandText = @"
+                        DELETE FROM PersonalInfo 
+                          WHERE 
+                          UserId = @userId AND
+                          PersonalInfoId = @personalInfoId AND
+                          FullName = @fullName";
+              command.Parameters.Clear();
+              command.Parameters.AddWithValue("@userId", User.UserId);
+              command.Parameters.AddWithValue("@personalInfoId", currentPersonalInfo);
+              command.Parameters.AddWithValue("@fullName", fullName);
+              _logger.Debug("Выполнение запроса на удаление личной информации");
+              int rowsAffectedPersonalInfo = command.ExecuteNonQuery();
+              _logger.Debug("Запрос на удаление личной информации выполнен");
+
+              if (rowsAffectedPersonalInfo > 0)
+              {
+                transaction.Commit();
+                _logger.Info("Личные данные удалены успешно");
+                MessageBox.Show("Личные данные удалены успешно");
+              }
+              else
+              {
+                transaction.Rollback();
+                _logger.Warn("Личные данные не найдены или не удалены");
+                MessageBox.Show("Личные данные не найдены или не удалены");
+              }
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка удаления личных данных", ex);
+          MessageBox.Show("Ошибка удаления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+  }
+
+    /// <summary>
+    /// Существует ли уже такой опыт работы?
+    /// </summary>
+    /// <param name="experience">Опыт работы.</param>
+    /// <returns>true если хоть одна запись найдена.</returns>
+    public bool IsIdenticExperienceExist(Experience experience)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM Experience
+                   WHERE
+                     Position = @position AND
+                     Company = @company AND 
+                     Responsibilities = @responsibilities AND 
+                     StartDate =  @startDate AND 
+                     EndDate = @endDate";
+
+          command.Parameters.AddWithValue("@position",experience.Position);
+          command.Parameters.AddWithValue("@company", experience.Company);
+          command.Parameters.AddWithValue("@responsibilities", experience.Responsibilities);
+          command.Parameters.AddWithValue("@startDate",experience.StartDate);
+          command.Parameters.AddWithValue("@endDate",experience.EndDate);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read(); 
+          }
+        }
+      }
+    }
 
     /// <summary>
     /// Добавить опыт работы в таблицу Experience.
@@ -496,7 +605,7 @@ namespace FinalProject.DataBase
     /// Существует ли опыт работы у личности?
     /// </summary>
     /// <param name="currentPersonId">Текущий id личности.</param>
-    /// <returns></returns>
+    /// <returns>true - если хоть одна запись существует.</returns>
     public bool IsExperienceExist(int currentPersonId)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -507,8 +616,10 @@ namespace FinalProject.DataBase
           command.CommandText = "SELECT * FROM Experience WHERE PersonalInfoId = @personalInfoId";
           command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
 
-          object result = command.ExecuteScalar();
-          return result != null;
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
         }
       }
     }
@@ -542,11 +653,11 @@ namespace FinalProject.DataBase
     }
 
     /// <summary>
-    /// Поиск опыта работы по должности.
+    /// Найти опыт работы по должности.
     /// </summary>
     /// <param name="position">Должность.</param>
     /// <param name="currentExpId">Текущий id пользователя.</param>
-    /// <returns></returns>
+    /// <returns>Опыт работы.</returns>
     public Experience FindExperienceByPosition(string position)
     {
       Experience experience = new Experience();
@@ -583,10 +694,10 @@ namespace FinalProject.DataBase
     }
 
     /// <summary>
-    /// Изменить опыт работы.
+    /// Обновить опыт работы.
     /// </summary>
     /// <param name="experience">Опыт работы.</param>
-    public void EditExperience(Experience experience)
+    public void UpdateExperience(Experience experience)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
       {
@@ -606,10 +717,9 @@ namespace FinalProject.DataBase
                             StartDate = @startDate,
                             EndDate = @endDate,
                             Responsibilities = @responsibilities
-                        WHERE PersonalInfoId = @personalInfoId AND ExperienceId = @experienceId
-                    ";
+                        WHERE PersonalInfoId = @personalInfoId ";
 
-            // Обратите внимание на исправление условия WHERE, добавлен ExperienceId
+            
             command.Parameters.Clear();
             command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
             command.Parameters.AddWithValue("@position", experience.Position);
@@ -703,6 +813,38 @@ namespace FinalProject.DataBase
     }
 
     /// <summary>
+    /// Существует ли уже такое образование?
+    /// </summary>
+    /// <param name="education">Образование.</param>
+    /// <returns>true если хоть одна запись найдена.</returns>
+    public bool IsIdenticEducationExist(Education education)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM Experience
+                   WHERE
+                     Institution = @institution AND
+                     Specialty = @specialty AND
+                     YearOfGraduation = @YearOfGraduation ";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@institution", education.Institution);
+          command.Parameters.AddWithValue("@specialty", education.Specialty);
+          command.Parameters.AddWithValue("@yearOfGraduation", education.YearOfGraduation);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
+        }
+      }
+    }
+
+    /// <summary>
     /// Добавить образование в таблицу Education.
     /// </summary>
     /// <param name="education">Образование.</param>
@@ -754,12 +896,12 @@ namespace FinalProject.DataBase
         }
       }
     }
-
+   
     /// <summary>
     /// Существует ли образование у личности?
     /// </summary>
     /// <param name="currentPersonalInfoId">Текущий Id пользователя.</param>
-    /// <returns></returns>
+    /// <returns>true - если хоть одна запись существует.</returns>
     public bool IsEducationExist(int currentPersonId)
     {
       using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -770,8 +912,221 @@ namespace FinalProject.DataBase
           command.CommandText = "SELECT * FROM Education WHERE PersonalInfoId = @personalInfoId";
           command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
 
-          object result = command.ExecuteScalar();
-          return result != null;
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Список образования у конкретной личности.
+    /// </summary>
+    /// <param name="currentPersonId">Текущий Id личности.</param>
+    /// <returns>Список институтов.</returns>
+    public List<string> EducationList(int currentPersonId)
+    {
+      List<string> educationList = new List<string>();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Education WHERE PersonalInfoId = @personalInfoId";
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            while (reader.Read())
+            {
+              educationList.Add(reader["Institution"].ToString());
+            }
+          }
+        }
+      }
+      return educationList;
+    }
+
+    /// <summary>
+    /// Найти образование по учебному заведению.
+    /// </summary>
+    /// <param name="institution">Учебное заведение.</param>
+    /// <returns>Образование.</returns>
+    public Education FindEducationByInstitution(string institution)
+    {
+      Education education = new Education();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                  SELECT * FROM Education 
+                   WHERE
+                     PersonalInfoId = @personalInfoId AND
+                     Institution = @institution";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@institution", institution);
+
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              education.Institution = reader["Institution"].ToString();
+              education.Specialty = reader["Specialty"].ToString();
+              education.YearOfGraduation = reader["YearOfGraduation"].ToString();
+            }
+          }
+        }
+      }
+      return education;
+    }
+
+    /// <summary>
+    /// Обновить образование.
+    /// </summary>
+    /// <param name="education">Образование.</param>
+    public void UpdateEducation(Education education)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка обновления опыта работы");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        UPDATE Education
+                        SET Institution = @institution 
+                            Specialty = @specialty 
+                            YearOfGraduation = @YearOfGraduation 
+                        WHERE PersonalInfoId = @personalInfoId ";
+
+
+            command.Parameters.Clear();
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@institution", education.Institution);
+            command.Parameters.AddWithValue("@specialty", education.Specialty);
+            command.Parameters.AddWithValue("@yearOfGraduation", education.YearOfGraduation);
+
+            _logger.Debug("Выполнение запроса на обновление оразования");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на обновление образования выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Образование обновлено успешно");
+              MessageBox.Show("Данные обновлены");
+            }
+            else
+            {
+              _logger.Warn("Образование не обновлено");
+              MessageBox.Show("Данные не обновлены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка обновления данных образования", ex);
+          MessageBox.Show("Ошибка обновления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Удалить образование.
+    /// </summary>
+    /// <param name="institution">Учебное заведение.</param>
+    public void DeleteEducation(string institution)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка удаления опыта работы");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        DELETE FROM Education 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId AND
+                     Institution = @institution  ";
+
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@institution", institution);
+
+            _logger.Debug("Выполнение запроса на удаление образования");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на удаление образования выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Образование удалено успешно");
+              MessageBox.Show("Образование удалено успешно");
+            }
+            else
+            {
+              _logger.Warn("Образование не найдено или не удалено");
+              MessageBox.Show("Образование не найдено или не удалено");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка удаления образования", ex);
+          MessageBox.Show("Ошибка удаления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Существует ли уже такой навык?
+    /// </summary>
+    /// <param name="skill">Навык.</param>
+    /// <returns>true - если существует хоть одна запись.</returns>
+    public bool IsIdenticSkillExist(Skill skill)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM Skills
+                   WHERE
+                     HardSkill = @hardSkill AND
+                     SoftSkill = @softSkill ";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@hardSkill", skill.Hardskill);
+          command.Parameters.AddWithValue("@softSkill",skill.Softskill);
+          
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
         }
       }
     }
@@ -826,6 +1181,240 @@ namespace FinalProject.DataBase
     }
 
     /// <summary>
+    /// Существует ли навык у личности?
+    /// </summary>
+    /// <param name="currentPersonId">Текщий id личности.</param>
+    /// <returns>true - если хоть одна запись существует.</returns>
+    public bool IsSkillExist(int currentPersonId)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Skills WHERE PersonalInfoId = @personalInfoId";
+
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Список навыков у конкретной личности.
+    /// </summary>
+    /// <param name="currentPersonId">Текущий Id личности.</param>
+    /// <returns>Список навыков.</returns>
+    public List<string> SkillList(int currentPersonId)
+    {
+      List<string> skillList = new List<string>();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Skills WHERE PersonalInfoId = @personalInfoId";
+
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            while (reader.Read())
+            {
+              skillList.Add(reader["HardSkill"].ToString());
+            }
+          }
+        }
+      }
+      return skillList;
+    }
+
+    /// <summary>
+    /// Найти нывки по техническим навыкам.
+    /// </summary>
+    /// <param name="hardSkill">Технические навыки.</param>
+    /// <returns>Навыки.</returns>
+    public Skill FindSkillByHardSkill(string hardSkill)
+    {
+      Skill skill = new Skill();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                  SELECT * FROM Skills 
+                   WHERE
+                     PersonalInfoId = @personalInfoId AND
+                     HardSkill = @hardSkill";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@hardSkill", hardSkill);
+
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              skill.Hardskill = reader["HardSkill"].ToString();
+              skill.Softskill = reader["Softskill"].ToString();
+            }
+          }
+        }
+      }
+      return skill;
+    }
+
+    /// <summary>
+    /// Обновить нfвыки.
+    /// </summary>
+    /// <param name="skill">Навыки.</param>
+    public void UpdateSkill(Skill skill)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка обновления навыков");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        UPDATE Skills
+                        SET HardSkill = @hardSkill 
+                            SoftSkill = @softSkill 
+                        WHERE PersonalInfoId = @personalInfoId ";
+
+
+            command.Parameters.Clear();
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@hardSkill", skill.Hardskill);
+            command.Parameters.AddWithValue("@softSkill", skill.Softskill);
+
+
+            _logger.Debug("Выполнение запроса на обновление навыков");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на обновление навыков выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Навыки обновлены успешно");
+              MessageBox.Show("Данные обновлены");
+            }
+            else
+            {
+              _logger.Warn("Навыки не обновлены");
+              MessageBox.Show("Данные не обновлены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка обновления данных навыков", ex);
+          MessageBox.Show("Ошибка обновления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Удалить навык.
+    /// </summary>
+    /// <param name="skill">Навык.</param>
+    public void DeleteSkill(string skill)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка удаления навыка");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        DELETE FROM Skills 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId AND
+                     HardSkill = @hardSkill ";
+
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@hardSkill", skill);
+           
+            
+
+            _logger.Debug("Выполнение запроса на удаление навыка");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на удаление навыка выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Навык удален успешно");
+              MessageBox.Show("Навык удален успешно");
+            }
+            else
+            {
+              _logger.Warn("Навык не найден или не удален");
+              MessageBox.Show("Навык не найден или не удален");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка удаления навыка", ex);
+          MessageBox.Show("Ошибка удаления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Существует ли уже такое достижение?
+    /// </summary>
+    /// <param name="achievement">Достижение.</param>
+    /// <returns>true - если существует хоть одна запись.</returns>
+    public bool IsIdenticAchievementExist(Achievement achievement)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                   SELECT * FROM Achievements
+                   WHERE
+                     AchievementName = @achievementName ";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@achievementName", achievement.AchievementName);
+
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
+        }
+      }
+    }
+
+    /// <summary>
     /// Добавить достижение в таблицу Achievements.
     /// </summary>
     /// <param name="achievement">Достижение.</param>
@@ -868,6 +1457,206 @@ namespace FinalProject.DataBase
         finally
         {
           connection.Close();
+        }
+      }
+    }
+
+    /// <summary>
+    /// Существует ли достижение у личности?
+    /// </summary>
+    /// <param name="currentPersonId">Текщий id личности.</param>
+    /// <returns>true - если хоть одна запись существует.</returns>
+    public bool IsAchievementExist(int currentPersonId)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Achievements WHERE PersonalInfoId = @personalInfoId";
+
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            return reader.Read();
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Список достижений у конкретной личности.
+    /// </summary>
+    /// <param name="currentPersonId">Текущий Id личности.</param>
+    /// <returns>Список достижений.</returns>
+    public List<string> AchievementList(int currentPersonId)
+    {
+      List<string> achievementList = new List<string>();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = "SELECT * FROM Achievements WHERE PersonalInfoId = @personalInfoId";
+
+          command.Parameters.AddWithValue("@personalInfoId", currentPersonId);
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            while (reader.Read())
+            {
+              achievementList.Add(reader["AchievementName"].ToString());
+            }
+          }
+        }
+      }
+      return achievementList;
+    }
+
+    /// <summary>
+    /// Найти достижение .
+    /// </summary>
+    /// <param name="ahievementName">Достижение.</param>
+    /// <returns>Достижение.</returns>
+    public Achievement FindAchievement(string ahievementName)
+    {
+      Achievement achievement = new Achievement();
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        connection.Open();
+        using (SQLiteCommand command = connection.CreateCommand())
+        {
+          command.CommandText = @"
+                  SELECT * FROM Achievements 
+                   WHERE
+                     PersonalInfoId = @personalInfoId AND
+                     AchievementName = @achievementName";
+
+          command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+          command.Parameters.AddWithValue("@achievementName", ahievementName);
+
+
+          using (SQLiteDataReader reader = command.ExecuteReader())
+          {
+            if (reader.Read())
+            {
+              achievement.AchievementName = reader["AchievementName"].ToString();
+             
+            }
+          }
+        }
+      }
+      return achievement;
+    }
+
+    /// <summary>
+    /// Обновить достижение.
+    /// </summary>
+    /// <param name="achievement">Достижение.</param>
+    public void UpdateAchievement(Achievement achievement)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка обновления достижения");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        UPDATE Achievements
+                        SET AchievementName = @achievementName 
+                        WHERE PersonalInfoId = @personalInfoId ";
+
+
+            command.Parameters.Clear();
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@achievementName", achievement.AchievementName);
+
+            _logger.Debug("Выполнение запроса на обновление достижения");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на обновление достижения выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Достижение обновлено успешно");
+              MessageBox.Show("Данные обновлены");
+            }
+            else
+            {
+              _logger.Warn("Достижение не обновлено");
+              MessageBox.Show("Данные не обновлены");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка обновления данных достижений", ex);
+          MessageBox.Show("Ошибка обновления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Удалить достижение.
+    /// </summary>
+    /// <param name="achievement">Достижение.</param>
+    public void DeleteAchievement(string achievement)
+    {
+      using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+      {
+        try
+        {
+          _logger.Info("Попытка удаления достижения");
+          _logger.Debug("Открытие соединения с базой данных");
+          connection.Open();
+          _logger.Debug("Соединение с базой данных открыто");
+
+          using (SQLiteCommand command = connection.CreateCommand())
+          {
+            command.CommandText = @"
+                        DELETE FROM Achievements 
+                          WHERE 
+                          PersonalInfoId = @personalInfoId AND
+                     AchievementName = @achievementName  ";
+
+            command.Parameters.AddWithValue("@personalInfoId", PersonalInfo.PersonalInfoId);
+            command.Parameters.AddWithValue("@achievementName",achievement);
+
+            _logger.Debug("Выполнение запроса на удаление достижения");
+            int rowsAffected = command.ExecuteNonQuery();
+            _logger.Debug("Запрос на удаление достижения выполнен");
+
+            if (rowsAffected > 0)
+            {
+              _logger.Info("Достижение удалено успешно");
+              MessageBox.Show("Достижение удалено успешно");
+            }
+            else
+            {
+              _logger.Warn("Достижение не найдено или не удалено");
+              MessageBox.Show("Достижение не найдено или не удалено");
+            }
+          }
+        }
+        catch (SQLiteException ex)
+        {
+          _logger.Error("Ошибка удаления достижения", ex);
+          MessageBox.Show("Ошибка удаления данных: " + ex.Message);
+        }
+        finally
+        {
+          connection.Close();
+          _logger.Debug("Соединение с базой данных закрыто");
         }
       }
     }

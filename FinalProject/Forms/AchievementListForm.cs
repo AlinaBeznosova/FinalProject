@@ -1,6 +1,4 @@
-﻿using FinalProject.Core;
-using FinalProject.DataBase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,17 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace FinalProject.Forms
 {
-  public partial class EditExperienceForm : Form
+  public partial class AchievementListForm : Form
   {
-    
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-   
-    private void EditExperienceForm_Load(object sender, EventArgs e)
+
+    private void AchievementListForm_Load(object sender, EventArgs e)
     {
-      List<string> list = baseManager.ExperienceList(PersonalInfo.PersonalInfoId);
+      List<string> list = baseManager.AchievementList(PersonalInfo.PersonalInfoId);
       int yPos = 10;
       foreach (string name in list)
       {
@@ -35,13 +31,12 @@ namespace FinalProject.Forms
       }
     }
 
-    private void EditExperienceForm_FormClosed(object sender, FormClosedEventArgs e)
+    private void AchievementListForm_FormClosed(object sender, FormClosedEventArgs e)
     {
       Application.Exit();
     }
 
-
-    private void DeleteExperienceButton_Click(object sender, EventArgs e)
+    private void DeleteAchievementButton_Click(object sender, EventArgs e)
     {
       RadioButton selectedRadioButton = null;
       foreach (Control control in radioPanel.Controls)
@@ -55,21 +50,20 @@ namespace FinalProject.Forms
       if (selectedRadioButton != null)
       {
 
-        string selectedPosition = selectedRadioButton.Text;
-        baseManager.DeleteExperience(selectedPosition);
+        string selectedAchievement = selectedRadioButton.Text;
+        baseManager.DeleteAchievement(selectedAchievement);
 
         this.Hide();
-        EditExperienceForm editExperienceForm = new EditExperienceForm();
-        editExperienceForm.Show();
+        AchievementListForm achievementListForm = new AchievementListForm();
+        achievementListForm.Show();
       }
       else
       {
         MessageBox.Show("Выберите один из вариантов");
       }
     }
-   
 
-    private void EditExperience_Click(object sender, EventArgs e)
+    private void EditAchievement_Click(object sender, EventArgs e)
     {
       RadioButton selectedRadioButton = null;
       foreach (Control control in radioPanel.Controls)
@@ -83,12 +77,12 @@ namespace FinalProject.Forms
 
       if (selectedRadioButton != null)
       {
-        string selectedPosition = selectedRadioButton.Text;
-        Experience experience = baseManager.FindExperienceByPosition(selectedPosition);
+        string selectedAchievement = selectedRadioButton.Text;
+        Achievement achievement = baseManager.FindAchievement(selectedAchievement);
 
         this.Hide();
-        ExperienceForm experienceForm = new ExperienceForm(experience);
-        experienceForm.Show();
+        AchievementForm achievementForm = new AchievementForm(achievement);
+        achievementForm.Show();
       }
 
       else
@@ -99,22 +93,21 @@ namespace FinalProject.Forms
 
     private void NextFormButton_Click(object sender, EventArgs e)
     {
-      EducationForm educationForm = new EducationForm();
-      educationForm.Show();
+      ResumeForm resumeForm = new ResumeForm();
+      resumeForm.Show();
       this.Hide();
     }
 
     private void PreviousFormButton_Click(object sender, EventArgs e)
     {
-      ExperienceForm exp = new ExperienceForm();
-      exp.Show();
+      AchievementListForm achievementListForm = new AchievementListForm();
+      achievementListForm.Show();
       this.Hide();
     }
 
-    public EditExperienceForm()
+    public AchievementListForm()
     {
       InitializeComponent();
     }
-
   }
 }

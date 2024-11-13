@@ -1,6 +1,4 @@
-﻿using FinalProject.Core;
-using FinalProject.DataBase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,17 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace FinalProject.Forms
 {
-  public partial class EditExperienceForm : Form
+  public partial class SkillsListForm : Form
   {
-    
     readonly DataBase.DataBaseManager baseManager = new DataBase.DataBaseManager();
-   
-    private void EditExperienceForm_Load(object sender, EventArgs e)
+
+    private void SkillsListForm_Load(object sender, EventArgs e)
     {
-      List<string> list = baseManager.ExperienceList(PersonalInfo.PersonalInfoId);
+      List<string> list = baseManager.SkillList(PersonalInfo.PersonalInfoId);
       int yPos = 10;
       foreach (string name in list)
       {
@@ -35,13 +31,12 @@ namespace FinalProject.Forms
       }
     }
 
-    private void EditExperienceForm_FormClosed(object sender, FormClosedEventArgs e)
+    private void SkillsListForm_FormClosed(object sender, FormClosedEventArgs e)
     {
       Application.Exit();
     }
 
-
-    private void DeleteExperienceButton_Click(object sender, EventArgs e)
+    private void DeleteSkillButton_Click(object sender, EventArgs e)
     {
       RadioButton selectedRadioButton = null;
       foreach (Control control in radioPanel.Controls)
@@ -55,21 +50,20 @@ namespace FinalProject.Forms
       if (selectedRadioButton != null)
       {
 
-        string selectedPosition = selectedRadioButton.Text;
-        baseManager.DeleteExperience(selectedPosition);
+        string selectedSkill = selectedRadioButton.Text;
+        baseManager.DeleteSkill(selectedSkill);
 
         this.Hide();
-        EditExperienceForm editExperienceForm = new EditExperienceForm();
-        editExperienceForm.Show();
+        SkillsListForm skillListForm = new SkillsListForm();
+        skillListForm.Show();
       }
       else
       {
         MessageBox.Show("Выберите один из вариантов");
       }
     }
-   
 
-    private void EditExperience_Click(object sender, EventArgs e)
+    private void EditSkill_Click(object sender, EventArgs e)
     {
       RadioButton selectedRadioButton = null;
       foreach (Control control in radioPanel.Controls)
@@ -83,12 +77,12 @@ namespace FinalProject.Forms
 
       if (selectedRadioButton != null)
       {
-        string selectedPosition = selectedRadioButton.Text;
-        Experience experience = baseManager.FindExperienceByPosition(selectedPosition);
+        string selectedSkill = selectedRadioButton.Text;
+        Skill skill = baseManager.FindSkillByHardSkill(selectedSkill);
 
         this.Hide();
-        ExperienceForm experienceForm = new ExperienceForm(experience);
-        experienceForm.Show();
+        SkillsForm skillForm = new SkillsForm(skill);
+        skillForm.Show();
       }
 
       else
@@ -99,22 +93,21 @@ namespace FinalProject.Forms
 
     private void NextFormButton_Click(object sender, EventArgs e)
     {
-      EducationForm educationForm = new EducationForm();
-      educationForm.Show();
+      AchievementForm achievementForm = new AchievementForm();
+      achievementForm.Show();
       this.Hide();
     }
 
     private void PreviousFormButton_Click(object sender, EventArgs e)
     {
-      ExperienceForm exp = new ExperienceForm();
-      exp.Show();
+      SkillsForm skillsForm = new SkillsForm();
+      skillsForm.Show();
       this.Hide();
     }
 
-    public EditExperienceForm()
+    public SkillsListForm()
     {
       InitializeComponent();
     }
-
   }
 }

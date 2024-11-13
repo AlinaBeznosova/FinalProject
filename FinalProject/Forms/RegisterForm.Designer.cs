@@ -39,7 +39,7 @@
       // 
       this.labelpass.AutoSize = true;
       this.labelpass.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.labelpass.Location = new System.Drawing.Point(54, 108);
+      this.labelpass.Location = new System.Drawing.Point(29, 109);
       this.labelpass.Name = "labelpass";
       this.labelpass.Size = new System.Drawing.Size(78, 20);
       this.labelpass.TabIndex = 11;
@@ -49,7 +49,7 @@
       // 
       this.labellogin.AutoSize = true;
       this.labellogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.labellogin.Location = new System.Drawing.Point(54, 44);
+      this.labellogin.Location = new System.Drawing.Point(29, 45);
       this.labellogin.Name = "labellogin";
       this.labellogin.Size = new System.Drawing.Size(64, 20);
       this.labellogin.TabIndex = 10;
@@ -57,7 +57,7 @@
       // 
       // RegisterButton
       // 
-      this.RegisterButton.Location = new System.Drawing.Point(56, 216);
+      this.RegisterButton.Location = new System.Drawing.Point(31, 217);
       this.RegisterButton.Name = "RegisterButton";
       this.RegisterButton.Size = new System.Drawing.Size(289, 47);
       this.RegisterButton.TabIndex = 8;
@@ -68,7 +68,7 @@
       // PasswordField
       // 
       this.PasswordField.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.PasswordField.Location = new System.Drawing.Point(58, 131);
+      this.PasswordField.Location = new System.Drawing.Point(33, 132);
       this.PasswordField.Name = "PasswordField";
       this.PasswordField.Size = new System.Drawing.Size(287, 36);
       this.PasswordField.TabIndex = 7;
@@ -78,7 +78,7 @@
       // LoginField
       // 
       this.LoginField.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.LoginField.Location = new System.Drawing.Point(58, 67);
+      this.LoginField.Location = new System.Drawing.Point(33, 68);
       this.LoginField.Multiline = true;
       this.LoginField.Name = "LoginField";
       this.LoginField.Size = new System.Drawing.Size(287, 36);
@@ -89,12 +89,13 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(415, 331);
+      this.ClientSize = new System.Drawing.Size(352, 323);
       this.Controls.Add(this.labelpass);
       this.Controls.Add(this.labellogin);
       this.Controls.Add(this.RegisterButton);
       this.Controls.Add(this.PasswordField);
       this.Controls.Add(this.LoginField);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Name = "RegisterForm";
       this.Text = "Регистрация";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RegisterForm_FormClosing);

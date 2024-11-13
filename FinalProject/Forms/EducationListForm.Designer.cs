@@ -28,104 +28,85 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.radioPanel = new System.Windows.Forms.Panel();
       this.PreviousFormButton = new System.Windows.Forms.Button();
       this.NextFormButton = new System.Windows.Forms.Button();
-      this.EditExperience = new System.Windows.Forms.Button();
-      this.DeleteExperienceButton = new System.Windows.Forms.Button();
-      this.PositionChoiseField = new System.Windows.Forms.TextBox();
-      this.PositionsList = new System.Windows.Forms.RichTextBox();
+      this.EditEducation = new System.Windows.Forms.Button();
+      this.DeleteEducationButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
+      // 
+      // radioPanel
+      // 
+      this.radioPanel.AutoScroll = true;
+      this.radioPanel.Location = new System.Drawing.Point(10, 10);
+      this.radioPanel.Name = "radioPanel";
+      this.radioPanel.Size = new System.Drawing.Size(438, 190);
+      this.radioPanel.TabIndex = 14;
       // 
       // PreviousFormButton
       // 
-      this.PreviousFormButton.Location = new System.Drawing.Point(47, 327);
+      this.PreviousFormButton.Location = new System.Drawing.Point(228, 206);
       this.PreviousFormButton.Name = "PreviousFormButton";
-      this.PreviousFormButton.Size = new System.Drawing.Size(222, 42);
-      this.PreviousFormButton.TabIndex = 13;
+      this.PreviousFormButton.Size = new System.Drawing.Size(220, 42);
+      this.PreviousFormButton.TabIndex = 18;
       this.PreviousFormButton.Text = "Добавить еще образование";
       this.PreviousFormButton.UseVisualStyleBackColor = true;
       this.PreviousFormButton.Click += new System.EventHandler(this.PreviousFormButton_Click);
       // 
       // NextFormButton
       // 
-      this.NextFormButton.Location = new System.Drawing.Point(275, 327);
+      this.NextFormButton.Location = new System.Drawing.Point(228, 254);
       this.NextFormButton.Name = "NextFormButton";
       this.NextFormButton.Size = new System.Drawing.Size(222, 42);
-      this.NextFormButton.TabIndex = 12;
+      this.NextFormButton.TabIndex = 17;
       this.NextFormButton.Text = "Далее";
       this.NextFormButton.UseVisualStyleBackColor = true;
       this.NextFormButton.Click += new System.EventHandler(this.NextFormButton_Click);
       // 
-      // EditExperience
+      // EditEducation
       // 
-      this.EditExperience.Location = new System.Drawing.Point(275, 274);
-      this.EditExperience.Name = "EditExperience";
-      this.EditExperience.Size = new System.Drawing.Size(222, 44);
-      this.EditExperience.TabIndex = 11;
-      this.EditExperience.Text = "Редактировать";
-      this.EditExperience.UseVisualStyleBackColor = true;
-      this.EditExperience.Click += new System.EventHandler(this.EditExperience_Click);
+      this.EditEducation.Location = new System.Drawing.Point(2, 254);
+      this.EditEducation.Name = "EditEducation";
+      this.EditEducation.Size = new System.Drawing.Size(220, 42);
+      this.EditEducation.TabIndex = 16;
+      this.EditEducation.Text = "Редактировать";
+      this.EditEducation.UseVisualStyleBackColor = true;
+      this.EditEducation.Click += new System.EventHandler(this.EditEducation_Click);
       // 
-      // DeleteExperienceButton
+      // DeleteEducationButton
       // 
-      this.DeleteExperienceButton.Location = new System.Drawing.Point(47, 274);
-      this.DeleteExperienceButton.Name = "DeleteExperienceButton";
-      this.DeleteExperienceButton.Size = new System.Drawing.Size(222, 44);
-      this.DeleteExperienceButton.TabIndex = 10;
-      this.DeleteExperienceButton.Text = "Удалить";
-      this.DeleteExperienceButton.UseVisualStyleBackColor = true;
-      this.DeleteExperienceButton.Click += new System.EventHandler(this.DeleteExperienceButton_Click);
-      // 
-      // PositionChoiseField
-      // 
-      this.PositionChoiseField.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.PositionChoiseField.Location = new System.Drawing.Point(32, 219);
-      this.PositionChoiseField.Multiline = true;
-      this.PositionChoiseField.Name = "PositionChoiseField";
-      this.PositionChoiseField.Size = new System.Drawing.Size(482, 49);
-      this.PositionChoiseField.TabIndex = 9;
-      this.PositionChoiseField.Text = "Введите учебное заведение";
-      this.PositionChoiseField.Click += new System.EventHandler(this.PositionChoiseField_Click);
-      this.PositionChoiseField.TextChanged += new System.EventHandler(this.PositionChoiseField_TextChanged);
-      this.PositionChoiseField.Leave += new System.EventHandler(this.PositionChoiseField_Leave);
-      // 
-      // PositionsList
-      // 
-      this.PositionsList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.PositionsList.Location = new System.Drawing.Point(32, 42);
-      this.PositionsList.Name = "PositionsList";
-      this.PositionsList.ReadOnly = true;
-      this.PositionsList.Size = new System.Drawing.Size(482, 162);
-      this.PositionsList.TabIndex = 8;
-      this.PositionsList.Text = "";
+      this.DeleteEducationButton.Location = new System.Drawing.Point(2, 206);
+      this.DeleteEducationButton.Name = "DeleteEducationButton";
+      this.DeleteEducationButton.Size = new System.Drawing.Size(220, 42);
+      this.DeleteEducationButton.TabIndex = 15;
+      this.DeleteEducationButton.Text = "Удалить";
+      this.DeleteEducationButton.UseVisualStyleBackColor = true;
+      this.DeleteEducationButton.Click += new System.EventHandler(this.DeleteEducationButton_Click);
       // 
       // EducationListForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(549, 401);
+      this.ClientSize = new System.Drawing.Size(452, 303);
       this.Controls.Add(this.PreviousFormButton);
       this.Controls.Add(this.NextFormButton);
-      this.Controls.Add(this.EditExperience);
-      this.Controls.Add(this.DeleteExperienceButton);
-      this.Controls.Add(this.PositionChoiseField);
-      this.Controls.Add(this.PositionsList);
+      this.Controls.Add(this.EditEducation);
+      this.Controls.Add(this.DeleteEducationButton);
+      this.Controls.Add(this.radioPanel);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Name = "EducationListForm";
       this.Text = "EducationListForm";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.EducationListForm_FormClosed);
       this.Load += new System.EventHandler(this.EducationListForm_Load);
       this.ResumeLayout(false);
-      this.PerformLayout();
 
     }
 
     #endregion
-
+    private System.Windows.Forms.Panel radioPanel;
     private System.Windows.Forms.Button PreviousFormButton;
     private System.Windows.Forms.Button NextFormButton;
-    private System.Windows.Forms.Button EditExperience;
-    private System.Windows.Forms.Button DeleteExperienceButton;
-    private System.Windows.Forms.TextBox PositionChoiseField;
-    private System.Windows.Forms.RichTextBox PositionsList;
+    private System.Windows.Forms.Button EditEducation;
+    private System.Windows.Forms.Button DeleteEducationButton;
   }
 }
